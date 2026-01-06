@@ -120,10 +120,10 @@ export function calcWeeklySeverityTrend(entries) {
     ? previousWeekEntries.reduce((sum, e) => sum + e.severity, 0) / previousWeekEntries.length
     : 0;
 
-  if (currentWeekEntries.length === 0 || previousWeekEntries.length === 0)
+  if (currentWeekEntries.length < 3 || previousWeekEntries.length < 3)
     return {
       direction: 'Insufficient',
-      message: 'Insufficient Data',
+      message: 'Insufficient Weekly Data',
       percentChange: null
     };
 

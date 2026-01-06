@@ -39,7 +39,7 @@ function WeeklyAverageSeverityKPICard() {
     }
   };
 
-  const currentTrend = trendMap[trend.direction];
+  const currentTrend = trendMap[trend.direction] || trendMap['insufficient'];
 
   return (
     <div className="flex flex-col items-center justify-between h-full">
