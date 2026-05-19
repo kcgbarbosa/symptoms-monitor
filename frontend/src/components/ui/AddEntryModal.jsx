@@ -1,15 +1,27 @@
-import { useState } from 'react';
-import { useEntriesStore } from '../../../store/useEntriesStore'
-import { getSeverityLevel, SEVERITY_COLORS } from '../../utils/severityConstants';
-import IconGrid from '../IconPicker/IconGrid';
+import { useState } from "react";
+import { useEntriesStore } from "../../../store/useEntriesStore";
+import {
+  getSeverityLevel,
+  SEVERITY_COLORS,
+} from "../../utils/severityConstants";
+import IconGrid from "../IconPicker/IconGrid";
 
-const MODAL_ID = 'add_entry_modal';
-const MODAL_CONTENT_ID = 'modal_content';
+const MODAL_ID = "add_entry_modal";
+const MODAL_CONTENT_ID = "modal_content";
 const MAX_NOTES_LENGTH = 500;
 const MAX_NAME_LENGTH = 40;
 
 function AddEntryModal() {
-  const { addEntry, updateEntry, fetchEntries, resetForm, formData, setFormData, loading, entries } = useEntriesStore();
+  const {
+    addEntry,
+    updateEntry,
+    fetchEntries,
+    resetForm,
+    formData,
+    setFormData,
+    loading,
+    entries,
+  } = useEntriesStore();
 
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
 
@@ -24,15 +36,13 @@ function AddEntryModal() {
   };
 
   const getLastIconForSymptom = (name) => {
-    const key = (name || '').trim().toLowerCase();
+    const key = (name || "").trim().toLowerCase();
     if (!key) return null;
 
-    const match = [...entries]
-      .reverse()
-      .find((entry) => {
-        const entryKey = (entry.symptom_name || '').trim().toLowerCase();
-        return entryKey === key;
-      });
+    const match = [...entries].reverse().find((entry) => {
+      const entryKey = (entry.symptom_name || "").trim().toLowerCase();
+      return entryKey === key;
+    });
 
     return match?.icon_name || null;
   };
@@ -47,16 +57,14 @@ function AddEntryModal() {
     setFormData({
       ...formData,
       symptom_name: name,
-      ...(lastIcon ? { icon_name: lastIcon } : {})
+      ...(lastIcon ? { icon_name: lastIcon } : {}),
     });
 
     if (!normalizedInput) {
       setFilteredSuggestions([]);
     } else {
       setFilteredSuggestions(
-        entryNames.filter(n =>
-          n.toLowerCase().includes(normalizedInput)
-        )
+        entryNames.filter((n) => n.toLowerCase().includes(normalizedInput)),
       );
     }
   };
@@ -66,7 +74,7 @@ function AddEntryModal() {
     setFormData({
       ...formData,
       symptom_name: suggestion,
-      ...(lastIcon ? { icon_name: lastIcon } : {})
+      ...(lastIcon ? { icon_name: lastIcon } : {}),
     });
     setFilteredSuggestions([]);
   };
@@ -91,19 +99,28 @@ function AddEntryModal() {
         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
           onClick={closeModal}
-        >✕</button>
+        >
+          ✕
+        </button>
 
-        <h3 className="font-bold text-xl mb-2">{formData?.id ? "Edit Entry" : "Add New Entry"}</h3>
+        <h3 className="font-bold text-xl mb-2">
+          {formData?.id ? "Edit Entry" : "Add New Entry"}
+        </h3>
         <p className="label-text text-small font-medium opacity-70 mb-6">
-          {formData?.id ? "Update your entry details" : "Start typing to see your previous symptoms"}
+          {formData?.id
+            ? "Update your entry details"
+            : "Start typing to see your previous symptoms"}
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-
           <div className="form-control relative">
             <label className="label">
-              <span className="label-text text-base font-medium">Symptom Name</span>
-              <span className="label-text-alt text-sm text-gray-500">{(formData.symptom_name || "").length}/{MAX_NAME_LENGTH}</span>
+              <span className="label-text text-base font-medium">
+                Symptom Name
+              </span>
+              <span className="label-text-alt text-sm text-gray-500">
+                {(formData.symptom_name || "").length}/{MAX_NAME_LENGTH}
+              </span>
             </label>
             <input
               type="text"
@@ -117,7 +134,7 @@ function AddEntryModal() {
                 if (trimmedName !== formData.symptom_name) {
                   setFormData({
                     ...formData,
-                    symptom_name: trimmedName
+                    symptom_name: trimmedName,
                   });
                 }
               }}
@@ -142,12 +159,16 @@ function AddEntryModal() {
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text text-base font-medium">Select Icon</span>
+              <span className="label-text text-base font-medium">
+                Select Icon
+              </span>
             </label>
             <div className="bg-base-100 p-2 rounded-xl border border-base-300 shadow-inner">
               <IconGrid
                 selectedIcon={formData.icon_name}
-                onSelectIcon={(iconName) => setFormData({ ...formData, icon_name: iconName })}
+                onSelectIcon={(iconName) =>
+                  setFormData({ ...formData, icon_name: iconName })
+                }
               />
             </div>
           </div>
@@ -155,7 +176,9 @@ function AddEntryModal() {
           <div className="form-control">
             <label className="label">
               <span className="label-text text-base font-medium">Severity</span>
-              <span className={`font-bold text-xl ${SEVERITY_COLORS[getSeverityLevel(formData.severity)].text}`}>
+              <span
+                className={`font-bold text-xl ${SEVERITY_COLORS[getSeverityLevel(formData.severity)].text}`}
+              >
                 {formData.severity || 5}
               </span>
             </label>
@@ -165,29 +188,41 @@ function AddEntryModal() {
                 min="1"
                 max="10"
                 value={formData.severity || 5}
-                onChange={(e) => setFormData({ ...formData, severity: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, severity: e.target.value })
+                }
                 className={`range ${SEVERITY_COLORS[getSeverityLevel(formData.severity)].range}`}
                 step="1"
               />
               <div className="flex justify-between px-2 mt-2">
-                <span className="text-sm font-bold text-success uppercase text-[12px]">Mild</span>
+                <span className="text-sm font-bold text-success uppercase text-[12px]">
+                  Mild
+                </span>
                 <span className="text-gray-300">—</span>
-                <span className="text-sm font-bold text-warning uppercase text-[12px]">Moderate</span>
+                <span className="text-sm font-bold text-warning uppercase text-[12px]">
+                  Moderate
+                </span>
                 <span className="text-gray-300">—</span>
-                <span className="text-sm font-bold text-error uppercase text-[12px]">Severe</span>
+                <span className="text-sm font-bold text-error uppercase text-[12px]">
+                  Severe
+                </span>
               </div>
             </div>
           </div>
 
           <div className="form-control">
             <label className="label">
-              <span className="label-text text-base font-medium">Date of Symptom</span>
+              <span className="label-text text-base font-medium">
+                Date of Symptom
+              </span>
             </label>
             <input
               type="date"
               className="input input-bordered w-full py-3 focus:input-primary transition-colors duration-200"
               value={formData.date_of_symptom}
-              onChange={(e) => setFormData({ ...formData, date_of_symptom: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, date_of_symptom: e.target.value })
+              }
               max={new Date().toISOString().split("T")[0]}
             />
           </div>
@@ -204,21 +239,36 @@ function AddEntryModal() {
               className="textarea textarea-bordered w-full py-3 focus:textarea-primary transition-colors duration-200 resize-none h-24 shadow-inner"
               value={formData.notes}
               maxLength={MAX_NOTES_LENGTH}
-              onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, notes: e.target.value })
+              }
             />
           </div>
 
           <div className="modal-action">
-            <button type="button" className="btn btn-ghost" onClick={closeModal}>Cancel</button>
+            <button
+              type="button"
+              className="btn btn-ghost"
+              onClick={closeModal}
+            >
+              Cancel
+            </button>
             <button
               type="submit"
               className="btn btn-primary min-w-[120px] text-white"
-              disabled={!formData.symptom_name || !formData.severity || !formData.date_of_symptom || loading}
+              disabled={
+                !formData.symptom_name ||
+                !formData.severity ||
+                !formData.date_of_symptom ||
+                loading
+              }
             >
               {loading ? (
                 <span className="loading loading-spinner loading-sm" />
+              ) : formData?.id ? (
+                "Save Changes"
               ) : (
-                formData?.id ? "Save Changes" : "Save Entry"
+                "Save Entry"
               )}
             </button>
           </div>

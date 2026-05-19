@@ -1,6 +1,9 @@
-import { calcWeeklyEntries, getMostLoggedSymptomThisWeek } from '../../utils/dataProcessing';
-import { useEntriesStore } from '../../../store/useEntriesStore';
-import { CalendarFold, Star } from 'lucide-react';
+import {
+  calcWeeklyEntries,
+  getMostLoggedSymptomThisWeek,
+} from "../../utils/dataProcessing";
+import { useEntriesStore } from "../../../store/useEntriesStore";
+import { CalendarFold, Star } from "lucide-react";
 
 function WeeklyEntriesKPICard() {
   const { entries } = useEntriesStore();
@@ -12,8 +15,10 @@ function WeeklyEntriesKPICard() {
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-2">
           <CalendarFold className="size-5 text-purple-600" strokeWidth={2.5} />
-          <h3 className="text-md font-medium text-gray-600 uppercase tracking-wide">This Week</h3>
-        </div> 
+          <h3 className="text-md font-medium text-gray-600 uppercase tracking-wide">
+            This Week
+          </h3>
+        </div>
 
         <p className="text-base text-gray-500">Total Symptoms Logged</p>
         <p className="text-7xl font-bold text-gray-900 tracking-tighter">
@@ -21,7 +26,7 @@ function WeeklyEntriesKPICard() {
         </p>
       </div>
 
-     {peakSymptom && (
+      {peakSymptom && (
         <div className="absolute bottom-0 right-0">
           <div className="inline-flex items-center gap-2 px-4 py-4 border-l border-t border-amber-200 rounded-tl-2xl">
             <div className="flex items-center justify-center size-8 bg-amber-500 rounded-full">

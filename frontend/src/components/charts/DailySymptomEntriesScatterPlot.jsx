@@ -1,8 +1,8 @@
-import { Scatter } from 'react-chartjs-2';
-import { getIconColor } from '../IconPicker/IconOptions';
-import { formatDateForDisplay } from '../../utils/dataProcessing';
+import { Scatter } from "react-chartjs-2";
+import { getIconColor } from "../IconPicker/IconOptions";
+import { formatDateForDisplay } from "../../utils/dataProcessing";
 
-import 'chartjs-adapter-date-fns';
+import "chartjs-adapter-date-fns";
 
 import {
   Chart as ChartJS,
@@ -13,7 +13,7 @@ import {
   Tooltip,
   Legend,
   TimeScale,
-} from 'chart.js';
+} from "chart.js";
 
 ChartJS.register(
   LinearScale,
@@ -22,40 +22,40 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
 );
 
 // Renders a grid of scatter plots showing symptom frequency over time.
 const DailySymptomEntriesScatterPlot = ({ data, entries }) => {
-
   if (!data || data.length === 0) {
     return <div className="text-center p-4">No data available</div>;
   }
 
   const symptomIconMap = {};
-  entries.forEach(entry => {
+  entries.forEach((entry) => {
     if (!symptomIconMap[entry.symptom_name]) {
       symptomIconMap[entry.symptom_name] = entry.icon_name;
     }
   });
 
   // Sort data by date to make sure the TimeScale renders properly
-  const sortedData = [...data].sort((a, b) => new Date(a.date) - new Date(b.date));
+  const sortedData = [...data].sort(
+    (a, b) => new Date(a.date) - new Date(b.date),
+  );
 
   // Extract unique symptom names to generate individual charts
   const symptomNames = [
     ...new Set(
-      sortedData.flatMap(day =>
-        Object.keys(day).filter(key =>
-          key !== 'date' &&
-          key !== 'icon_name'))
-    )
+      sortedData.flatMap((day) =>
+        Object.keys(day).filter((key) => key !== "date" && key !== "icon_name"),
+      ),
+    ),
   ];
 
   // Calculate a global Y-axis max so all charts use the same scale
   let allCounts = [];
-  sortedData.forEach(day => {
-    symptomNames.forEach(symptom => {
+  sortedData.forEach((day) => {
+    symptomNames.forEach((symptom) => {
       allCounts.push(day[symptom] || 0);
     });
   });
@@ -68,17 +68,17 @@ const DailySymptomEntriesScatterPlot = ({ data, entries }) => {
     plugins: {
       legend: { display: false },
       tooltip: {
-        backgroundColor: 'rgba(255,255,255,0.95)',
-        titleColor: '#1f2937',
-        bodyColor: '#374151',
-        borderColor: '#e5e7eb',
+        backgroundColor: "rgba(255,255,255,0.95)",
+        titleColor: "#1f2937",
+        bodyColor: "#374151",
+        borderColor: "#e5e7eb",
         borderWidth: 1,
         padding: 10,
         displayColors: false,
         callbacks: {
           title: (context) => {
             const dateValue = context[0].parsed.x;
-            const isoDate = new Date(dateValue).toISOString().split('T')[0];
+            const isoDate = new Date(dateValue).toISOString().split("T")[0];
 
             return formatDateForDisplay({
               date_of_symptom: isoDate,
@@ -86,17 +86,17 @@ const DailySymptomEntriesScatterPlot = ({ data, entries }) => {
           },
           label: (context) => {
             const value = context.parsed.y;
-            return `${value} ${value === 1 ? 'entry' : 'entries'}`;
+            return `${value} ${value === 1 ? "entry" : "entries"}`;
           },
         },
       },
     },
     scales: {
       x: {
-        type: 'time',
+        type: "time",
         time: {
-          unit: 'day',
-          displayFormats: { day: 'MMM dd' },
+          unit: "day",
+          displayFormats: { day: "MMM dd" },
         },
         ticks: { display: false },
         grid: { display: false },
@@ -107,10 +107,10 @@ const DailySymptomEntriesScatterPlot = ({ data, entries }) => {
         ticks: {
           stepSize: 1,
           font: { size: 10 },
-          color: '#9ca3af',
+          color: "#9ca3af",
         },
         grid: {
-          color: '#f3f4f6',
+          color: "#f3f4f6",
           drawBorder: false,
         },
       },
@@ -120,9 +120,8 @@ const DailySymptomEntriesScatterPlot = ({ data, entries }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {symptomNames.map((symptom) => {
-
-        const iconName = symptomIconMap[symptom] || 'DefaultIcon';
-        const color = getIconColor(iconName, 'hex');
+        const iconName = symptomIconMap[symptom] || "DefaultIcon";
+        const color = getIconColor(iconName, "hex");
 
         // define chart points, excluding 0 entry days
         const points = sortedData
@@ -137,17 +136,13 @@ const DailySymptomEntriesScatterPlot = ({ data, entries }) => {
         const dateRangeDisplay =
           datesWithEntries.length > 0
             ? `${formatDateForDisplay({
-              date_of_symptom: datesWithEntries[0],
-            })} – ${formatDateForDisplay({
-              date_of_symptom:
-                datesWithEntries[datesWithEntries.length - 1],
-            })}`
-            : 'No entries';
+                date_of_symptom: datesWithEntries[0],
+              })} – ${formatDateForDisplay({
+                date_of_symptom: datesWithEntries[datesWithEntries.length - 1],
+              })}`
+            : "No entries";
 
-        const totalEntries = points.reduce(
-          (sum, point) => sum + point.y,
-          0
-        );
+        const totalEntries = points.reduce((sum, point) => sum + point.y, 0);
 
         const averagePerDay = (totalEntries / sortedData.length).toFixed(1);
 
@@ -171,18 +166,16 @@ const DailySymptomEntriesScatterPlot = ({ data, entries }) => {
             className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow flex flex-col"
           >
             <div className="mb-3">
-              <h3 className="text-sm font-semibold truncate mb-2">
-                {symptom}
-              </h3>
+              <h3 className="text-sm font-semibold truncate mb-2">{symptom}</h3>
               <div className="flex justify-between text-xs text-base-content/70">
-                <span className='text-secondary/50'>
-                  Total:{' '}
+                <span className="text-secondary/50">
+                  Total:{" "}
                   <span className="font-semibold text-secondary/70">
                     {totalEntries}
                   </span>
                 </span>
-                <span className='text-accent/50'>
-                  Avg:{' '}
+                <span className="text-accent/50">
+                  Avg:{" "}
                   <span className="font-semibold text-accent/70 ">
                     {averagePerDay}/day
                   </span>
