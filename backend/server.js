@@ -1,10 +1,10 @@
-import express from 'express';
+import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
-import entryRoutes from './routes/entryRoutes.js';
-import { sql } from './config/db.js';
+import entryRoutes from "./routes/entryRoutes.js";
+import { sql } from "./config/db.js";
 
 dotenv.config();
 const app = express();
@@ -16,14 +16,14 @@ app.use(helmet());
 app.use(cors());
 app.use(morgan("dev"));
 
-// Routes 
+// Routes
 app.use("/api/entries", entryRoutes);
 
 // Database Initialization
 async function initDB() {
-    try {
-        // Schema initialization for the entries table
-        await sql`
+  try {
+    // Schema initialization for the entries table
+    await sql`
             CREATE TABLE IF NOT EXISTS entries (
                 id SERIAL PRIMARY KEY,
                 symptom_name VARCHAR(255) NOT NULL,
@@ -34,15 +34,15 @@ async function initDB() {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `;
-        console.log("Database initialized successfully");
-    } catch (error) {
-        console.error("Critical Error: Database initialization failed", error);
-    }
+    console.log("Database initialized successfully");
+  } catch (error) {
+    console.error("Critical Error: Database initialization failed", error);
+  }
 }
 
-// Server Startup 
+// Server Startup
 initDB().then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
-    });
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
 });

@@ -1,9 +1,9 @@
-import { create } from 'zustand';
-import axios from 'axios';
+import { create } from "zustand";
+import axios from "axios";
 import toast from "react-hot-toast";
-import { demoSeedData } from '../src/demo-seed-data/demoSeedData.js';
-import { DEMO_MODE } from '../src/config/demoConfig.js';
-import { applyRollingDates } from '../src/utils/dataProcessing.js';
+import { demoSeedData } from "../src/demo-seed-data/demoSeedData.js";
+import { DEMO_MODE } from "../src/config/demoConfig.js";
+import { applyRollingDates } from "../src/utils/dataProcessing.js";
 
 const BASE_URL = "http://localhost:8000";
 
@@ -11,19 +11,18 @@ const BASE_URL = "http://localhost:8000";
 const nextId = (allEntries) => {
   if (allEntries.length === 0) return 1;
 
-  const maxId = Math.max(...allEntries.map(entry => entry.id));
+  const maxId = Math.max(...allEntries.map((entry) => entry.id));
   return maxId + 1;
 };
 
 export const useEntriesStore = create((set, get) => ({
-
   //entries state
   entries: [],
   loading: false,
   error: null,
   currentEntry: null,
 
-  //forms state 
+  //forms state
   formData: {
     symptom_name: "",
     icon_name: "DefaultIcon",
@@ -33,18 +32,21 @@ export const useEntriesStore = create((set, get) => ({
   },
 
   setFormData: (formData) => set({ formData }),
-  resetForm: () => set({
-    formData: {
-      symptom_name: "",
-      icon_name: "DefaultIcon",
-      severity: "5",
-      notes: "",
-      date_of_symptom: "",
-    }
-  }),
+  resetForm: () =>
+    set({
+      formData: {
+        symptom_name: "",
+        icon_name: "DefaultIcon",
+        severity: "5",
+        notes: "",
+        date_of_symptom: "",
+      },
+    }),
 
   sortEntriesByDate: (entries) => {
-    return [...entries].sort((a, b) => new Date(b.date_of_symptom) - new Date(a.date_of_symptom));
+    return [...entries].sort(
+      (a, b) => new Date(b.date_of_symptom) - new Date(a.date_of_symptom),
+    );
   },
 
   addEntry: async (e) => {
@@ -96,11 +98,13 @@ export const useEntriesStore = create((set, get) => ({
       if (currentEntries.length === 0) {
         const demoDataWithRollingDates = applyRollingDates(demoSeedData);
 
-        const entriesWithIds = demoDataWithRollingDates.map((seedEntry, index) => ({
-          id: index + 1,
-          ...seedEntry,
-          created_at: new Date().toISOString(),
-        }));
+        const entriesWithIds = demoDataWithRollingDates.map(
+          (seedEntry, index) => ({
+            id: index + 1,
+            ...seedEntry,
+            created_at: new Date().toISOString(),
+          }),
+        );
 
         const sortedEntries = get().sortEntriesByDate(entriesWithIds);
         set({ entries: sortedEntries, loading: false, error: null });
@@ -112,7 +116,7 @@ export const useEntriesStore = create((set, get) => ({
     }
 
     try {
-      const response = await axios.get(`${BASE_URL}/api/entries`)
+      const response = await axios.get(`${BASE_URL}/api/entries`);
       const sortedEntries = get().sortEntriesByDate(response.data.data);
       set({ entries: sortedEntries, error: null });
     } catch (err) {
@@ -128,14 +132,20 @@ export const useEntriesStore = create((set, get) => ({
     if (DEMO_MODE) {
       const { formData, entries } = get();
       const targetId = Number(id);
-      const updatedEntries = entries.map(entry =>
+      const updatedEntries = entries.map((entry) =>
         Number(entry.id) === targetId
           ? { ...entry, ...formData, severity: Number(formData.severity) }
-          : entry
+          : entry,
       );
       const sortedEntries = get().sortEntriesByDate(updatedEntries);
-      const updatedEntry = updatedEntries.find(entry => Number(entry.id) === targetId);
-      set({ entries: sortedEntries, currentEntry: updatedEntry, loading: false });
+      const updatedEntry = updatedEntries.find(
+        (entry) => Number(entry.id) === targetId,
+      );
+      set({
+        entries: sortedEntries,
+        currentEntry: updatedEntry,
+        loading: false,
+      });
       get().resetForm();
       toast.success("Entry updated successfully!");
       return;
@@ -143,7 +153,10 @@ export const useEntriesStore = create((set, get) => ({
 
     try {
       const { formData } = get();
-      const response = await axios.put(`${BASE_URL}/api/entries/${id}`, formData);
+      const response = await axios.put(
+        `${BASE_URL}/api/entries/${id}`,
+        formData,
+      );
       set({ currentEntry: response.data.data });
       toast.success("Entry updated successfully!");
     } catch (error) {
@@ -163,7 +176,9 @@ export const useEntriesStore = create((set, get) => ({
 
     if (DEMO_MODE) {
       const targetId = Number(id);
-      const updatedEntries = get().entries.filter(entry => Number(entry.id) !== targetId);
+      const updatedEntries = get().entries.filter(
+        (entry) => Number(entry.id) !== targetId,
+      );
       set({ entries: updatedEntries, loading: false });
       toast.success("Entry deleted successfully!");
       return;
@@ -171,12 +186,14 @@ export const useEntriesStore = create((set, get) => ({
 
     try {
       await axios.delete(`${BASE_URL}/api/entries/${id}`);
-      set(prev => ({
-        entries: prev.entries.filter(entry => Number(entry.id) !== Number(id)) 
+      set((prev) => ({
+        entries: prev.entries.filter(
+          (entry) => Number(entry.id) !== Number(id),
+        ),
       }));
-      toast.success("Entry deleted successfully!")
+      toast.success("Entry deleted successfully!");
     } catch (error) {
-      console.log("Error in deleteEntry function", error)
+      console.log("Error in deleteEntry function", error);
       toast.error("Something went wrong");
     } finally {
       set({ loading: false });
@@ -188,7 +205,9 @@ export const useEntriesStore = create((set, get) => ({
 
     if (DEMO_MODE) {
       const targetId = Number(id);
-      const entry = get().entries.find(entry => Number(entry.id) === targetId);
+      const entry = get().entries.find(
+        (entry) => Number(entry.id) === targetId,
+      );
       if (entry) {
         set({ currentEntry: entry, error: null, loading: false });
       } else {
@@ -210,5 +229,4 @@ export const useEntriesStore = create((set, get) => ({
       set({ loading: false });
     }
   },
-
 }));

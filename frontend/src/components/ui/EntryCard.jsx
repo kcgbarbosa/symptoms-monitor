@@ -1,16 +1,14 @@
-import { formatDateForDisplay } from '../../utils/dataProcessing';
-import IconComponent from './IconComponent';
-import SeverityBadge from './SeverityBadge';
+import { formatDateForDisplay } from "../../utils/dataProcessing";
+import IconComponent from "./IconComponent";
+import SeverityBadge from "./SeverityBadge";
 
 function EntryCard({ entry }) {
-
   const displayDate = formatDateForDisplay(entry);
 
   return (
     <div className="card bg-base-100 shadow hover:shadow-lg transition-shadow">
       <div className="card-body p-3 sm:p-6">
         <div className="flex items-center gap-2 sm:gap-4">
-
           <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-base-200 flex items-center justify-center shrink-0">
             <IconComponent entry={entry} size={32} strokeWidth={3} />
           </div>
@@ -37,8 +35,7 @@ function EntryCard({ entry }) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default EntryCard
-
+export default EntryCard;

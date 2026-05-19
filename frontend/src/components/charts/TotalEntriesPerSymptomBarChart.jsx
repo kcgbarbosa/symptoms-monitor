@@ -14,27 +14,29 @@ import {
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement, 
-  Title, 
-  Tooltip, 
-  Legend);
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+);
 
 const TotalEntriesPerSymptomBarChart = ({ data }) => {
-
   const MAX_LABEL_LENGTH = 15;
 
   // Truncate symptom names to prevent labels going outside of chart boundaries
-  const fullLabels = data.map(item => item.symptom_name || '');
-  const labels = fullLabels.map(name =>
-    name.length > MAX_LABEL_LENGTH ? `${name.slice(0, MAX_LABEL_LENGTH)}…` : name
+  const fullLabels = data.map((item) => item.symptom_name || "");
+  const labels = fullLabels.map((name) =>
+    name.length > MAX_LABEL_LENGTH
+      ? `${name.slice(0, MAX_LABEL_LENGTH)}…`
+      : name,
   );
 
-  const counts = data.map(item => item.count);
+  const counts = data.map((item) => item.count);
 
   // Map custom icon colors to the bars for visual consistency with the icons
-  const colors = data.map(item => {
-    const name = item.icon_name || 'DefaultIcon';
-    return getIconColor(name, 'hex');
+  const colors = data.map((item) => {
+    const name = item.icon_name || "DefaultIcon";
+    return getIconColor(name, "hex");
   });
 
   const chartData = {
@@ -51,7 +53,7 @@ const TotalEntriesPerSymptomBarChart = ({ data }) => {
   };
 
   const options = {
-    indexAxis: 'y',
+    indexAxis: "y",
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -62,18 +64,18 @@ const TotalEntriesPerSymptomBarChart = ({ data }) => {
         display: false,
       },
       tooltip: {
-        backgroundColor: 'rgba(255, 255, 255, 0.95)',
-        titleColor: '#1f2937',
-        bodyColor: '#6b7280',
-        borderColor: '#e5e7eb',
+        backgroundColor: "rgba(255, 255, 255, 0.95)",
+        titleColor: "#1f2937",
+        bodyColor: "#6b7280",
+        borderColor: "#e5e7eb",
         borderWidth: 1,
         padding: 12,
         displayColors: false,
         callbacks: {
           label: function (context) {
-            return `${context.parsed.x} ${context.parsed.x === 1 ? 'entry' : 'entries'}`;
-          }
-        }
+            return `${context.parsed.x} ${context.parsed.x === 1 ? "entry" : "entries"}`;
+          },
+        },
       },
     },
     scales: {
@@ -82,12 +84,12 @@ const TotalEntriesPerSymptomBarChart = ({ data }) => {
         ticks: {
           stepSize: 1,
           font: {
-            size: 12
+            size: 12,
           },
-          color: '#6b7280',
+          color: "#6b7280",
         },
         grid: {
-          color: '#f9fafb',
+          color: "#f9fafb",
           drawBorder: false,
         },
       },
@@ -95,9 +97,9 @@ const TotalEntriesPerSymptomBarChart = ({ data }) => {
         ticks: {
           font: {
             size: 13,
-            weight: '500'
+            weight: "500",
           },
-          color: '#374151',
+          color: "#374151",
         },
         grid: {
           display: false,
