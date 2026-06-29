@@ -78,11 +78,12 @@ export const useEntriesStore = create((set, get) => ({
       const { data, error } = await supabase
         .from('entries')
         .insert(formData);
+      if (error) throw error;
       await get().fetchEntries();
       get().resetForm();
       toast.success("Entry added successfully");
       document.getElementById("add_entry_modal").close();
-    } catch (error) {
+    } catch (err) {
       console.log("Error in addEntry function", error);
       toast.error("Something went wrong");
     } finally {
@@ -159,9 +160,10 @@ export const useEntriesStore = create((set, get) => ({
         .from('entries')
         .update(formData)
         .eq('id', id);
+      if (error) throw error;
       set({ currentEntry: data });
       toast.success("Entry updated successfully!");
-    } catch (error) {
+    } catch (err) {
       toast.error("Something went wrong");
       console.log("Error in updateEntry function", error);
     } finally {
@@ -187,17 +189,18 @@ export const useEntriesStore = create((set, get) => ({
     }
 
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('entries')
         .delete()
         .eq('id', id);
+      if (error) throw error;
       set((prev) => ({
         entries: prev.entries.filter(
           (entry) => Number(entry.id) !== Number(id),
         ),
       }));
       toast.success("Entry deleted successfully!");
-    } catch (error) {
+    } catch (err) {
       console.log("Error in deleteEntry function", error);
       toast.error("Something went wrong");
     } finally {
@@ -223,11 +226,12 @@ export const useEntriesStore = create((set, get) => ({
 
     try {
       const { data } = await supabase.from('entries').select('*').eq('id', id);
+      if (error) throw error;
       set({
         currentEntry: data[0],
         error: null,
       });
-    } catch (error) {
+    } catch (err) {
       console.log("Error in fetchEntry function", error);
       set({ error: "Something went wrong", currentEntry: null });
     } finally {
