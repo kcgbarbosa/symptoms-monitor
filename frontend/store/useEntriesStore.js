@@ -1,11 +1,9 @@
 import { create } from "zustand";
-import axios from "axios";
 import toast from "react-hot-toast";
 import { demoSeedData } from "../src/demo-seed-data/demoSeedData.js";
 import { DEMO_MODE } from "../src/config/demoConfig.js";
 import { applyRollingDates } from "../src/utils/dataProcessing.js";
-
-const BASE_URL = "http://localhost:8000";
+import { supabase } from "../src/config/supabase.js";
 
 // function to get the next available ID for new entries in demo mode
 const nextId = (allEntries) => {
@@ -77,7 +75,9 @@ export const useEntriesStore = create((set, get) => ({
 
     try {
       const { formData } = get();
-      await axios.post(`${BASE_URL}/api/entries`, formData);
+      const { data, error } = await supabase
+        .from('entries')
+        .insert(formData);
       await get().fetchEntries();
       get().resetForm();
       toast.success("Entry added successfully");
@@ -116,8 +116,10 @@ export const useEntriesStore = create((set, get) => ({
     }
 
     try {
-      const response = await axios.get(`${BASE_URL}/api/entries`);
-      const sortedEntries = get().sortEntriesByDate(response.data.data);
+      const { data, error } = await supabase
+        .from('entries')
+        .select('*');
+      const sortedEntries = get().sortEntriesByDate(data);
       set({ entries: sortedEntries, error: null });
     } catch (err) {
       set({ error: "Something went wrong", entries: [] });
@@ -153,11 +155,11 @@ export const useEntriesStore = create((set, get) => ({
 
     try {
       const { formData } = get();
-      const response = await axios.put(
-        `${BASE_URL}/api/entries/${id}`,
-        formData,
-      );
-      set({ currentEntry: response.data.data });
+      const { data, error } = await supabase
+        .from('entries')
+        .update(formData)
+        .eq('id', id);
+      set({ currentEntry: data });
       toast.success("Entry updated successfully!");
     } catch (error) {
       toast.error("Something went wrong");
@@ -185,7 +187,10 @@ export const useEntriesStore = create((set, get) => ({
     }
 
     try {
-      await axios.delete(`${BASE_URL}/api/entries/${id}`);
+      const { data } = await supabase
+        .from('entries')
+        .delete()
+        .eq('id', id);
       set((prev) => ({
         entries: prev.entries.filter(
           (entry) => Number(entry.id) !== Number(id),
@@ -217,9 +222,9 @@ export const useEntriesStore = create((set, get) => ({
     }
 
     try {
-      const response = await axios.get(`${BASE_URL}/api/entries/${id}`);
+      const { data } = await supabase.from('entries').select('*').eq('id', id);
       set({
-        currentEntry: response.data.data,
+        currentEntry: data[0],
         error: null,
       });
     } catch (error) {
