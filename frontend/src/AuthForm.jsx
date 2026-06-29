@@ -31,7 +31,29 @@ function Auth() {
 
   return (
     <main>
-     
+      <h1>Authentication Page</h1>
+      <form onSubmit={handleSubmit}>
+        <h3>{isLogin ? 'Log in' : 'Sign up'}</h3>
+        <label>Email</label>
+        <input
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <label>Password</label>
+        <input
+          type="text"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <input type="submit" />
+      </form>
+      <p>
+        {isLogin ? 'Need an account?' : 'Already have an account?'}{' '}
+        <button type="button" onClick={() => setIsLogin(!isLogin)}>
+          {isLogin ? 'Sign up' : 'Log in'}
+        </button>
+      </p>
     </main>
   );
 }
