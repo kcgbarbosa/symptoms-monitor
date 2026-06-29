@@ -3,12 +3,13 @@ import { supabase } from '../src/config/supabase.js';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 
-function Auth() {
+function AuthForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
   const navigate = useNavigate();
 
+  // #TODO FEAT [June 29] - Add comprehensive form validation & error messaging
   const handleSubmit = async (e) => {
     e.preventDefault();
     let data;
@@ -25,28 +26,30 @@ function Auth() {
       console.log('Error with handleSubmit', error);
       toast.error(error.message);
     } else {
+      toast.success('Sign in successful');
       navigate('/');
     }
   };
 
   return (
     <main>
-      <h1>Authentication Page</h1>
-      <form onSubmit={handleSubmit}>
+      <form>
         <h3>{isLogin ? 'Log in' : 'Sign up'}</h3>
-        <label>Email</label>
+        <label className="pr-3">Email</label>
         <input
           type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <label>Password</label>
+        <br />
+        <label className="pr-3">Password</label>
         <input
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <input type="submit" />
+        <br />
+        <button onClick={handleSubmit}>Submit</button>
       </form>
       <p>
         {isLogin ? 'Need an account?' : 'Already have an account?'}{' '}
@@ -58,4 +61,4 @@ function Auth() {
   );
 }
 
-export default Auth;
+export default AuthForm;
