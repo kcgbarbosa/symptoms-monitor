@@ -23,7 +23,7 @@ function Auth() {
     }
     if (error) {
       console.log('Error with handleSubmit', error);
-      toast.error('Something went wrong');
+      toast.error(error.message);
     } else {
       navigate('/');
     }
@@ -42,7 +42,7 @@ function Auth() {
         />
         <label>Password</label>
         <input
-          type="text"
+          type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
