@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { Activity } from "lucide-react";
-import { DEMO_MODE } from "../config/demoConfig.js";
+import { useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+import { Activity } from 'lucide-react';
+import { DEMO_MODE } from '../config/demoConfig.js';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,7 +58,7 @@ const Navbar = () => {
           to="/"
           className={({ isActive }) =>
             `flex items-center h-10 px-3 ${
-              isActive ? "font-bold text-purple-600" : ""
+              isActive ? 'font-bold text-purple-600' : ''
             }`
           }
         >
@@ -68,7 +68,7 @@ const Navbar = () => {
           to="/entries"
           className={({ isActive }) =>
             `flex items-center h-10 px-3 ${
-              isActive ? "font-bold text-purple-600" : ""
+              isActive ? 'font-bold text-purple-600' : ''
             }`
           }
         >
@@ -78,11 +78,21 @@ const Navbar = () => {
           to="/trends"
           className={({ isActive }) =>
             `flex items-center h-10 px-3 ${
-              isActive ? "font-bold text-purple-600" : ""
+              isActive ? 'font-bold text-purple-600' : ''
             }`
           }
         >
           Trends
+        </NavLink>
+        <NavLink
+          to="/auth"
+          className={({ isActive }) =>
+            `flex items-center h-10 px-3 ${
+              isActive ? 'font-bold text-purple-600' : ''
+            }`
+          }
+        >
+          Auth
         </NavLink>
       </div>
 
@@ -105,7 +115,7 @@ const Navbar = () => {
                 to="/"
                 className={({ isActive }) =>
                   `px-4 py-3 text-sm flex items-center ${
-                    isActive ? "font-bold text-purple-600" : ""
+                    isActive ? 'font-bold text-purple-600' : ''
                   }`
                 }
                 onClick={closeMenu}
@@ -116,7 +126,7 @@ const Navbar = () => {
                 to="/entries"
                 className={({ isActive }) =>
                   `px-4 py-3 text-sm flex items-center ${
-                    isActive ? "font-bold text-purple-600" : ""
+                    isActive ? 'font-bold text-purple-600' : ''
                   }`
                 }
                 onClick={closeMenu}
@@ -127,7 +137,7 @@ const Navbar = () => {
                 to="/trends"
                 className={({ isActive }) =>
                   `px-4 py-3 text-sm flex items-center ${
-                    isActive ? "font-bold text-purple-600" : ""
+                    isActive ? 'font-bold text-purple-600' : ''
                   }`
                 }
                 onClick={closeMenu}
