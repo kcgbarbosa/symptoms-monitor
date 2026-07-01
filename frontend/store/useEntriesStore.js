@@ -78,12 +78,13 @@ export const useEntriesStore = create((set, get) => ({
       const { data, error } = await supabase
         .from('entries')
         .insert(formData);
+      if (error) throw error;
       await get().fetchEntries();
       get().resetForm();
       toast.success("Entry added successfully");
       document.getElementById("add_entry_modal").close();
-    } catch (error) {
-      console.log("Error in addEntry function", error);
+    } catch (err) {
+      console.log("Error in addEntry function", err);
       toast.error("Something went wrong");
     } finally {
       set({ loading: false });
@@ -119,6 +120,7 @@ export const useEntriesStore = create((set, get) => ({
       const { data, error } = await supabase
         .from('entries')
         .select('*');
+      if (error) throw error;
       const sortedEntries = get().sortEntriesByDate(data);
       set({ entries: sortedEntries, error: null });
     } catch (err) {
@@ -159,11 +161,12 @@ export const useEntriesStore = create((set, get) => ({
         .from('entries')
         .update(formData)
         .eq('id', id);
+      if (error) throw error;
       set({ currentEntry: data });
       toast.success("Entry updated successfully!");
-    } catch (error) {
+    } catch (err) {
       toast.error("Something went wrong");
-      console.log("Error in updateEntry function", error);
+      console.log("Error in updateEntry function", err);
     } finally {
       set({ loading: false });
     }
@@ -187,18 +190,19 @@ export const useEntriesStore = create((set, get) => ({
     }
 
     try {
-      const { data } = await supabase
+      const { data, error } = await supabase
         .from('entries')
         .delete()
         .eq('id', id);
+      if (error) throw error;
       set((prev) => ({
         entries: prev.entries.filter(
           (entry) => Number(entry.id) !== Number(id),
         ),
       }));
       toast.success("Entry deleted successfully!");
-    } catch (error) {
-      console.log("Error in deleteEntry function", error);
+    } catch (err) {
+      console.log("Error in deleteEntry function", err);
       toast.error("Something went wrong");
     } finally {
       set({ loading: false });
@@ -222,13 +226,14 @@ export const useEntriesStore = create((set, get) => ({
     }
 
     try {
-      const { data } = await supabase.from('entries').select('*').eq('id', id);
+      const { data, error } = await supabase.from('entries').select('*').eq('id', id);
+      if (error) throw error;
       set({
         currentEntry: data[0],
         error: null,
       });
-    } catch (error) {
-      console.log("Error in fetchEntry function", error);
+    } catch (err) {
+      console.log("Error in fetchEntry function", err);
       set({ error: "Something went wrong", currentEntry: null });
     } finally {
       set({ loading: false });
