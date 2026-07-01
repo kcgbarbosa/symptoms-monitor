@@ -84,7 +84,7 @@ export const useEntriesStore = create((set, get) => ({
       toast.success("Entry added successfully");
       document.getElementById("add_entry_modal").close();
     } catch (err) {
-      console.log("Error in addEntry function", error);
+      console.log("Error in addEntry function", err);
       toast.error("Something went wrong");
     } finally {
       set({ loading: false });
@@ -120,6 +120,7 @@ export const useEntriesStore = create((set, get) => ({
       const { data, error } = await supabase
         .from('entries')
         .select('*');
+      if (error) throw error;
       const sortedEntries = get().sortEntriesByDate(data);
       set({ entries: sortedEntries, error: null });
     } catch (err) {
@@ -165,7 +166,7 @@ export const useEntriesStore = create((set, get) => ({
       toast.success("Entry updated successfully!");
     } catch (err) {
       toast.error("Something went wrong");
-      console.log("Error in updateEntry function", error);
+      console.log("Error in updateEntry function", err);
     } finally {
       set({ loading: false });
     }
@@ -201,7 +202,7 @@ export const useEntriesStore = create((set, get) => ({
       }));
       toast.success("Entry deleted successfully!");
     } catch (err) {
-      console.log("Error in deleteEntry function", error);
+      console.log("Error in deleteEntry function", err);
       toast.error("Something went wrong");
     } finally {
       set({ loading: false });
@@ -225,14 +226,14 @@ export const useEntriesStore = create((set, get) => ({
     }
 
     try {
-      const { data } = await supabase.from('entries').select('*').eq('id', id);
+      const { data, error } = await supabase.from('entries').select('*').eq('id', id);
       if (error) throw error;
       set({
         currentEntry: data[0],
         error: null,
       });
     } catch (err) {
-      console.log("Error in fetchEntry function", error);
+      console.log("Error in fetchEntry function", err);
       set({ error: "Something went wrong", currentEntry: null });
     } finally {
       set({ loading: false });
