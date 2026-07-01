@@ -4,6 +4,7 @@ import { demoSeedData } from "../src/demo-seed-data/demoSeedData.js";
 import { DEMO_MODE } from "../src/config/demoConfig.js";
 import { applyRollingDates } from "../src/utils/dataProcessing.js";
 import { supabase } from "../src/config/supabase.js";
+import { useAuthStore } from "./useAuthStore.js";
 
 // function to get the next available ID for new entries in demo mode
 const nextId = (allEntries) => {
@@ -75,9 +76,11 @@ export const useEntriesStore = create((set, get) => ({
 
     try {
       const { formData } = get();
+      const { session } = useAuthStore.getState();
+      if (!session) throw new Error("Not authenticated");
       const { data, error } = await supabase
         .from('entries')
-        .insert(formData);
+        .insert({ ...formData, user_id: session.user.id });
       if (error) throw error;
       await get().fetchEntries();
       get().resetForm();
