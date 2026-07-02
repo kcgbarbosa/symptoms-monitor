@@ -1,4 +1,4 @@
-import { Routes, Route, data } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import Layout from './layouts/Layout.jsx';
 import HomePage from './pages/HomePage.jsx';
 import EntriesPage from './pages/EntriesPage.jsx';
@@ -19,8 +19,8 @@ function App() {
   return (
     <div className="min-h-screen bg-gray-100">
       <Routes>
+        <Route path="/auth" element={<AuthPage />} />
         <Route path="/" element={<Layout />}>
-          <Route path="auth" element={<AuthPage />} />
           <Route element={<ProtectedRoute />}>
             <Route index element={<HomePage />} />
             <Route path="entries" element={<EntriesPage />} />
