@@ -2,7 +2,7 @@
 
 # Symptoms Monitor
 
-### Track, visualize, and reflect on your health trends
+## Track, visualize, and reflect on your health trends
 
 _Built during my brain surgery recovery_
 
@@ -10,63 +10,61 @@ _Built during my brain surgery recovery_
 [![View Code](https://img.shields.io/badge/code-github-black?style=for-the-badge&logo=github)](https://github.com/kcgbarbosa/symptoms-monitor)
 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
-![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
 </div>
 
 ## Why I Built This
 
-In 2024 I was diagnosed with a brain tumour. Over the next 12 months I underwent two neurosurgical procedures. My doctors emphasized the importance of closely tracking my symptoms, but doing so without structure was frustrating and didn't provide me any insights.
+In 2024 I was diagnosed with a brain tumour. Over the next 12 months I underwent two neurosurgical procedures. Throughout the process, my doctors emphasized the importance of closely tracking my symptoms. I found monitoring my symptoms to be quite overwhelming.
 
-Six months into my recovery, I decided to build the tool I wish I had. A symptom monitoring tool with frequency tracking and visual analytics.
-
-![Dashboard Screenshot](https://github.com/user-attachments/assets/cc3332b3-85a6-4d7b-bcb0-0460953542bf)
+After six months of recovery, I decided to start building the tool I wish I had. A symptom monitoring application that made tracking simple, while also providing helpful insights and empowering my progression.
 
 ---
 
 ## Features
 
-- Frequency tracking highlights your most logged symptoms over time
-- Symptom correlations based on co-occurrence in your entries
-- Week-over-week severity comparisons
-- Timeline charts and severity radials
-- Log symptoms retroactively with optional context notes
+- Personal profiles: Create an account to track and manage your own symptom history
+  <img src='sm-github-media/demo-desktop-login.png'/>
+
+- Fully responsive: works on mobile, tablet, and desktop
+
+<img src='sm-github-media/demo-mobile-navbar.png' width='300'/>
+
+- Symptom Logging: track symptoms from past, present or future with optional context notes
+  ![Dashboard Screenshot](https://github.com/user-attachments/assets/cc3332b3-85a6-4d7b-bcb0-0460953542bf)
+- Statistics & Insights: Weekly/all-time severity, total count, and correlation (based on co-occurrence)
+- Visuals: various charts and radials throughout
 
 ![Trends Page Screenshot](https://github.com/user-attachments/assets/0fd4f8de-26b8-4c5d-a729-9726e47d385f)
 
 ---
 
-## Local Setup
+## Demo Mode
 
-**Front-end (pre-seeded)**:
+The live demo runs with pre-seeded data so you can explore the full UI without having to create an account. </br> Entries, trends, and insights are all populated. Sign up when you're ready to start tracking your own data.
+
+## Contribution / Running Locally
 
 ```bash
 git clone https://github.com/kcgbarbosa/symptoms-monitor.git
 cd symptoms-monitor/frontend
-echo "VITE_DEMO_MODE=true" > .env
 npm install && npm run dev
 ```
 
-**Full stack:**
+Create a free [Supabase](https://supabase.com) project and update `frontend/.env`:
 
 ```bash
-# backend/.env
-DATABASE_URL=postgresql://user:password@localhost:5432/symptoms_monitor
-PORT=8000
-
-cd backend && npm install && npm start
+VITE_SUPABASE_URL=your-project-url
+VITE_SUPABASE_PUBLISHABLE_KEY=your-anon-key
 ```
 
-```bash
-# new terminal
-cd frontend
-echo "VITE_DEMO_MODE=false" > .env
-npm install && npm run dev
-```
+**Contributing:**
 
----
+1. Fork the repo and create a branch from `main`
+2. Make your changes and test locally
+3. Open a pull request with a clear description of changes and why
 
 ## Connect
 
