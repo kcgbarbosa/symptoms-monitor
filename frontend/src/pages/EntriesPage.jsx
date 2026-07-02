@@ -1,4 +1,5 @@
 import { useEntriesStore } from '../../store/useEntriesStore.js';
+import { useAuthStore } from '../../store/useAuthStore.js';
 import AddEntryModal from '../components/ui/AddEntryModal.jsx';
 import { useEffect } from 'react';
 import { Edit3Icon, HeartOff, Trash2Icon, ListCheck } from 'lucide-react';
@@ -21,8 +22,8 @@ function EntriesPage() {
     resetForm,
     error,
     loading,
-    isDemoMode,
   } = useEntriesStore();
+  const { isDemoMode } = useAuthStore();
 
   useEffect(() => {
     fetchEntries();

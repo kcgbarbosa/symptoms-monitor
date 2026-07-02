@@ -17,7 +17,6 @@ export const useEntriesStore = create((set, get) => ({
   loading: false,
   error: null,
   currentEntry: null,
-  isDemoMode: false,
 
   formData: {
     symptom_name: "",
@@ -27,7 +26,7 @@ export const useEntriesStore = create((set, get) => ({
     date_of_symptom: "",
   },
 
-  toggleDemoMode: (isDemoMode) => set({ isDemoMode }),
+  clearEntries: () => set({ entries: [] }),
 
   setFormData: (formData) => set({ formData }),
 
@@ -51,7 +50,7 @@ export const useEntriesStore = create((set, get) => ({
   addEntry: async (e) => {
     e.preventDefault();
     set({ loading: true });
-    const { isDemoMode } = get();
+    const isDemoMode = useAuthStore.getState().isDemoMode;
 
     if (isDemoMode) {
       const { formData } = get();
@@ -97,7 +96,7 @@ export const useEntriesStore = create((set, get) => ({
 
   fetchEntries: async () => {
     set({ loading: true });
-    const { isDemoMode } = get();
+    const isDemoMode = useAuthStore.getState().isDemoMode;
 
     if (isDemoMode) {
       const currentEntries = get().entries;
@@ -137,7 +136,7 @@ export const useEntriesStore = create((set, get) => ({
 
   updateEntry: async (id) => {
     set({ loading: true });
-    const { isDemoMode } = get();
+    const isDemoMode = useAuthStore.getState().isDemoMode;
 
     if (isDemoMode) {
       const { formData, entries } = get();
@@ -184,7 +183,7 @@ export const useEntriesStore = create((set, get) => ({
     }
 
     set({ loading: true });
-    const { isDemoMode } = get();
+    const isDemoMode = useAuthStore.getState().isDemoMode;
 
     if (isDemoMode) {
       const targetId = Number(id);
@@ -218,7 +217,7 @@ export const useEntriesStore = create((set, get) => ({
 
   fetchEntry: async (id) => {
     set({ loading: true });
-    const { isDemoMode } = get();
+    const isDemoMode = useAuthStore.getState().isDemoMode;
 
     if (isDemoMode) {
       const targetId = Number(id);

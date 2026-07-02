@@ -5,8 +5,8 @@ import { useAuthStore } from '../../store/useAuthStore.js';
 import { useEntriesStore } from '../../store/useEntriesStore.js';
 
 const Navbar = () => {
-  const { session, signOut } = useAuthStore();
-  const { isDemoMode, toggleDemoMode } = useEntriesStore();
+  const { session, signOut, isDemoMode, setDemoMode } = useAuthStore();
+  const { clearEntries } = useEntriesStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -20,7 +20,8 @@ const Navbar = () => {
 
   const handleExitDemo = () => {
     closeMenu();
-    toggleDemoMode(false);
+    clearEntries();
+    setDemoMode(false);
     navigate('/auth');
   };
 
@@ -92,14 +93,7 @@ const Navbar = () => {
           Trends
         </NavLink>
 
-        {isDemoMode ? (
-          <button
-            onClick={handleExitDemo}
-            className="btn btn-outline btn-sm normal-case"
-          >
-            Exit Demo
-          </button>
-        ) : session ? (
+        {session ? (
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
@@ -122,6 +116,13 @@ const Navbar = () => {
               </li>
             </ul>
           </div>
+        ) : isDemoMode ? (
+          <button
+            onClick={handleExitDemo}
+            className="btn btn-outline btn-sm normal-case"
+          >
+            Exit Demo
+          </button>
         ) : (
           <NavLink
             to="/auth"
@@ -143,7 +144,7 @@ const Navbar = () => {
           <div className="absolute top-16 right-2 bg-base-100 border border-gray-300 shadow-md rounded-box md:hidden z-20">
             <div className="flex flex-col py-2 min-w-[10rem]">
               {isDemoMode && (
-                <div className="mx-4 mb-2 text-center rounded-full border px-3 py-1 uppercase tracking-widest font-bold bg-yellow-200 text-yellow-800 border-yellow-300 text-xs">
+                <div className="mx-4 mb-2 inline-flex items-center rounded-full border shadow-sm px-3 py-1 uppercase tracking-widest font-bold bg-yellow-200 text-yellow-800 border-yellow-300 text-xs">
                   Demo
                 </div>
               )}
@@ -177,14 +178,7 @@ const Navbar = () => {
               </NavLink>
 
               <div className="border-t border-gray-200 mt-1 pt-1">
-                {isDemoMode ? (
-                  <button
-                    onClick={handleExitDemo}
-                    className="w-full text-left px-4 py-3 text-sm text-error"
-                  >
-                    Exit Demo
-                  </button>
-                ) : session ? (
+                {session ? (
                   <>
                     <p className="px-4 py-2 text-xs text-base-content/50 truncate">
                       {session.user.email}
@@ -196,6 +190,13 @@ const Navbar = () => {
                       Sign out
                     </button>
                   </>
+                ) : isDemoMode ? (
+                  <button
+                    onClick={handleExitDemo}
+                    className="w-full text-left px-4 py-3 text-sm"
+                  >
+                    Exit Demo
+                  </button>
                 ) : (
                   <NavLink
                     to="/auth"

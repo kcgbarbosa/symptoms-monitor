@@ -4,6 +4,9 @@ import { create } from 'zustand';
 export const useAuthStore = create((set, get) => ({
   session: null,
   loading: true,
+  isDemoMode: false,
+
+  setDemoMode: (isDemoMode) => set({ isDemoMode }),
 
   initAuth: () => {
     const { data } = supabase.auth.onAuthStateChange((event, session) => {
