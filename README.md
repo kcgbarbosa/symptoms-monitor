@@ -6,8 +6,7 @@
 
 _Built during my brain surgery recovery_
 
-[![Live Demo](https://img.shields.io/badge/demo-live-limegreen?style=for-the-badge)](https://health.kcgbarbosa.dev)
-[![View Code](https://img.shields.io/badge/code-github-black?style=for-the-badge&logo=github)](https://github.com/kcgbarbosa/symptoms-monitor)
+[![Live](https://img.shields.io/badge/%20Live-limegreen?style=for-the-badge)](https://health.kcgbarbosa.dev)
 
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
 ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
