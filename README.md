@@ -28,11 +28,11 @@ After six months of recovery, I decided to start building the tool I wish I had.
 ## Features
 
 - Personal profiles: Create an account to track and manage your own symptom history
-  <img src='sm-github-media/demo-desktop-login.png' alt='Login page on desktop'/>
 
+<img alt="Login page on desktop" src="https://github.com/user-attachments/assets/9c156ccd-4b06-41cb-991c-a85e938c1549" />
 - Responsive: looks great on mobile, tablet, and desktop
 
-<img src='sm-github-media/demo-mobile-navbar.png' width='300' alt='Mobile navigation menu'/>
+<img width="500" height="900" alt="Mobile navigation menu" src="https://github.com/user-attachments/assets/d70c2980-4dac-4ec9-ae1c-35c3426dbd94" />
 
 - Symptom Logging: track symptoms from past, present or future with optional context notes
   <img src='https://github.com/user-attachments/assets/cc3332b3-85a6-4d7b-bcb0-0460953542bf' alt='Dashboard showing recent symptom entries'/>
