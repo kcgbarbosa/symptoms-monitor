@@ -20,19 +20,24 @@ function AuthPage() {
           <Activity size={24} />
           <Link
             to="/auth"
-            className="font-bold uppercase tracking-tighter text-2xl"
+            className="font-bold uppercase tracking-tight text-xl"
           >
             Symptoms Monitor
           </Link>
         </div>
-
         <div className="space-y-4">
-          <h2 className="text-4xl font-bold leading-tight">
-            Track, visualize, and reflect <br /> on your health trends
-          </h2>
-          <p className="text-purple-200 text-lg">
-            Log daily entries, view patterns over time, and take control of your
-            wellbeing.
+          <blockquote className="space-y-2">
+            <h2 className="text-4xl font-bold italic leading-tight">
+              "Although the world is full of suffering, it is full also of the
+              overcoming of it."
+            </h2>
+            <cite className="text-purple-300 text-sm block not-italic">
+              — Helen Keller
+            </cite>
+          </blockquote>
+          <p className="text-purple-200 text-lg leading-relaxed">
+            Your symptoms are real, and so is your capacity to heal. <br />
+            Let's monitor your progress, together.
           </p>
         </div>
 
@@ -50,8 +55,7 @@ function AuthPage() {
             </span>
           </div>
           <p className="text-purple-200 text-sm">
-            Log daily entries, view patterns over time, and take control of your
-            wellbeing.
+            Track, visualize, and reflect on your health trends
           </p>
         </div>
 
