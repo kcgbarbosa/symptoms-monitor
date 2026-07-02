@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Activity } from 'lucide-react';
 import AuthForm from '../components/ui/AuthForm';
+import { Link } from 'react-router-dom';
 
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -10,14 +11,17 @@ function AuthPage() {
       <div className="hidden lg:flex flex-col justify-between bg-purple-600 p-12 text-white">
         <div className="flex items-center gap-2">
           <Activity size={24} />
-          <span className="font-bold uppercase tracking-tighter text-lg">
+          <Link
+            to="/auth"
+            className="font-bold uppercase tracking-tighter text-2xl"
+          >
             Symptoms Monitor
-          </span>
+          </Link>
         </div>
 
         <div className="space-y-4">
           <h2 className="text-4xl font-bold leading-tight">
-            Track, visualize, and reflect on your health trends
+            Track, visualize, and reflect <br /> on your health trends
           </h2>
           <p className="text-purple-200 text-lg">
             Log daily entries, view patterns over time, and take control of your
@@ -26,7 +30,7 @@ function AuthPage() {
         </div>
 
         <p className="text-purple-300 text-sm">
-          © {new Date().getFullYear()} Symptoms Monitor
+          Creator: Kevin-Christian Giraldo-Barbosa
         </p>
       </div>
 
@@ -39,7 +43,8 @@ function AuthPage() {
             </span>
           </div>
           <p className="text-purple-200 text-sm">
-            Track, visualize, and reflect on your health trends.
+            Log daily entries, view patterns over time, and take control of your
+            wellbeing.
           </p>
         </div>
 
