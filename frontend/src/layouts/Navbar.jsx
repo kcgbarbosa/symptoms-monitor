@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { Activity, ChevronDown } from 'lucide-react';
-import { DEMO_MODE } from '../config/demoConfig.js';
 import { useAuthStore } from '../../store/useAuthStore.js';
+import { useEntriesStore } from '../../store/useEntriesStore.js';
 
 const Navbar = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { session, signOut } = useAuthStore();
+  const { isDemoMode, toggleDemoMode } = useEntriesStore();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const closeMenu = () => setIsMenuOpen(false);
@@ -14,6 +15,12 @@ const Navbar = () => {
   const handleSignOut = async () => {
     closeMenu();
     await signOut();
+    navigate('/auth');
+  };
+
+  const handleExitDemo = () => {
+    closeMenu();
+    toggleDemoMode(false);
     navigate('/auth');
   };
 
@@ -54,9 +61,9 @@ const Navbar = () => {
       </label>
 
       <div className="hidden md:flex items-center ml-auto pr-2 gap-2">
-        {DEMO_MODE && (
+        {isDemoMode && (
           <div className="inline-flex items-center rounded-full border shadow-sm px-3 py-1 uppercase tracking-widest font-bold bg-yellow-200 text-yellow-800 border-yellow-300 text-xs">
-            DEMO MODE
+            Demo
           </div>
         )}
 
@@ -85,7 +92,14 @@ const Navbar = () => {
           Trends
         </NavLink>
 
-        {session ? (
+        {isDemoMode ? (
+          <button
+            onClick={handleExitDemo}
+            className="btn btn-outline btn-sm normal-case"
+          >
+            Exit Demo
+          </button>
+        ) : session ? (
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
@@ -128,9 +142,9 @@ const Navbar = () => {
           />
           <div className="absolute top-16 right-2 bg-base-100 border border-gray-300 shadow-md rounded-box md:hidden z-20">
             <div className="flex flex-col py-2 min-w-[10rem]">
-              {DEMO_MODE && (
+              {isDemoMode && (
                 <div className="mx-4 mb-2 text-center rounded-full border px-3 py-1 uppercase tracking-widest font-bold bg-yellow-200 text-yellow-800 border-yellow-300 text-xs">
-                  Demo Mode
+                  Demo
                 </div>
               )}
 
@@ -163,7 +177,14 @@ const Navbar = () => {
               </NavLink>
 
               <div className="border-t border-gray-200 mt-1 pt-1">
-                {session ? (
+                {isDemoMode ? (
+                  <button
+                    onClick={handleExitDemo}
+                    className="w-full text-left px-4 py-3 text-sm text-error"
+                  >
+                    Exit Demo
+                  </button>
+                ) : session ? (
                   <>
                     <p className="px-4 py-2 text-xs text-base-content/50 truncate">
                       {session.user.email}

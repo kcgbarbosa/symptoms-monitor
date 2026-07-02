@@ -1,12 +1,10 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import { demoSeedData } from "../src/demo-seed-data/demoSeedData.js";
-import { DEMO_MODE } from "../src/config/demoConfig.js";
 import { applyRollingDates } from "../src/utils/dataProcessing.js";
 import { supabase } from "../src/config/supabase.js";
 import { useAuthStore } from "./useAuthStore.js";
 
-// function to get the next available ID for new entries in demo mode
 const nextId = (allEntries) => {
   if (allEntries.length === 0) return 1;
 
@@ -15,13 +13,12 @@ const nextId = (allEntries) => {
 };
 
 export const useEntriesStore = create((set, get) => ({
-  //entries state
   entries: [],
   loading: false,
   error: null,
   currentEntry: null,
+  isDemoMode: false,
 
-  //forms state
   formData: {
     symptom_name: "",
     icon_name: "DefaultIcon",
@@ -30,7 +27,10 @@ export const useEntriesStore = create((set, get) => ({
     date_of_symptom: "",
   },
 
+  toggleDemoMode: (isDemoMode) => set({ isDemoMode }),
+
   setFormData: (formData) => set({ formData }),
+
   resetForm: () =>
     set({
       formData: {
@@ -51,8 +51,9 @@ export const useEntriesStore = create((set, get) => ({
   addEntry: async (e) => {
     e.preventDefault();
     set({ loading: true });
+    const { isDemoMode } = get();
 
-    if (DEMO_MODE) {
+    if (isDemoMode) {
       const { formData } = get();
 
       const newEntry = {
@@ -96,8 +97,9 @@ export const useEntriesStore = create((set, get) => ({
 
   fetchEntries: async () => {
     set({ loading: true });
+    const { isDemoMode } = get();
 
-    if (DEMO_MODE) {
+    if (isDemoMode) {
       const currentEntries = get().entries;
       if (currentEntries.length === 0) {
         const demoDataWithRollingDates = applyRollingDates(demoSeedData);
@@ -135,8 +137,9 @@ export const useEntriesStore = create((set, get) => ({
 
   updateEntry: async (id) => {
     set({ loading: true });
+    const { isDemoMode } = get();
 
-    if (DEMO_MODE) {
+    if (isDemoMode) {
       const { formData, entries } = get();
       const targetId = Number(id);
       const updatedEntries = entries.map((entry) =>
@@ -181,8 +184,9 @@ export const useEntriesStore = create((set, get) => ({
     }
 
     set({ loading: true });
+    const { isDemoMode } = get();
 
-    if (DEMO_MODE) {
+    if (isDemoMode) {
       const targetId = Number(id);
       const updatedEntries = get().entries.filter(
         (entry) => Number(entry.id) !== targetId,
@@ -214,8 +218,9 @@ export const useEntriesStore = create((set, get) => ({
 
   fetchEntry: async (id) => {
     set({ loading: true });
+    const { isDemoMode } = get();
 
-    if (DEMO_MODE) {
+    if (isDemoMode) {
       const targetId = Number(id);
       const entry = get().entries.find(
         (entry) => Number(entry.id) === targetId,

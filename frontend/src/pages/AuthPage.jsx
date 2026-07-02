@@ -3,15 +3,21 @@ import { Activity } from 'lucide-react';
 import AuthForm from '../components/ui/AuthForm';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore.js';
+import { useEntriesStore } from '../../store/useEntriesStore.js';
 
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const { session } = useAuthStore();
+  const { isDemoMode, toggleDemoMode } = useEntriesStore();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (session) navigate('/');
   }, [session]);
+
+  useEffect(() => {
+    if (isDemoMode) navigate('/');
+  }, [isDemoMode]);
 
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
@@ -67,6 +73,18 @@ function AuthPage() {
               onToggle={() => setIsLogin(!isLogin)}
             />
           </div>
+        </div>
+
+        <div className="px-8 pb-8 text-center">
+          <p className="text-sm text-base-content/50 mb-2">
+            Just want to look around?
+          </p>
+          <button
+            onClick={() => toggleDemoMode(true)}
+            className="btn btn-outline btn-sm w-full max-w-sm"
+          >
+            Try Demo
+          </button>
         </div>
       </div>
     </div>

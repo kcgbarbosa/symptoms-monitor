@@ -1,17 +1,16 @@
-import { useEntriesStore } from "../../store/useEntriesStore.js";
-import AddEntryModal from "../components/ui/AddEntryModal.jsx";
-import { useEffect } from "react";
-import { Edit3Icon, HeartOff, Trash2Icon, ListCheck } from "lucide-react";
+import { useEntriesStore } from '../../store/useEntriesStore.js';
+import AddEntryModal from '../components/ui/AddEntryModal.jsx';
+import { useEffect } from 'react';
+import { Edit3Icon, HeartOff, Trash2Icon, ListCheck } from 'lucide-react';
 import {
   calcEntriesPerSymptomAllTime,
   symptomCountToArr,
   formatDateForDisplay,
   formatDateForInput,
-} from "../utils/dataProcessing.js";
-import EntriesPerSymptomAllTimeChart from "../components/charts/TotalEntriesPerSymptomBarChart.jsx";
-import IconComponent from "../components/ui/IconComponent.jsx";
-import SeverityBadge from "../components/ui/SeverityBadge.jsx";
-import { DEMO_MODE } from "../config/demoConfig.js";
+} from '../utils/dataProcessing.js';
+import EntriesPerSymptomAllTimeChart from '../components/charts/TotalEntriesPerSymptomBarChart.jsx';
+import IconComponent from '../components/ui/IconComponent.jsx';
+import SeverityBadge from '../components/ui/SeverityBadge.jsx';
 
 function EntriesPage() {
   const {
@@ -22,6 +21,7 @@ function EntriesPage() {
     resetForm,
     error,
     loading,
+    isDemoMode,
   } = useEntriesStore();
 
   useEffect(() => {
@@ -33,12 +33,12 @@ function EntriesPage() {
       ...entry,
       date_of_symptom: formatDateForInput(entry),
     });
-    document.getElementById("add_entry_modal").showModal();
+    document.getElementById('add_entry_modal').showModal();
   };
 
   const entriesPerSymptomArr = symptomCountToArr(
     calcEntriesPerSymptomAllTime(entries),
-    entries,
+    entries
   );
 
   return (
@@ -50,7 +50,7 @@ function EntriesPage() {
             <p className="mt-1 text-sm text-gray-600">
               Track and manage your symptom entries
             </p>
-            {DEMO_MODE && (
+            {isDemoMode && (
               <p className="text-xs text-gray-500 mt-3">
                 Demo mode uses temporary local data. Changes reset on refresh.
               </p>
@@ -77,7 +77,7 @@ function EntriesPage() {
             <button
               className="btn btn-primary btn-lg mt-4 shrink-0 rounded-full"
               onClick={() =>
-                document.getElementById("add_entry_modal").showModal()
+                document.getElementById('add_entry_modal').showModal()
               }
             >
               <span className="text-white">Add New Entry</span>
@@ -92,7 +92,7 @@ function EntriesPage() {
                     className="btn btn-primary btn-md shrink-0"
                     onClick={() => {
                       resetForm();
-                      document.getElementById("add_entry_modal").showModal();
+                      document.getElementById('add_entry_modal').showModal();
                     }}
                   >
                     <span className="text-white">Add New Entry</span>
