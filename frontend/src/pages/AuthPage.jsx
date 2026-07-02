@@ -6,12 +6,16 @@ import { useAuthStore } from '../../store/useAuthStore.js';
 
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
-  const { session } = useAuthStore();
+  const { session, isDemoMode, setDemoMode } = useAuthStore();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (session) navigate('/');
-  }, [session]);
+  }, [session, navigate]);
+
+  useEffect(() => {
+    if (isDemoMode) navigate('/');
+  }, [isDemoMode, navigate]);
 
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
@@ -67,6 +71,18 @@ function AuthPage() {
               onToggle={() => setIsLogin(!isLogin)}
             />
           </div>
+        </div>
+
+        <div className="px-8 pb-8 text-center">
+          <p className="text-sm text-base-content/50 mb-2">
+            Just want to look around?
+          </p>
+          <button
+            onClick={() => setDemoMode(true)}
+            className="btn btn-outline btn-sm w-full max-w-sm"
+          >
+            Try Demo
+          </button>
         </div>
       </div>
     </div>
