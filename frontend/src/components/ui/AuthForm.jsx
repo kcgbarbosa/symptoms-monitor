@@ -60,6 +60,7 @@ function AuthForm({ isLogin, onToggle }) {
     if (hasError) return;
 
     setLoading(true);
+    setFormError('');
     let data, error;
     if (isLogin) {
       ({ data, error } = await supabase.auth.signInWithPassword({
@@ -74,17 +75,15 @@ function AuthForm({ isLogin, onToggle }) {
     if (error) {
       if (isLogin) {
         setFormError("Incorrect email or password. Don't have an account?");
-      } else {
-        toast.error(error.message);
-      }
-    } else if (!isLogin) {
-      if (data.user?.identities?.length === 0) {
+      } else if (error.message.toLowerCase().includes('already registered')) {
         setEmailError(
           'An account with this email already exists. Try signing in.'
         );
       } else {
-        setSignUpSuccess(true);
+        toast.error(error.message);
       }
+    } else if (!isLogin) {
+      setSignUpSuccess(true);
     } else {
       navigate('/');
     }

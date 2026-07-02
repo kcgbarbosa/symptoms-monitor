@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Activity } from 'lucide-react';
 import AuthForm from '../components/ui/AuthForm';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/useAuthStore.js';
 
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
+  const { session } = useAuthStore();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (session) navigate('/');
+  }, [session]);
 
   return (
     <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
@@ -50,7 +57,11 @@ function AuthPage() {
 
         <div className="flex-1 flex justify-center items-center p-8">
           <div className="w-full max-w-sm">
-            <AuthForm isLogin={isLogin} onToggle={() => setIsLogin(!isLogin)} />
+            <AuthForm
+              key={isLogin ? 'login' : 'signup'}
+              isLogin={isLogin}
+              onToggle={() => setIsLogin(!isLogin)}
+            />
           </div>
         </div>
       </div>
