@@ -1,17 +1,29 @@
-import { useEntriesStore } from '../../store/useEntriesStore.js';
-import { useAuthStore } from '../../store/useAuthStore.js';
-import AddEntryModal from '../components/ui/AddEntryModal.jsx';
-import { useEffect } from 'react';
-import { Edit3Icon, HeartOff, Trash2Icon, ListCheck } from 'lucide-react';
+import { useEntriesStore } from "../../store/useEntriesStore.js";
+import { useAuthStore } from "../../store/useAuthStore.js";
+import AddEntryModal from "../components/ui/AddEntryModal.jsx";
+import { useEffect, useState } from "react";
+import { HeartOff, Pencil, Plus, Trash2 } from "lucide-react";
 import {
   calcEntriesPerSymptomAllTime,
   symptomCountToArr,
   formatDateForDisplay,
   formatDateForInput,
-} from '../utils/dataProcessing.js';
-import EntriesPerSymptomAllTimeChart from '../components/charts/TotalEntriesPerSymptomBarChart.jsx';
-import IconComponent from '../components/ui/IconComponent.jsx';
-import SeverityBadge from '../components/ui/SeverityBadge.jsx';
+} from "../utils/dataProcessing.js";
+import EntriesPerSymptomAllTimeChart from "../components/charts/TotalEntriesPerSymptomBarChart.jsx";
+import IconComponent from "../components/ui/IconComponent.jsx";
+import SeverityBadge from "../components/ui/SeverityBadge.jsx";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 function EntriesPage() {
   const {
@@ -20,10 +32,13 @@ function EntriesPage() {
     deleteEntry,
     setFormData,
     resetForm,
+    openModal,
     error,
     loading,
   } = useEntriesStore();
   const { isDemoMode } = useAuthStore();
+
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
   useEffect(() => {
     fetchEntries();
@@ -34,166 +49,188 @@ function EntriesPage() {
       ...entry,
       date_of_symptom: formatDateForInput(entry),
     });
-    document.getElementById('add_entry_modal').showModal();
+    openModal();
+  };
+
+  const handleAddNew = () => {
+    resetForm();
+    openModal();
+  };
+
+  const confirmDelete = async () => {
+    await deleteEntry(pendingDeleteId);
+    setPendingDeleteId(null);
   };
 
   const entriesPerSymptomArr = symptomCountToArr(
     calcEntriesPerSymptomAllTime(entries),
-    entries
+    entries,
   );
 
   return (
     <div>
-      <div className="mb-6">
-        <div className="mb-8">
+      <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
+        <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-            Entries Page
+            Entries
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="mt-1 text-sm text-muted-foreground">
             Track and manage your symptom entries
           </p>
           {isDemoMode && (
-            <p className="text-xs text-muted-foreground mt-3">
+            <p className="mt-3 text-xs text-muted-foreground">
               Demo mode uses temporary local data. Changes reset on refresh.
             </p>
           )}
         </div>
 
-        <AddEntryModal />
+        {entries.length > 0 && (
+          <Button onClick={handleAddNew}>
+            <Plus />
+            Add Entry
+          </Button>
+        )}
       </div>
 
-      {error && <div className="alert alert-error mb-8">{error}</div>}
+      {error && (
+        <div className="mb-8 rounded-lg border border-destructive/25 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {error}
+        </div>
+      )}
 
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="loading loading-spinner loading-lg" />
+        <div className="flex h-64 items-center justify-center">
+          <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
         </div>
       ) : entries.length === 0 ? (
-        <div className="flex flex-col items-center py-16">
-          <div className="bg-accent/25 p-4 rounded-full mb-4">
-            <HeartOff className="size-12 text-primary" />
+        <div className="flex flex-col items-center rounded-xl border border-dashed border-border py-16 text-center">
+          <div className="mb-4 rounded-full bg-muted p-4">
+            <HeartOff className="size-8 text-muted-foreground" />
           </div>
-          <h3 className="text-sm text-foreground mb-2">No entries (yet)</h3>
-          <p className="text-xs text-muted-foreground">Log your first entry</p>
-
-          <button
-            className="btn btn-primary btn-lg mt-4 shrink-0 rounded-full"
-            onClick={() =>
-              document.getElementById('add_entry_modal').showModal()
-            }
-          >
-            <span className="text-white">Add New Entry</span>
-          </button>
+          <h3 className="text-sm font-medium text-foreground">No entries yet</h3>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Log your first symptom to get started.
+          </p>
+          <Button className="mt-6" onClick={handleAddNew}>
+            <Plus />
+            Add Entry
+          </Button>
         </div>
       ) : (
-        <>
-          <div className="flex flex-col xl:flex-row gap-8 relative">
-            <div className="flex-1 relative min-w-0">
-              <div className="lg:absolute -top-14 right-0 mb-4 flex justify-end">
-                <button
-                  className="btn btn-primary btn-md shrink-0"
-                  onClick={() => {
-                    resetForm();
-                    document.getElementById('add_entry_modal').showModal();
-                  }}
-                >
-                  <span className="text-white">Add New Entry</span>
-                </button>
-              </div>
-
-              <div
-                className="
-              bg-white rounded-xl shadow-sm border border-gray-100 max-h-[750px] overflow-hidden overflow-y-auto
-              [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-              >
-                <table className="w-full">
-                  <thead className="sticky top-0 z-10 bg-secondary-content text-xs text-secondary ">
-                    <tr>
-                      <th className="px-3 py-4 font-semibold text-left min-w-[140px]">
-                        Symptom
-                      </th>
-                      <th className="px-3 py-4 font-semibold text-center hidden sm:table-cell w-24">
-                        Severity
-                      </th>
-                      <th className="px-3 py-4 font-semibold text-left w-28 sm:w-32">
-                        Date
-                      </th>
-                      <th className="px-3 py-4 font-semibold text-left hidden md:table-cell min-w-[200px] max-w-xs">
-                        Notes
-                      </th>
-                      <th className="px-3 py-4 font-semibold text-right w-24 sm:w-28"></th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100 text-sm">
-                    {entries.map((entry) => (
-                      <tr
-                        key={entry.id}
-                        className="hover:bg-secondary/10 transition-all group"
-                      >
-                        <td className="px-3 py-5 font-medium text-sm text-foreground align-middle truncate">
-                          <div className="flex items-center gap-2 sm:gap-4">
-                            <IconComponent
-                              entry={entry}
-                              size={20}
-                              className="sm:size-6"
-                            />
-                            <span
-                              onClick={() => handleEdit(entry)}
-                              className="text-sm hover:cursor-pointer hover:text-secondary max-w-[95px] sm:max-w-[120px] lg:max-w-[150px] truncate block"
-                            >
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <div className="min-w-0 flex-1">
+            <div className="overflow-x-auto rounded-xl border border-border bg-card">
+              <table className="w-full text-sm">
+                <thead className="text-xs text-muted-foreground">
+                  <tr className="border-b border-border">
+                    <th className="min-w-[140px] px-4 py-3 text-left font-medium uppercase tracking-wide">
+                      Symptom
+                    </th>
+                    <th className="hidden w-24 px-4 py-3 text-center font-medium uppercase tracking-wide sm:table-cell">
+                      Severity
+                    </th>
+                    <th className="w-28 px-4 py-3 text-left font-medium uppercase tracking-wide sm:w-32">
+                      Date
+                    </th>
+                    <th className="hidden min-w-[200px] max-w-xs px-4 py-3 text-left font-medium uppercase tracking-wide md:table-cell">
+                      Notes
+                    </th>
+                    <th className="w-16 px-4 py-3" />
+                  </tr>
+                </thead>
+                <tbody>
+                  {entries.map((entry) => (
+                    <tr
+                      key={entry.id}
+                      className="group border-b border-border transition-colors last:border-0 hover:bg-muted/40"
+                    >
+                      <td className="px-4 py-3 align-middle">
+                        <div className="flex items-center gap-3">
+                          <IconComponent entry={entry} size={20} />
+                          <button
+                            type="button"
+                            onClick={() => handleEdit(entry)}
+                            className="flex items-center gap-1.5 truncate text-left font-medium text-foreground transition-colors hover:text-primary"
+                          >
+                            <span className="max-w-[110px] truncate sm:max-w-[150px]">
                               {entry.symptom_name}
                             </span>
-                            <Edit3Icon className="size-3 opacity-0 group-hover:opacity-60 transition text-primary" />
-                          </div>
-                        </td>
+                            <Pencil className="size-3 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
+                          </button>
+                        </div>
+                      </td>
 
-                        <td className="px-3 py-5 text-center align-middle hidden sm:table-cell">
-                          <SeverityBadge severity={entry.severity} />
-                        </td>
+                      <td className="hidden px-4 py-3 text-center align-middle sm:table-cell">
+                        <SeverityBadge severity={entry.severity} />
+                      </td>
 
-                        <td className="px-3 py-5 text-sm text-foreground align-middle">
-                          {formatDateForDisplay(entry)}
-                        </td>
+                      <td className="px-4 py-3 align-middle text-muted-foreground">
+                        {formatDateForDisplay(entry)}
+                      </td>
 
-                        <td className="px-3 py-5 text-sm text-foreground max-w-xs align-middle hidden md:table-cell truncate">
-                          {entry.notes}
-                        </td>
+                      <td className="hidden max-w-xs truncate px-4 py-3 align-middle text-muted-foreground md:table-cell">
+                        {entry.notes}
+                      </td>
 
-                        <td className="px-3 py-5 align-middle">
-                          <div className="flex justify-end gap-2 sm:gap-4 min-w-[50px]">
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                deleteEntry(entry.id);
-                              }}
-                              className="btn btn-sm opacity-50 group-hover:opacity-50 group-hover:btn-error hover:!opacity-100 transition-all rounded-full"
-                            >
-                              <Trash2Icon className="size-4" />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            <div className="w-full xl:w-1/3 h-fit flex flex-col">
-              <div className="bg-base-100 rounded-3xl p-4 sm:p-6">
-                <div className="flex items-center justify-center gap-2 sm:gap-2">
-                  <ListCheck className="size-4 text-secondary" />
-                  <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-                    Entries Per Symptom
-                  </h2>
-                </div>
-                <EntriesPerSymptomAllTimeChart data={entriesPerSymptomArr} />
-              </div>
+                      <td className="px-4 py-3 text-right align-middle">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon-sm"
+                          aria-label="Delete entry"
+                          onClick={() => setPendingDeleteId(entry.id)}
+                          className="text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive"
+                        >
+                          <Trash2 />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
-        </>
+
+          <div className="xl:w-1/3">
+            <Card className="gap-4">
+              <CardHeader>
+                <CardTitle className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                  Entries Per Symptom
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <EntriesPerSymptomAllTimeChart data={entriesPerSymptomArr} />
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       )}
+
+      <AddEntryModal />
+
+      <AlertDialog
+        open={pendingDeleteId !== null}
+        onOpenChange={(open) => !open && setPendingDeleteId(null)}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete this entry?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This permanently removes the symptom entry. This action cannot be
+              undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={confirmDelete}
+              className="bg-destructive/10 text-destructive hover:bg-destructive/20"
+            >
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
