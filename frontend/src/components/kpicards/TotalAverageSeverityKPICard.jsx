@@ -28,7 +28,7 @@ function TotalAverageSeverityKPICard() {
         <div className="flex flex-col gap-3 mb-2">
           <div className="flex items-center gap-2">
             <Gauge className="size-4 text-primary" />
-            <h3 className="text-md font-medium text-base uppercase tracking-wide">
+            <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
               Baseline Severity
             </h3>
           </div>
@@ -39,7 +39,7 @@ function TotalAverageSeverityKPICard() {
               className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold transition-all shadow-sm border ${
                 selectedSymptom === null
                   ? "bg-primary text-white border-primary"
-                  : "bg-white text-gray-500 border-gray-100 hover:bg-gray-50"
+                  : "bg-background text-muted-foreground border-border hover:bg-muted"
               }`}
             >
               All
@@ -51,7 +51,7 @@ function TotalAverageSeverityKPICard() {
                 className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold transition-all shadow-sm border ${
                   selectedSymptom === symptom
                     ? "bg-primary text-white border-primary"
-                    : "bg-white text-gray-500 border-gray-100 hover:bg-gray-50"
+                    : "bg-background text-muted-foreground border-border hover:bg-muted"
                 }`}
               >
                 {symptom}
@@ -60,28 +60,28 @@ function TotalAverageSeverityKPICard() {
           </div>
         </div>
 
-        <p className="text-sm text-gray-500 mb-6 italic">
+        <p className="text-sm text-muted-foreground mb-6 italic">
           {selectedSymptom
             ? `Focusing on ${selectedSymptom}`
             : "Across all of your Symptoms"}
         </p>
 
         <div className="hidden sm:block mb-auto">
-          <p className="text-xs font-medium text-gray-600 mb-2">
+          <p className="text-xs font-medium text-muted-foreground mb-2">
             Severity Scale
           </p>
           <progress
-            className={`progress ${colors.progress} w-3/4 h-2.5 bg-gray-100`}
+            className={`progress ${colors.progress} w-3/4 h-2.5 bg-muted`}
             max="10"
             value={totalAverageSeverity}
           ></progress>
-          <div className="flex justify-between w-3/4 text-xs text-gray-400 mt-1 font-mono">
+          <div className="flex justify-between w-3/4 text-xs text-muted-foreground mt-1 font-mono">
             <span>0</span>
             <span>10</span>
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5 text-xs text-gray-400 mt-2 sm:mt-6">
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-2 sm:mt-6">
           <Clock className="size-3.5" />
           <span>All time average</span>
         </div>

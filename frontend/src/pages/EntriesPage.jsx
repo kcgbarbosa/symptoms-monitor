@@ -45,13 +45,15 @@ function EntriesPage() {
   return (
     <div>
       <div className="mb-6">
-        <div className="mb-6">
-          <h1 className="text-xl font-bold text-primary m-0">Entries Page</h1>
-          <p className="mt-1 text-sm text-gray-600">
+        <div className="mb-8">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+            Entries Page
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
             Track and manage your symptom entries
           </p>
           {isDemoMode && (
-            <p className="text-xs text-gray-500 mt-3">
+            <p className="text-xs text-muted-foreground mt-3">
               Demo mode uses temporary local data. Changes reset on refresh.
             </p>
           )}
@@ -71,8 +73,8 @@ function EntriesPage() {
           <div className="bg-accent/25 p-4 rounded-full mb-4">
             <HeartOff className="size-12 text-primary" />
           </div>
-          <h3 className="text-xl font-semibold mb-2">No entries (yet)</h3>
-          <p className="text-base-content/60">Log your first entry</p>
+          <h3 className="text-sm text-foreground mb-2">No entries (yet)</h3>
+          <p className="text-xs text-muted-foreground">Log your first entry</p>
 
           <button
             className="btn btn-primary btn-lg mt-4 shrink-0 rounded-full"
@@ -128,7 +130,7 @@ function EntriesPage() {
                         key={entry.id}
                         className="hover:bg-secondary/10 transition-all group"
                       >
-                        <td className="px-3 py-5 font-medium text-gray-900 align-middle truncate">
+                        <td className="px-3 py-5 font-medium text-sm text-foreground align-middle truncate">
                           <div className="flex items-center gap-2 sm:gap-4">
                             <IconComponent
                               entry={entry}
@@ -149,11 +151,11 @@ function EntriesPage() {
                           <SeverityBadge severity={entry.severity} />
                         </td>
 
-                        <td className="px-3 py-5 text-gray-700 align-middle text-s">
+                        <td className="px-3 py-5 text-sm text-foreground align-middle">
                           {formatDateForDisplay(entry)}
                         </td>
 
-                        <td className="px-3 py-5 text-gray-700 max-w-xs align-middle hidden md:table-cell truncate">
+                        <td className="px-3 py-5 text-sm text-foreground max-w-xs align-middle hidden md:table-cell truncate">
                           {entry.notes}
                         </td>
 
@@ -182,7 +184,7 @@ function EntriesPage() {
               <div className="bg-base-100 rounded-3xl p-4 sm:p-6">
                 <div className="flex items-center justify-center gap-2 sm:gap-2">
                   <ListCheck className="size-4 text-secondary" />
-                  <h2 className="text-lg font-semibold text-secondary uppercase tracking-wide">
+                  <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
                     Entries Per Symptom
                   </h2>
                 </div>

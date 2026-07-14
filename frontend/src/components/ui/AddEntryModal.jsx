@@ -106,7 +106,7 @@ function AddEntryModal() {
         <h3 className="font-bold text-xl mb-2">
           {formData?.id ? "Edit Entry" : "Add New Entry"}
         </h3>
-        <p className="label-text text-small font-medium opacity-70 mb-6">
+        <p className="label-text text-xs font-medium opacity-70 mb-6">
           {formData?.id
             ? "Update your entry details"
             : "Start typing to see your previous symptoms"}
@@ -118,7 +118,7 @@ function AddEntryModal() {
               <span className="label-text text-base font-medium">
                 Symptom Name
               </span>
-              <span className="label-text-alt text-sm text-gray-500">
+              <span className="label-text-alt text-sm text-muted-foreground">
                 {(formData.symptom_name || "").length}/{MAX_NAME_LENGTH}
               </span>
             </label>
@@ -198,11 +198,11 @@ function AddEntryModal() {
                 <span className="text-sm font-bold text-success uppercase text-[12px]">
                   Mild
                 </span>
-                <span className="text-gray-300">—</span>
+                <span className="text-muted-foreground">—</span>
                 <span className="text-sm font-bold text-warning uppercase text-[12px]">
                   Moderate
                 </span>
-                <span className="text-gray-300">—</span>
+                <span className="text-muted-foreground">—</span>
                 <span className="text-sm font-bold text-error uppercase text-[12px]">
                   Severe
                 </span>
@@ -230,7 +230,7 @@ function AddEntryModal() {
           <div className="form-control">
             <label className="label">
               <span className="label-text text-base font-medium">Notes</span>
-              <span className="label-text-alt text-sm text-gray-500">
+              <span className="label-text-alt text-sm text-muted-foreground">
                 {(formData.notes || "").length}/{MAX_NOTES_LENGTH}
               </span>
             </label>

@@ -41,7 +41,7 @@ function WeeklyAverageSeverityKPICard() {
     insufficient: {
       iconClass: "",
       label: trend.message,
-      badgeClass: "bg-gray-50 text-gray-400",
+      badgeClass: "bg-muted text-muted-foreground",
       icon: null,
     },
   };
@@ -52,7 +52,7 @@ function WeeklyAverageSeverityKPICard() {
     <div className="flex flex-col items-center justify-between h-full">
       <div className="flex items-center gap-2 mb-4">
         <Gauge className="size-4 text-primary" />
-        <h3 className="text-md font-medium text-base uppercase tracking-wide">
+        <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
           Recent Severity
         </h3>
       </div>

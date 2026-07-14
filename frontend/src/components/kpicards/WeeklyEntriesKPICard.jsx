@@ -15,13 +15,13 @@ function WeeklyEntriesKPICard() {
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-2">
           <CalendarFold className="size-5 text-purple-600" strokeWidth={2.5} />
-          <h3 className="text-md font-medium text-gray-600 uppercase tracking-wide">
+          <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
             This Week
           </h3>
         </div>
 
-        <p className="text-base text-gray-500">Total Symptoms Logged</p>
-        <p className="text-7xl font-bold text-gray-900 tracking-tighter">
+        <p className="text-sm text-foreground">Total Symptoms Logged</p>
+        <p className="text-5xl font-bold tracking-tighter text-foreground">
           {weeklyEntries}
         </p>
       </div>
