@@ -1,6 +1,7 @@
 import { useEntriesStore } from '../../store/useEntriesStore.js';
 import { useAuthStore } from '../../store/useAuthStore.js';
 import AddEntryModal from '../components/ui/AddEntryModal.jsx';
+import EmptyState from '../components/ui/EmptyState.jsx';
 import { useEffect, useState } from 'react';
 import { HeartOff, Pencil, Plus, Trash2 } from 'lucide-react';
 import {
@@ -103,21 +104,17 @@ function EntriesPage() {
           <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
         </div>
       ) : entries.length === 0 ? (
-        <div className="flex flex-col items-center rounded-xl border border-dashed border-border py-16 text-center">
-          <div className="mb-4 rounded-full bg-muted p-4">
-            <HeartOff className="size-8 text-muted-foreground" />
-          </div>
-          <h3 className="text-sm font-medium text-foreground">
-            No entries yet
-          </h3>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Log your first symptom to get started.
-          </p>
-          <Button className="mt-6" onClick={handleAddNew}>
-            <Plus />
-            Add Entry
-          </Button>
-        </div>
+        <EmptyState
+          icon={HeartOff}
+          title="No entries yet"
+          description="Log your first symptom to get started."
+          action={
+            <Button onClick={handleAddNew}>
+              <Plus />
+              Add Entry
+            </Button>
+          }
+        />
       ) : (
         <div className="flex flex-col gap-6 xl:flex-row">
           <div className="min-w-0 flex-1">
