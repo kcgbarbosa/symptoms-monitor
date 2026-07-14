@@ -17,6 +17,7 @@ export const useEntriesStore = create((set, get) => ({
   loading: false,
   error: null,
   currentEntry: null,
+  isModalOpen: false,
 
   formData: {
     symptom_name: "",
@@ -27,6 +28,13 @@ export const useEntriesStore = create((set, get) => ({
   },
 
   clearEntries: () => set({ entries: [] }),
+
+  openModal: () => set({ isModalOpen: true }),
+
+  closeModal: () => {
+    get().resetForm();
+    set({ isModalOpen: false });
+  },
 
   setFormData: (formData) => set({ formData }),
 
@@ -69,7 +77,6 @@ export const useEntriesStore = create((set, get) => ({
       set({ entries: sortedEntries, loading: false });
       get().resetForm();
       toast.success("Entry added successfully");
-      document.getElementById("add_entry_modal").close();
 
       return;
     }
@@ -85,7 +92,6 @@ export const useEntriesStore = create((set, get) => ({
       await get().fetchEntries();
       get().resetForm();
       toast.success("Entry added successfully");
-      document.getElementById("add_entry_modal").close();
     } catch (err) {
       console.log("Error in addEntry function", err);
       toast.error("Something went wrong");
@@ -178,10 +184,6 @@ export const useEntriesStore = create((set, get) => ({
   },
 
   deleteEntry: async (id) => {
-    if (!window.confirm("Are you sure you want to delete this entry?")) {
-      return;
-    }
-
     set({ loading: true });
     const isDemoMode = useAuthStore.getState().isDemoMode;
 
