@@ -1,46 +1,62 @@
-import { useState } from "react";
-import { useEntriesStore } from "../../../store/useEntriesStore";
+import { useState } from 'react';
+import { useEntriesStore } from '../../../store/useEntriesStore';
 import {
   getSeverityLevel,
   SEVERITY_COLORS,
-} from "../../utils/severityConstants";
-import IconGrid from "../IconPicker/IconGrid";
+} from '../../utils/severityConstants';
+import IconGrid from '../IconPicker/IconGrid';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
+import { Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
-const MODAL_ID = "add_entry_modal";
-const MODAL_CONTENT_ID = "modal_content";
 const MAX_NOTES_LENGTH = 500;
 const MAX_NAME_LENGTH = 40;
+
+const fieldLabel = 'text-sm font-medium text-foreground';
 
 function AddEntryModal() {
   const {
     addEntry,
     updateEntry,
     fetchEntries,
-    resetForm,
     formData,
     setFormData,
     loading,
     entries,
+    isModalOpen,
+    closeModal,
   } = useEntriesStore();
 
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
 
-  const closeModal = () => {
-    const modalContent = document.getElementById(MODAL_CONTENT_ID);
-    if (modalContent) {
-      modalContent.scrollTop = 0;
+  const isEditing = Boolean(formData?.id);
+  const severity = Number(formData.severity) || 5;
+  const severityColors = SEVERITY_COLORS[getSeverityLevel(severity)];
+
+  const handleOpenChange = (open) => {
+    if (!open) {
+      setFilteredSuggestions([]);
+      closeModal();
     }
-    resetForm();
-    setFilteredSuggestions([]);
-    document.getElementById(MODAL_ID).close();
   };
 
   const getLastIconForSymptom = (name) => {
-    const key = (name || "").trim().toLowerCase();
+    const key = (name || '').trim().toLowerCase();
     if (!key) return null;
 
     const match = [...entries].reverse().find((entry) => {
-      const entryKey = (entry.symptom_name || "").trim().toLowerCase();
+      const entryKey = (entry.symptom_name || '').trim().toLowerCase();
       return entryKey === key;
     });
 
@@ -64,7 +80,7 @@ function AddEntryModal() {
       setFilteredSuggestions([]);
     } else {
       setFilteredSuggestions(
-        entryNames.filter((n) => n.toLowerCase().includes(normalizedInput)),
+        entryNames.filter((n) => n.toLowerCase().includes(normalizedInput))
       );
     }
   };
@@ -87,67 +103,58 @@ function AddEntryModal() {
     } else {
       await addEntry(e);
     }
+    setFilteredSuggestions([]);
     closeModal();
   };
 
   return (
-    <dialog id={MODAL_ID} className="modal modal-middle">
-      <div
-        id={MODAL_CONTENT_ID}
-        className="modal-box w-11/12 max-w-lg relative bg-base-200 rounded-lg p-8 shadow-lg overflow-y-auto max-h-[90vh] no-scrollbar"
-      >
-        <button
-          className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-          onClick={closeModal}
-        >
-          ✕
-        </button>
+    <Dialog open={isModalOpen} onOpenChange={handleOpenChange}>
+      <DialogContent className="max-h-[90vh] gap-0 overflow-y-auto sm:max-w-lg">
+        <DialogHeader>
+          <DialogTitle className="text-lg">
+            {isEditing ? 'Edit Entry' : 'Add New Entry'}
+          </DialogTitle>
+          <DialogDescription>
+            {isEditing
+              ? 'Update your entry details.'
+              : "Start typing to reuse a symptom you've logged before."}
+          </DialogDescription>
+        </DialogHeader>
 
-        <h3 className="font-bold text-xl mb-2">
-          {formData?.id ? "Edit Entry" : "Add New Entry"}
-        </h3>
-        <p className="label-text text-xs font-medium opacity-70 mb-6">
-          {formData?.id
-            ? "Update your entry details"
-            : "Start typing to see your previous symptoms"}
-        </p>
-
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="form-control relative">
-            <label className="label">
-              <span className="label-text text-base font-medium">
-                Symptom Name
+        <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+          <div className="relative space-y-2">
+            <div className="flex items-center justify-between">
+              <label htmlFor="symptom_name" className={fieldLabel}>
+                Symptom name
+              </label>
+              <span className="text-xs text-muted-foreground tabular-nums">
+                {(formData.symptom_name || '').length}/{MAX_NAME_LENGTH}
               </span>
-              <span className="label-text-alt text-sm text-muted-foreground">
-                {(formData.symptom_name || "").length}/{MAX_NAME_LENGTH}
-              </span>
-            </label>
-            <input
+            </div>
+            <Input
+              id="symptom_name"
               type="text"
-              placeholder="e.g., Fatigue, Joint Pain..."
-              className="input input-bordered w-full py-3 focus:input-primary transition-colors duration-200"
+              placeholder="e.g. Fatigue, Joint Pain…"
               value={formData.symptom_name}
               maxLength={MAX_NAME_LENGTH}
               onChange={(e) => handleNameChange(e.target.value)}
               onBlur={() => {
                 const trimmedName = formData.symptom_name.trim();
                 if (trimmedName !== formData.symptom_name) {
-                  setFormData({
-                    ...formData,
-                    symptom_name: trimmedName,
-                  });
+                  setFormData({ ...formData, symptom_name: trimmedName });
                 }
               }}
+              autoComplete="off"
             />
 
             {filteredSuggestions.length > 0 && (
-              <ul className="absolute z-[100] top-[100%] left-0 w-full bg-base-100 border border-base-300 rounded-md shadow-xl max-h-48 overflow-y-auto">
+              <ul className="absolute top-full left-0 z-[100] mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-border bg-popover p-1 shadow-md">
                 {filteredSuggestions.map((suggestion) => (
                   <li key={suggestion}>
                     <button
                       type="button"
                       onClick={() => handleSelectSuggestion(suggestion)}
-                      className="w-full text-left px-4 py-2 hover:bg-primary hover:text-primary-content transition-colors"
+                      className="w-full rounded-sm px-3 py-2 text-left text-sm transition-colors hover:bg-muted"
                     >
                       {suggestion}
                     </button>
@@ -157,13 +164,9 @@ function AddEntryModal() {
             )}
           </div>
 
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text text-base font-medium">
-                Select Icon
-              </span>
-            </label>
-            <div className="bg-base-100 p-2 rounded-xl border border-base-300 shadow-inner">
+          <div className="space-y-2">
+            <label className={fieldLabel}>Select icon</label>
+            <div className="rounded-lg border border-border bg-muted/30 p-2">
               <IconGrid
                 selectedIcon={formData.icon_name}
                 onSelectIcon={(iconName) =>
@@ -173,89 +176,81 @@ function AddEntryModal() {
             </div>
           </div>
 
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text text-base font-medium">Severity</span>
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className={fieldLabel}>Severity</label>
               <span
-                className={`font-bold text-xl ${SEVERITY_COLORS[getSeverityLevel(formData.severity)].text}`}
+                className={cn(
+                  'text-lg font-bold tabular-nums',
+                  severityColors.text
+                )}
               >
-                {formData.severity || 5}
+                {severity}
               </span>
-            </label>
-            <div className="w-full mx-auto">
-              <input
-                type="range"
-                min="1"
-                max="10"
-                value={formData.severity || 5}
-                onChange={(e) =>
-                  setFormData({ ...formData, severity: e.target.value })
-                }
-                className={`range ${SEVERITY_COLORS[getSeverityLevel(formData.severity)].range}`}
-                step="1"
-              />
-              <div className="flex justify-between px-2 mt-2">
-                <span className="text-sm font-bold text-success uppercase text-[12px]">
-                  Mild
-                </span>
-                <span className="text-muted-foreground">—</span>
-                <span className="text-sm font-bold text-warning uppercase text-[12px]">
-                  Moderate
-                </span>
-                <span className="text-muted-foreground">—</span>
-                <span className="text-sm font-bold text-error uppercase text-[12px]">
-                  Severe
-                </span>
-              </div>
+            </div>
+            <Slider
+              min={1}
+              max={10}
+              step={1}
+              value={[severity]}
+              onValueChange={([val]) =>
+                setFormData({ ...formData, severity: String(val) })
+              }
+              className={cn(
+                severityColors.text,
+                '[&_[data-slot=slider-range]]:bg-current [&_[data-slot=slider-thumb]]:border-current'
+              )}
+            />
+            <div className="flex justify-between text-xs font-medium text-muted-foreground">
+              <span>Mild</span>
+              <span>Moderate</span>
+              <span>Severe</span>
             </div>
           </div>
 
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text text-base font-medium">
-                Date of Symptom
-              </span>
+          <div className="space-y-2">
+            <label htmlFor="date_of_symptom" className={fieldLabel}>
+              Date of symptom
             </label>
-            <input
+            <Input
+              id="date_of_symptom"
               type="date"
-              className="input input-bordered w-full py-3 focus:input-primary transition-colors duration-200"
               value={formData.date_of_symptom}
               onChange={(e) =>
                 setFormData({ ...formData, date_of_symptom: e.target.value })
               }
-              max={new Date().toISOString().split("T")[0]}
+              max={new Date().toISOString().split('T')[0]}
             />
           </div>
 
-          <div className="form-control">
-            <label className="label">
-              <span className="label-text text-base font-medium">Notes</span>
-              <span className="label-text-alt text-sm text-muted-foreground">
-                {(formData.notes || "").length}/{MAX_NOTES_LENGTH}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <label htmlFor="notes" className={fieldLabel}>
+                Notes
+              </label>
+              <span className="text-xs text-muted-foreground tabular-nums">
+                {(formData.notes || '').length}/{MAX_NOTES_LENGTH}
               </span>
-            </label>
-            <textarea
-              placeholder="How are you feeling otherwise? (Optional)"
-              className="textarea textarea-bordered w-full py-3 focus:textarea-primary transition-colors duration-200 resize-none h-24 shadow-inner"
+            </div>
+            <Textarea
+              id="notes"
+              placeholder="How are you feeling otherwise? (optional)"
               value={formData.notes}
               maxLength={MAX_NOTES_LENGTH}
               onChange={(e) =>
                 setFormData({ ...formData, notes: e.target.value })
               }
+              className="h-24 resize-none"
             />
           </div>
 
-          <div className="modal-action">
-            <button
-              type="button"
-              className="btn btn-ghost"
-              onClick={closeModal}
-            >
+          <DialogFooter>
+            <Button type="button" variant="ghost" onClick={closeModal}>
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               type="submit"
-              className="btn btn-primary min-w-[120px] text-white"
+              className="min-w-[120px]"
               disabled={
                 !formData.symptom_name ||
                 !formData.severity ||
@@ -264,22 +259,17 @@ function AddEntryModal() {
               }
             >
               {loading ? (
-                <span className="loading loading-spinner loading-sm" />
-              ) : formData?.id ? (
-                "Save Changes"
+                <Loader2 className="animate-spin" />
+              ) : isEditing ? (
+                'Save Changes'
               ) : (
-                "Save Entry"
+                'Save Entry'
               )}
-            </button>
-          </div>
+            </Button>
+          </DialogFooter>
         </form>
-      </div>
-
-      {/* Click outside to close */}
-      <form method="dialog" className="modal-backdrop">
-        <button>close</button>
-      </form>
-    </dialog>
+      </DialogContent>
+    </Dialog>
   );
 }
 

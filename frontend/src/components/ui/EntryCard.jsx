@@ -1,40 +1,39 @@
-import { formatDateForDisplay } from "../../utils/dataProcessing";
-import IconComponent from "./IconComponent";
-import SeverityBadge from "./SeverityBadge";
+import { formatDateForDisplay } from '../../utils/dataProcessing';
+import IconComponent from './IconComponent';
+import SeverityBadge from './SeverityBadge';
+import { Card } from '@/components/ui/card';
 
 function EntryCard({ entry }) {
   const displayDate = formatDateForDisplay(entry);
 
   return (
-    <div className="card bg-base-100 shadow hover:shadow-lg transition-shadow">
-      <div className="card-body p-3 sm:p-6">
-        <div className="flex items-center gap-2 sm:gap-4">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-base-200 flex items-center justify-center shrink-0">
-            <IconComponent entry={entry} size={32} strokeWidth={3} />
-          </div>
-
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 flex-wrap">
-              <h3 className="card-title m-0 text-sm sm:text-base text-primary truncate">
-                {entry?.symptom_name}
-              </h3>
-              {displayDate && (
-                <span className="text-xs text-accent/75 whitespace-nowrap">
-                  {displayDate}
-                </span>
-              )}
-            </div>
-            <p className="mt-1 text-xs sm:text-sm text-base-content/60 truncate">
-              {entry?.notes}
-            </p>
-          </div>
-
-          <div className="scale-100 lg:scale-125">
-            <SeverityBadge severity={entry?.severity} />
-          </div>
+    <Card className="gap-0 px-4 py-4 transition-colors hover:bg-muted/40">
+      <div className="flex items-center gap-4">
+        <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-muted">
+          <IconComponent entry={entry} size={26} strokeWidth={2.5} />
         </div>
+
+        <div className="min-w-0 flex-1">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
+            <h3 className="truncate text-sm font-medium text-foreground">
+              {entry?.symptom_name}
+            </h3>
+            {displayDate && (
+              <span className="whitespace-nowrap text-xs text-muted-foreground">
+                {displayDate}
+              </span>
+            )}
+          </div>
+          {entry?.notes && (
+            <p className="mt-0.5 truncate text-xs text-muted-foreground">
+              {entry.notes}
+            </p>
+          )}
+        </div>
+
+        <SeverityBadge severity={entry?.severity} />
       </div>
-    </div>
+    </Card>
   );
 }
 

@@ -35,7 +35,7 @@ function App() {
     };
   }, []);
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-background">
       <RouterProvider router={router} />
     </div>
   );

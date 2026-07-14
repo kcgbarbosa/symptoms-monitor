@@ -1,15 +1,16 @@
 import {
   calcTotalAverageSeverity,
   getUniqueSymptomNames,
-} from "../../utils/dataProcessing";
-import { useEntriesStore } from "../../../store/useEntriesStore";
+} from '../../utils/dataProcessing';
+import { useEntriesStore } from '../../../store/useEntriesStore';
 import {
   getSeverityLevel,
   SEVERITY_COLORS,
-} from "../../utils/severityConstants";
-import { Clock, Gauge } from "lucide-react";
-import RadialProgress from "../ui/RadialProgress";
-import { useState } from "react";
+} from '../../utils/severityConstants';
+import RadialProgress from '../ui/RadialProgress';
+import { KPICard, KPICardHeader, KPICardMeta } from './shared';
+import { cn } from '@/lib/utils';
+import { useState } from 'react';
 
 function TotalAverageSeverityKPICard() {
   const { entries } = useEntriesStore();
@@ -17,30 +18,30 @@ function TotalAverageSeverityKPICard() {
   const [selectedSymptom, setSelectedSymptom] = useState(null);
   const totalAverageSeverity = calcTotalAverageSeverity(
     entries,
-    selectedSymptom,
+    selectedSymptom
   );
 
   const level = getSeverityLevel(totalAverageSeverity);
   const colors = SEVERITY_COLORS[level];
-  return (
-    <div className="flex flex-col sm:flex-row h-full gap-6">
-      <div className="flex sm:flex-[2] flex-col justify-between overflow-hidden">
-        <div className="flex flex-col gap-3 mb-2">
-          <div className="flex items-center gap-2">
-            <Gauge className="size-4 text-primary" />
-            <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-              Baseline Severity
-            </h3>
-          </div>
 
-          <div className="flex gap-2 overflow-x-auto [mask-image:linear-gradient(to_right,black_85%,transparent_100%)]">
+  const pillClass = (active) =>
+    cn(
+      'shrink-0 whitespace-nowrap rounded-full border px-3 py-1 text-xs font-medium transition-colors',
+      active
+        ? 'border-primary bg-primary text-primary-foreground'
+        : 'border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground'
+    );
+
+  return (
+    <KPICard className="sm:flex-row sm:items-stretch">
+      <div className="flex min-w-0 flex-1 flex-col justify-between gap-4">
+        <div className="space-y-3">
+          <KPICardHeader label="Baseline Severity" />
+
+          <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             <button
               onClick={() => setSelectedSymptom(null)}
-              className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold transition-all shadow-sm border ${
-                selectedSymptom === null
-                  ? "bg-primary text-white border-primary"
-                  : "bg-background text-muted-foreground border-border hover:bg-muted"
-              }`}
+              className={pillClass(selectedSymptom === null)}
             >
               All
             </button>
@@ -48,11 +49,7 @@ function TotalAverageSeverityKPICard() {
               <button
                 key={symptom}
                 onClick={() => setSelectedSymptom(symptom)}
-                className={`whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold transition-all shadow-sm border ${
-                  selectedSymptom === symptom
-                    ? "bg-primary text-white border-primary"
-                    : "bg-background text-muted-foreground border-border hover:bg-muted"
-                }`}
+                className={pillClass(selectedSymptom === symptom)}
               >
                 {symptom}
               </button>
@@ -60,43 +57,24 @@ function TotalAverageSeverityKPICard() {
           </div>
         </div>
 
-        <p className="text-sm text-muted-foreground mb-6 italic">
+        <KPICardMeta>
           {selectedSymptom
-            ? `Focusing on ${selectedSymptom}`
-            : "Across all of your Symptoms"}
-        </p>
-
-        <div className="hidden sm:block mb-auto">
-          <p className="text-xs font-medium text-muted-foreground mb-2">
-            Severity Scale
-          </p>
-          <progress
-            className={`progress ${colors.progress} w-3/4 h-2.5 bg-muted`}
-            max="10"
-            value={totalAverageSeverity}
-          ></progress>
-          <div className="flex justify-between w-3/4 text-xs text-muted-foreground mt-1 font-mono">
-            <span>0</span>
-            <span>10</span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-2 sm:mt-6">
-          <Clock className="size-3.5" />
-          <span>All time average</span>
-        </div>
+            ? `Showing ${selectedSymptom}`
+            : 'Across all symptoms'}{' '}
+          · all-time average
+        </KPICardMeta>
       </div>
 
-      <div className="flex-1 flex items-center justify-center">
+      <div className="flex shrink-0 items-center justify-center">
         <RadialProgress
           value={totalAverageSeverity}
           max={10}
-          sizeClass="size-40 sm:size-48"
-          thickness="0.75rem"
+          sizeClass="size-36 sm:size-40"
           colorClass={colors.text}
+          trackClass={colors.track}
         />
       </div>
-    </div>
+    </KPICard>
   );
 }
 

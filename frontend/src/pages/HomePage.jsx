@@ -2,10 +2,15 @@ import { useEffect } from 'react';
 import { useEntriesStore } from '../../store/useEntriesStore';
 import EntryCard from '../components/ui/EntryCard';
 import { HouseHeart } from 'lucide-react';
-import WeeklyTotalEntriesKPICard from '../components/kpicards/WeeklyEntriesKPICard';
-import UniqueSymptomsKPICard from '../components/kpicards/UniqueSymptomsKPICard';
+import StatKPICard from '../components/kpicards/StatKPICard';
 import AverageSeverityKPICard from '../components/kpicards/WeeklyAverageSeverityKPICard';
+import {
+  calcWeeklyEntries,
+  getMostLoggedSymptomThisWeek,
+  getUniqueSymptomNames,
+} from '../utils/dataProcessing';
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
 
 function HomePage() {
   const { entries, loading, error, fetchEntries } = useEntriesStore();
@@ -18,77 +23,101 @@ function HomePage() {
     .sort((a, b) => new Date(b.date_of_symptom) - new Date(a.date_of_symptom))
     .slice(0, 6);
 
+  const weeklyEntries = calcWeeklyEntries(entries);
+  const peakSymptom = getMostLoggedSymptomThisWeek(entries);
+  const uniqueSymptoms = getUniqueSymptomNames(entries).length;
+
+  const weeklyCaption = peakSymptom ? (
+    <>
+      Most tracked{' '}
+      <span className="font-medium text-foreground">{peakSymptom.name}</span> (
+      {peakSymptom.count}×)
+    </>
+  ) : (
+    'Nothing logged yet this week'
+  );
+
   return (
     <div className="flex-1 min-w-0">
-      <div className="bg-base-200 rounded-3xl sm:p-8 mb-6">
-        <div className="mb-8">
-          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-            Dashboard Page
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Overview of your symptom tracking
-          </p>
-        </div>
-
-        {error && <div className="alert alert-error mb-8">{error}</div>}
-
-        {loading ? (
-          <div className="flex justify-center items-center h-64">
-            <div className="loading loading-spinner loading-lg" />
-          </div>
-        ) : entries.length === 0 ? (
-          <div className="flex flex-col items-center py-16">
-            <div className="bg-accent/25 p-4 rounded-full mb-4">
-              <HouseHeart className="size-12 text-primary" />
-            </div>
-            <h3 className="text-sm text-foreground mb-2">
-              Welcome to your Dashboard
-            </h3>
-            <p className="text-xs text-muted-foreground">
-              Here you can view your recent entries. <br /> Get started by
-              logging your first entry.
-            </p>
-            <Link to="/entries" className="mt-6 shrink-0">
-              <button className="btn btn-accent btn-lg rounded-full">
-                <span className="text-white">Add First Entry</span>
-              </button>
-            </Link>
-          </div>
-        ) : (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8 mb-6">
-              <div className="bg-base-100 rounded-3xl p-4 sm:p-8 shadow-sm min-h-[280px]">
-                <WeeklyTotalEntriesKPICard />
-              </div>
-              <div className="bg-base-100 rounded-3xl p-4 sm:p-8 shadow-sm min-h-[280px]">
-                <AverageSeverityKPICard />
-              </div>
-              <div className="bg-base-100 rounded-3xl p-4 sm:p-8 shadow-sm min-h-[280px]">
-                <UniqueSymptomsKPICard />
-              </div>
-            </div>
-
-            <div className="bg-base-300 rounded-3xl p-4 sm:p-6">
-              <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-                Recent Entries
-              </h2>
-              <p className="mt-1 mb-4 text-sm text-foreground">
-                Showing your 6 most recent entries.{' '}
-                <Link to="/entries" className="link link-primary">
-                  View all entries
-                </Link>{' '}
-                to manage or edit.
-              </p>
-
-              <div className="space-y-3">
-                {recentEntries.map((entry) => (
-                  <EntryCard key={entry.id} entry={entry} />
-                ))}
-              </div>
-            </div>
-          </>
-        )}
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+          Dashboard
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Your recent symptom activity at a glance
+        </p>
       </div>
+
+      {error && (
+        <div className="mb-8 rounded-lg border border-destructive/25 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {error}
+        </div>
+      )}
+
+      {loading ? (
+        <div className="flex h-64 items-center justify-center">
+          <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
+        </div>
+      ) : entries.length === 0 ? (
+        <div className="flex flex-col items-center rounded-xl border border-dashed border-border py-16 text-center">
+          <div className="mb-4 rounded-full bg-muted p-4">
+            <HouseHeart className="size-8 text-muted-foreground" />
+          </div>
+          <h3 className="text-sm font-medium text-foreground">
+            Welcome to your dashboard
+          </h3>
+          <p className="mt-1 max-w-xs text-xs text-muted-foreground">
+            Your recent entries will show here. Get started by logging your
+            first one.
+          </p>
+          <Button asChild className="mt-6">
+            <Link to="/entries">Add first entry</Link>
+          </Button>
+        </div>
+      ) : (
+        <div className="space-y-8">
+          <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
+            <StatKPICard
+              label="This Week"
+              value={weeklyEntries}
+              valueLabel="Symptoms logged"
+              caption={weeklyCaption}
+            />
+            <AverageSeverityKPICard />
+            <StatKPICard
+              label="All Time"
+              value={uniqueSymptoms}
+              valueLabel="Distinct symptom types"
+              caption="Across all of your entries"
+            />
+          </div>
+
+          <section>
+            <div className="mb-4 flex items-end justify-between gap-4">
+              <div>
+                <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                  Recent Entries
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Your 6 most recent entries.
+                </p>
+              </div>
+              <Link
+                to="/entries"
+                className="shrink-0 text-sm font-medium text-primary hover:underline"
+              >
+                View all
+              </Link>
+            </div>
+
+            <div className="space-y-3">
+              {recentEntries.map((entry) => (
+                <EntryCard key={entry.id} entry={entry} />
+              ))}
+            </div>
+          </section>
+        </div>
+      )}
     </div>
   );
 }

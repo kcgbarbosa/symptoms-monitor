@@ -15,33 +15,24 @@ export const getSeverityLevel = (severity) => {
 
 export const SEVERITY_COLORS = {
   severe: {
-    pill: "bg-red-50 border-red-200 text-red-700",
+    label: "Severe",
+    text: "text-red-600 dark:text-red-400",
     dot: "bg-red-500",
-    text: "text-red-600",
-    range: "range-error",
-    progress: "progress-error",
-    trendBadge:
-      "bg-gradient-to-r from-red-50 to-rose-50 border-red-200 text-red-900",
-    trendBadgeIcon: "bg-red-500",
+    pill: "bg-red-500/10 text-red-700 dark:text-red-300 border-red-500/25",
+    track: "text-red-500/15",
   },
   moderate: {
-    pill: "bg-amber-50 border-amber-200 text-amber-700",
+    label: "Moderate",
+    text: "text-amber-600 dark:text-amber-400",
     dot: "bg-amber-500",
-    text: "text-amber-600",
-    range: "range-warning",
-    progress: "progress-warning",
-    trendBadge:
-      "bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-200 text-amber-900",
-    trendBadgeIcon: "bg-amber-500",
+    pill: "bg-amber-500/10 text-amber-700 dark:text-amber-300 border-amber-500/25",
+    track: "text-amber-500/15",
   },
   mild: {
-    pill: "bg-emerald-50 border-emerald-200 text-emerald-700",
+    label: "Mild",
+    text: "text-emerald-600 dark:text-emerald-400",
     dot: "bg-emerald-500",
-    text: "text-emerald-600",
-    progress: "progress-success",
-    range: "range-success",
-    trendBadge:
-      "bg-gradient-to-r from-emerald-50 to-green-50 border-emerald-200 text-emerald-900",
-    trendBadgeIcon: "bg-emerald-500",
+    pill: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border-emerald-500/25",
+    track: "text-emerald-500/15",
   },
 };

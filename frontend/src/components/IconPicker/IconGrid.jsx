@@ -14,17 +14,17 @@ function IconGrid({ selectedIcon, onSelectIcon }) {
             type="button"
             aria-pressed={isSelected}
             className={`
-              flex flex-col 
+              flex flex-col
               p-4
-              items-center 
+              items-center
               justify-center
-              border-2 rounded-2xl
+              border rounded-xl
               transition-all duration-150
               hover:scale-105 active:scale-95
               ${
                 isSelected
-                  ? "bg-primary/10 border-primary shadow-sm"
-                  : "bg-base-100 border-transparent hover:border-base-300"
+                  ? "bg-primary/10 border-primary"
+                  : "bg-background border-border hover:border-muted-foreground/40"
               }
             `}
             onClick={() => onSelectIcon(iconName)}

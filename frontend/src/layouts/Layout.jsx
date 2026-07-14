@@ -10,7 +10,7 @@ const Layout = () => {
         <AppSidebar />
         <main className="flex-1 min-w-0">
           <SidebarTrigger className="m-2" />
-          <div className="p-6 lg:p-8 max-w-7xl">
+          <div className="max-w-7xl mx-auto p-6 lg:p-8">
             <Outlet />
           </div>
         </main>

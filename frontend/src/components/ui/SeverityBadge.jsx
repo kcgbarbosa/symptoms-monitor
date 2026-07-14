@@ -1,7 +1,8 @@
+import { Badge } from '@/components/ui/badge';
 import {
   getSeverityLevel,
   SEVERITY_COLORS,
-} from "../../utils/severityConstants";
+} from '../../utils/severityConstants';
 
 function SeverityBadge({ severity }) {
   if (!severity) return null;
@@ -10,12 +11,10 @@ function SeverityBadge({ severity }) {
   const colors = SEVERITY_COLORS[level];
 
   return (
-    <div
-      className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full border shadow-sm ${colors.pill}`}
-    >
-      <span className={`h-2 w-2 rounded-full ${colors.dot}`} />
-      <span className="text-sm font-semibold leading-none">{severity}</span>
-    </div>
+    <Badge variant="outline" className={`gap-1.5 border ${colors.pill}`}>
+      <span className={`size-1.5 rounded-full ${colors.dot}`} />
+      <span className="font-semibold tabular-nums">{severity}</span>
+    </Badge>
   );
 }
 

@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { groupEntriesByDate } from '../utils/dataProcessing';
 import DailySymptomEntriesScatterPlot from '../components/charts/DailySymptomEntriesScatterPlot';
-import TotalEntriesKPICard from '../components/kpicards/TotalEntriesKPICard';
+import StatKPICard from '../components/kpicards/StatKPICard';
 import TotalAverageSeverityKPICard from '../components/kpicards/TotalAverageSeverityKPICard';
 import CorrelationInsightKPICard from '../components/kpicards/CorrelationInsightKPICard';
 import { TrendingUpDown } from 'lucide-react';
@@ -16,6 +16,7 @@ function TrendsPage() {
   }, []);
 
   const data = groupEntriesByDate(entries);
+  const totalEntries = entries.length;
 
   return (
     <div className="flex-1 min-w-0">
@@ -28,34 +29,47 @@ function TrendsPage() {
         </p>
       </div>
 
-      {error && <div className="alert alert-error mb-8">{error}</div>}
+      {error && (
+        <div className="mb-8 rounded-lg border border-destructive/25 bg-destructive/10 px-4 py-3 text-sm text-destructive">
+          {error}
+        </div>
+      )}
 
       {loading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="loading loading-spinner loading-lg" />
+        <div className="flex h-64 items-center justify-center">
+          <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
         </div>
       ) : entries.length === 0 ? (
-        <div className="flex flex-col items-center py-16">
-          <div className="bg-accent/25 p-4 rounded-full mb-4">
-            <TrendingUpDown className="size-12 text-primary" />
+        <div className="flex flex-col items-center rounded-xl border border-dashed border-border py-16 text-center">
+          <div className="mb-4 rounded-full bg-muted p-4">
+            <TrendingUpDown className="size-8 text-muted-foreground" />
           </div>
-          <h3 className="text-sm text-foreground mb-2">
-            Welcome to your Trends Page
+          <h3 className="text-sm font-medium text-foreground">
+            Nothing to visualize yet
           </h3>
-          <p className="text-xs text-muted-foreground text-center">
-            We'll visualize your symptom patterns here once you've logged some{' '}
-            <Link to="/entries" className="link link-primary">
+          <p className="mt-1 max-w-xs text-xs text-muted-foreground">
+            We'll chart your symptom patterns here once you've logged some{' '}
+            <Link
+              to="/entries"
+              className="font-medium text-primary hover:underline"
+            >
               entries
             </Link>
+            .
           </p>
         </div>
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-            <div className="bg-base-100 rounded-3xl p-8 min-h-[280px] md:col-span-2">
-              <TotalEntriesKPICard />
+            <div className="md:col-span-2">
+              <StatKPICard
+                label="All Time"
+                value={totalEntries}
+                valueLabel="Symptoms monitored"
+                caption="Since you started tracking"
+              />
             </div>
-            <div className="bg-base-100 rounded-3xl p-8 min-h-[280px] md:col-span-3">
+            <div className="md:col-span-3">
               <TotalAverageSeverityKPICard />
             </div>
           </div>

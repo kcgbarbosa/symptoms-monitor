@@ -1,14 +1,15 @@
 import {
   calcWeeklyAverageSeverity,
   calcWeeklySeverityTrend,
-} from "../../utils/dataProcessing";
-import { useEntriesStore } from "../../../store/useEntriesStore";
-import { Gauge, TrendingDown, TrendingUp, Minus } from "lucide-react";
-import RadialProgress from "../ui/RadialProgress";
+} from '../../utils/dataProcessing';
+import { useEntriesStore } from '../../../store/useEntriesStore';
+import RadialProgress from '../ui/RadialProgress';
 import {
   getSeverityLevel,
   SEVERITY_COLORS,
-} from "../../utils/severityConstants";
+} from '../../utils/severityConstants';
+import { KPICard, KPICardHeader } from './shared';
+import { cn } from '@/lib/utils';
 
 function WeeklyAverageSeverityKPICard() {
   const { entries } = useEntriesStore();
@@ -20,71 +21,61 @@ function WeeklyAverageSeverityKPICard() {
 
   const trendMap = {
     improving: {
-      icon: TrendingDown,
-      label: `${trend.percentChange}% better vs last week`,
-      badgeClass: colors.trendBadge,
-      iconClass: colors.trendBadgeIcon,
+      className:
+        'border-emerald-500/25 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300',
+      arrow: '↓',
+      label: `${trend.percentChange}% vs last week`,
     },
     worsening: {
-      icon: TrendingUp,
-      label: `${trend.percentChange}% worse vs last week`,
-      badgeClass: colors.trendBadge,
-      iconClass: colors.trendBadgeIcon,
+      className:
+        'border-red-500/25 bg-red-500/10 text-red-700 dark:text-red-300',
+      arrow: '↑',
+      label: `${trend.percentChange}% vs last week`,
     },
     stable: {
-      icon: Minus,
-      label: "Stable",
-      badgeClass:
-        "bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200",
-      iconClass: "bg-blue-500",
+      className: 'border-border bg-muted text-muted-foreground',
+      arrow: '',
+      label: 'Holding steady',
     },
     insufficient: {
-      iconClass: "",
+      className: 'border-border bg-muted text-muted-foreground',
+      arrow: '',
       label: trend.message,
-      badgeClass: "bg-muted text-muted-foreground",
-      icon: null,
     },
   };
 
-  const currentTrend = trendMap[trend.direction] || trendMap["insufficient"];
+  const currentTrend = trendMap[trend.direction] || trendMap.insufficient;
 
   return (
-    <div className="flex flex-col items-center justify-between h-full">
-      <div className="flex items-center gap-2 mb-4">
-        <Gauge className="size-4 text-primary" />
-        <h3 className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
-          Recent Severity
-        </h3>
-      </div>
+    <KPICard>
+      <KPICardHeader label="Recent Severity" />
 
-      <div className="flex-1 flex items-center justify-center mb-2">
+      <div className="flex flex-1 items-center justify-center py-2">
         <RadialProgress
           value={weeklyAverageSeverity}
           max={10}
-          sizeClass="size-40 sm:size-44"
-          thickness="0.875rem"
+          sizeClass="size-32 sm:size-36"
           colorClass={colors.text}
+          trackClass={colors.track}
         />
       </div>
 
-      <div className="mt-4">
-        <div
-          className={`inline-flex items-center gap-2 px-3 py-1.5 border rounded-full ${currentTrend.badgeClass}`}
-        >
-          {currentTrend.icon && (
-            <div
-              className={`flex items-center justify-center size-7 ${currentTrend.iconClass} rounded-full`}
-            >
-              <currentTrend.icon
-                className="size-5 text-white"
-                strokeWidth={3}
-              />
-            </div>
+      <div className="flex justify-center">
+        <span
+          className={cn(
+            'inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium',
+            currentTrend.className
           )}
-          <span className="text-sm font-semibold">{currentTrend.label}</span>
-        </div>
+        >
+          {currentTrend.arrow && (
+            <span aria-hidden className="text-sm leading-none">
+              {currentTrend.arrow}
+            </span>
+          )}
+          {currentTrend.label}
+        </span>
       </div>
-    </div>
+    </KPICard>
   );
 }
 
