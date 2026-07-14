@@ -1,6 +1,7 @@
 import { Scatter } from "react-chartjs-2";
 import { getIconColor } from "../IconPicker/IconOptions";
 import { formatDateForDisplay } from "../../utils/dataProcessing";
+import { getChartTheme } from "../../utils/chartTheme";
 
 import "chartjs-adapter-date-fns";
 
@@ -62,19 +63,15 @@ const DailySymptomEntriesScatterPlot = ({ data, entries }) => {
 
   const globalYAxisMax = Math.max(0, ...allCounts) + 1;
 
+  const theme = getChartTheme();
+
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
       legend: { display: false },
       tooltip: {
-        backgroundColor: "rgba(255,255,255,0.95)",
-        titleColor: "#1f2937",
-        bodyColor: "#374151",
-        borderColor: "#e5e7eb",
-        borderWidth: 1,
-        padding: 10,
-        displayColors: false,
+        ...theme.tooltip,
         callbacks: {
           title: (context) => {
             const dateValue = context[0].parsed.x;
@@ -107,10 +104,10 @@ const DailySymptomEntriesScatterPlot = ({ data, entries }) => {
         ticks: {
           stepSize: 1,
           font: { size: 10 },
-          color: "#9ca3af",
+          color: theme.tick,
         },
         grid: {
-          color: "#f3f4f6",
+          color: theme.grid,
           drawBorder: false,
         },
       },
@@ -163,20 +160,22 @@ const DailySymptomEntriesScatterPlot = ({ data, entries }) => {
         return (
           <div
             key={symptom}
-            className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow flex flex-col"
+            className="flex flex-col rounded-xl border border-border bg-card p-4 transition-colors hover:bg-muted/30"
           >
             <div className="mb-3">
-              <h3 className="text-sm font-semibold truncate mb-2">{symptom}</h3>
-              <div className="flex justify-between text-xs text-base-content/70">
-                <span className="text-secondary/50">
+              <h3 className="mb-2 truncate text-sm font-semibold text-foreground">
+                {symptom}
+              </h3>
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>
                   Total:{" "}
-                  <span className="font-semibold text-secondary/70">
+                  <span className="font-semibold text-foreground">
                     {totalEntries}
                   </span>
                 </span>
-                <span className="text-accent/50">
+                <span>
                   Avg:{" "}
-                  <span className="font-semibold text-accent/70 ">
+                  <span className="font-semibold text-foreground">
                     {averagePerDay}/day
                   </span>
                 </span>
@@ -187,7 +186,7 @@ const DailySymptomEntriesScatterPlot = ({ data, entries }) => {
               <Scatter data={chartData} options={chartOptions} />
             </div>
 
-            <div className="mt-2 text-center text-xs text-base-content/70">
+            <div className="mt-2 text-center text-xs text-muted-foreground">
               {dateRangeDisplay}
             </div>
           </div>

@@ -1,5 +1,6 @@
 import { Bar } from "react-chartjs-2";
 import { getIconColor } from "../IconPicker/IconOptions";
+import { getChartTheme } from "../../utils/chartTheme";
 
 import {
   Chart as ChartJS,
@@ -52,6 +53,8 @@ const TotalEntriesPerSymptomBarChart = ({ data }) => {
     ],
   };
 
+  const theme = getChartTheme();
+
   const options = {
     indexAxis: "y",
     responsive: true,
@@ -64,13 +67,7 @@ const TotalEntriesPerSymptomBarChart = ({ data }) => {
         display: false,
       },
       tooltip: {
-        backgroundColor: "rgba(255, 255, 255, 0.95)",
-        titleColor: "#1f2937",
-        bodyColor: "#6b7280",
-        borderColor: "#e5e7eb",
-        borderWidth: 1,
-        padding: 12,
-        displayColors: false,
+        ...theme.tooltip,
         callbacks: {
           label: function (context) {
             return `${context.parsed.x} ${context.parsed.x === 1 ? "entry" : "entries"}`;
@@ -86,10 +83,10 @@ const TotalEntriesPerSymptomBarChart = ({ data }) => {
           font: {
             size: 12,
           },
-          color: "#6b7280",
+          color: theme.tick,
         },
         grid: {
-          color: "#f9fafb",
+          color: theme.grid,
           drawBorder: false,
         },
       },
@@ -99,7 +96,7 @@ const TotalEntriesPerSymptomBarChart = ({ data }) => {
             size: 13,
             weight: "500",
           },
-          color: "#374151",
+          color: theme.tick,
         },
         grid: {
           display: false,
@@ -109,7 +106,7 @@ const TotalEntriesPerSymptomBarChart = ({ data }) => {
   };
 
   return (
-    <div className="w-full h-[500px] bg-white rounded-xl p-6">
+    <div className="h-[420px] w-full">
       <Bar data={chartData} options={options} />
     </div>
   );
