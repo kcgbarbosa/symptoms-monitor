@@ -13,7 +13,6 @@ function ThemeToggle() {
       aria-label={
         theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
       }
-      className="fixed top-4 right-4 z-40 shadow-sm"
     >
       {theme === 'dark' ? <Sun /> : <Moon />}
     </Button>
