@@ -6,6 +6,7 @@ import DailySymptomEntriesScatterPlot from '../components/charts/DailySymptomEnt
 import StatKPICard from '../components/kpicards/StatKPICard';
 import TotalAverageSeverityKPICard from '../components/kpicards/TotalAverageSeverityKPICard';
 import CorrelationInsightKPICard from '../components/kpicards/CorrelationInsightKPICard';
+import EmptyState from '../components/ui/EmptyState';
 import { TrendingUpDown } from 'lucide-react';
 
 function TrendsPage() {
@@ -40,24 +41,22 @@ function TrendsPage() {
           <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
         </div>
       ) : entries.length === 0 ? (
-        <div className="flex flex-col items-center rounded-xl border border-dashed border-border py-16 text-center">
-          <div className="mb-4 rounded-full bg-muted p-4">
-            <TrendingUpDown className="size-8 text-muted-foreground" />
-          </div>
-          <h3 className="text-sm font-medium text-foreground">
-            Nothing to visualize yet
-          </h3>
-          <p className="mt-1 max-w-xs text-xs text-muted-foreground">
-            We'll chart your symptom patterns here once you've logged some{' '}
-            <Link
-              to="/entries"
-              className="font-medium text-primary hover:underline"
-            >
-              entries
-            </Link>
-            .
-          </p>
-        </div>
+        <EmptyState
+          icon={TrendingUpDown}
+          title="Nothing to visualize yet"
+          description={
+            <>
+              We'll chart your symptom patterns here once you've logged some{' '}
+              <Link
+                to="/entries"
+                className="font-medium text-primary hover:underline"
+              >
+                entries
+              </Link>
+              .
+            </>
+          }
+        />
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6">

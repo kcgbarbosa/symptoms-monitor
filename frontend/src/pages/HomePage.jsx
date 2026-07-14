@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import { useEntriesStore } from '../../store/useEntriesStore';
-import EntryCard from '../components/ui/EntryCard';
-import { HouseHeart } from 'lucide-react';
+import EntryTimeline from '../components/ui/EntryTimeline';
+import AddEntryModal from '../components/ui/AddEntryModal';
+import EmptyState from '../components/ui/EmptyState';
+import { HouseHeart, Plus } from 'lucide-react';
 import StatKPICard from '../components/kpicards/StatKPICard';
 import AverageSeverityKPICard from '../components/kpicards/WeeklyAverageSeverityKPICard';
 import {
@@ -13,7 +15,8 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 
 function HomePage() {
-  const { entries, loading, error, fetchEntries } = useEntriesStore();
+  const { entries, loading, error, fetchEntries, resetForm, openModal } =
+    useEntriesStore();
 
   useEffect(() => {
     fetchEntries();
@@ -37,15 +40,29 @@ function HomePage() {
     'Nothing logged yet this week'
   );
 
+  const handleAddNew = () => {
+    resetForm();
+    openModal();
+  };
+
   return (
     <div className="flex-1 min-w-0">
-      <div className="mb-8">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
-          Dashboard
-        </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Your recent symptom activity at a glance
-        </p>
+      <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+            Dashboard
+          </h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Your recent symptom activity at a glance
+          </p>
+        </div>
+
+        {entries.length > 0 && (
+          <Button onClick={handleAddNew}>
+            <Plus />
+            Add Entry
+          </Button>
+        )}
       </div>
 
       {error && (
@@ -59,40 +76,15 @@ function HomePage() {
           <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
         </div>
       ) : entries.length === 0 ? (
-        <div className="flex flex-col items-center rounded-xl border border-dashed border-border py-16 text-center">
-          <div className="mb-4 rounded-full bg-muted p-4">
-            <HouseHeart className="size-8 text-muted-foreground" />
-          </div>
-          <h3 className="text-sm font-medium text-foreground">
-            Welcome to your dashboard
-          </h3>
-          <p className="mt-1 max-w-xs text-xs text-muted-foreground">
-            Your recent entries will show here. Get started by logging your
-            first one.
-          </p>
-          <Button asChild className="mt-6">
-            <Link to="/entries">Add first entry</Link>
-          </Button>
-        </div>
+        <EmptyState
+          icon={HouseHeart}
+          title="Welcome to your dashboard"
+          description="Your recent entries will show here. Get started by logging your first one."
+          action={<Button onClick={handleAddNew}>Add first entry</Button>}
+        />
       ) : (
-        <div className="space-y-8">
-          <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-3">
-            <StatKPICard
-              label="This Week"
-              value={weeklyEntries}
-              valueLabel="Symptoms logged"
-              caption={weeklyCaption}
-            />
-            <AverageSeverityKPICard />
-            <StatKPICard
-              label="All Time"
-              value={uniqueSymptoms}
-              valueLabel="Distinct symptom types"
-              caption="Across all of your entries"
-            />
-          </div>
-
-          <section>
+        <div className="flex flex-col gap-6 lg:flex-row">
+          <div className="min-w-0 flex-1">
             <div className="mb-4 flex items-end justify-between gap-4">
               <div>
                 <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
@@ -110,14 +102,28 @@ function HomePage() {
               </Link>
             </div>
 
-            <div className="space-y-3">
-              {recentEntries.map((entry) => (
-                <EntryCard key={entry.id} entry={entry} />
-              ))}
-            </div>
-          </section>
+            <EntryTimeline entries={recentEntries} />
+          </div>
+
+          <aside className="shrink-0 space-y-4 lg:w-80">
+            <StatKPICard
+              label="This Week"
+              value={weeklyEntries}
+              valueLabel="Symptoms logged"
+              caption={weeklyCaption}
+            />
+            <AverageSeverityKPICard />
+            <StatKPICard
+              label="All Time"
+              value={uniqueSymptoms}
+              valueLabel="Distinct symptom types"
+              caption="Across all of your entries"
+            />
+          </aside>
         </div>
       )}
+
+      <AddEntryModal />
     </div>
   );
 }
