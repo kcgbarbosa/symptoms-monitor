@@ -105,7 +105,7 @@ function HomePage() {
             <EntryTimeline entries={recentEntries} />
           </div>
 
-          <aside className="shrink-0 space-y-4 lg:w-80">
+          <aside className="shrink-0 space-y-4 lg:w-90">
             <StatKPICard
               label="This Week"
               value={weeklyEntries}
