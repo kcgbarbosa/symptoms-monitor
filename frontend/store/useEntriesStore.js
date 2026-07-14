@@ -20,6 +20,7 @@ export const useEntriesStore = create((set, get) => ({
   isModalOpen: false,
 
   formData: {
+    // TODO: Add time 
     symptom_name: "",
     icon_name: "DefaultIcon",
     severity: "5",
