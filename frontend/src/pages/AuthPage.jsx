@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Activity } from 'lucide-react';
 import AuthForm from '../components/ui/AuthForm';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore.js';
+import { Button } from '@/components/ui/button';
 
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -18,52 +19,50 @@ function AuthPage() {
   }, [isDemoMode, navigate]);
 
   return (
-    <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2">
-      <div className="hidden lg:flex flex-col justify-between bg-purple-600 p-12 text-white">
+    <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
+      <div className="hidden flex-col justify-between bg-primary p-12 text-primary-foreground lg:flex">
         <div className="flex items-center gap-2">
-          <Activity size={24} />
+          <Activity size={22} />
           <Link
             to="/auth"
-            className="font-bold uppercase tracking-tight text-xl"
+            className="text-xl font-bold uppercase tracking-tight"
           >
             Symptoms Monitor
           </Link>
         </div>
-        <div className="space-y-4">
-          <blockquote className="space-y-2">
-            <h2 className="text-4xl font-bold italic leading-tight">
-              "Although the world is full of suffering, it is full also of the
-              overcoming of it."
-            </h2>
-            <cite className="text-purple-300 text-sm block not-italic">
-              — Helen Keller
+        <div className="space-y-5">
+          <blockquote className="space-y-3">
+            <p className="text-3xl font-semibold italic leading-tight">
+              “The greatest glory in living lies not in never falling, <br/> but in rising every time we fall.” 
+            </p>
+            <cite className="block text-sm not-italic text-primary-foreground/70">
+              – Nelson Mandela
             </cite>
           </blockquote>
-          <p className="text-purple-200 text-lg leading-relaxed">
-            Your symptoms are real, and so is your capacity to heal. <br />
-            Let's monitor your progress, together.
+          <p className="text-lg leading-relaxed text-primary-foreground/80">
+            Your symptoms are real, and so is your capacity to heal.
           </p>
         </div>
 
-        <p className="text-purple-300 text-sm">
+        <p className="text-sm text-primary-foreground/60">
           Creator: Kevin-Christian Giraldo-Barbosa
         </p>
       </div>
 
-      <div className="flex flex-col bg-base-100">
-        <div className="bg-purple-600 text-white px-8 py-8 lg:hidden">
-          <div className="flex items-center gap-2 mb-3">
+      <div className="flex flex-col bg-background">
+        <div className="bg-primary px-8 py-8 text-primary-foreground lg:hidden">
+          <div className="mb-3 flex items-center gap-2">
             <Activity size={20} />
-            <span className="font-bold uppercase tracking-tighter">
+            <span className="font-bold uppercase tracking-tight">
               Symptoms Monitor
             </span>
           </div>
-          <p className="text-purple-200 text-sm">
+          <p className="text-sm text-primary-foreground/80">
             Track, visualize, and reflect on your health trends
           </p>
         </div>
 
-        <div className="flex-1 flex justify-center items-center p-8">
+        <div className="flex flex-1 items-center justify-center p-8">
           <div className="w-full max-w-sm">
             <AuthForm
               key={isLogin ? 'login' : 'signup'}
@@ -74,15 +73,16 @@ function AuthPage() {
         </div>
 
         <div className="px-8 pb-8 text-center">
-          <p className="text-sm text-base-content/50 mb-2">
+          <p className="mb-2 text-sm text-muted-foreground">
             Just want to look around?
           </p>
-          <button
+          <Button
+            variant="outline"
             onClick={() => setDemoMode(true)}
-            className="btn btn-outline btn-sm w-full max-w-sm"
+            className="w-full max-w-sm"
           >
             Try Demo
-          </button>
+          </Button>
         </div>
       </div>
     </div>
