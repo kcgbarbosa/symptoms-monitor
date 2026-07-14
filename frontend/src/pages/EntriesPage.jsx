@@ -1,19 +1,19 @@
-import { useEntriesStore } from "../../store/useEntriesStore.js";
-import { useAuthStore } from "../../store/useAuthStore.js";
-import AddEntryModal from "../components/ui/AddEntryModal.jsx";
-import { useEffect, useState } from "react";
-import { HeartOff, Pencil, Plus, Trash2 } from "lucide-react";
+import { useEntriesStore } from '../../store/useEntriesStore.js';
+import { useAuthStore } from '../../store/useAuthStore.js';
+import AddEntryModal from '../components/ui/AddEntryModal.jsx';
+import { useEffect, useState } from 'react';
+import { HeartOff, Pencil, Plus, Trash2 } from 'lucide-react';
 import {
   calcEntriesPerSymptomAllTime,
   symptomCountToArr,
   formatDateForDisplay,
   formatDateForInput,
-} from "../utils/dataProcessing.js";
-import EntriesPerSymptomAllTimeChart from "../components/charts/TotalEntriesPerSymptomBarChart.jsx";
-import IconComponent from "../components/ui/IconComponent.jsx";
-import SeverityBadge from "../components/ui/SeverityBadge.jsx";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+} from '../utils/dataProcessing.js';
+import EntriesPerSymptomAllTimeChart from '../components/charts/TotalEntriesPerSymptomBarChart.jsx';
+import IconComponent from '../components/ui/IconComponent.jsx';
+import SeverityBadge from '../components/ui/SeverityBadge.jsx';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,7 +23,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
 
 function EntriesPage() {
   const {
@@ -64,7 +64,7 @@ function EntriesPage() {
 
   const entriesPerSymptomArr = symptomCountToArr(
     calcEntriesPerSymptomAllTime(entries),
-    entries,
+    entries
   );
 
   return (
@@ -107,7 +107,9 @@ function EntriesPage() {
           <div className="mb-4 rounded-full bg-muted p-4">
             <HeartOff className="size-8 text-muted-foreground" />
           </div>
-          <h3 className="text-sm font-medium text-foreground">No entries yet</h3>
+          <h3 className="text-sm font-medium text-foreground">
+            No entries yet
+          </h3>
           <p className="mt-1 text-xs text-muted-foreground">
             Log your first symptom to get started.
           </p>
@@ -179,7 +181,7 @@ function EntriesPage() {
                           size="icon-sm"
                           aria-label="Delete entry"
                           onClick={() => setPendingDeleteId(entry.id)}
-                          className="text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100 hover:text-destructive"
+                          className="cursor-pointer text-muted-foreground opacity-100 transition-all duration-150 hover:bg-destructive/10 hover:text-destructive sm:opacity-0 sm:group-hover:opacity-100"
                         >
                           <Trash2 />
                         </Button>
