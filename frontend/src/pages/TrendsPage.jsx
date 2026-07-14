@@ -19,9 +19,11 @@ function TrendsPage() {
 
   return (
     <div className="flex-1 min-w-0">
-      <div className="mb-4">
-        <h1 className="text-xl font-bold text-primary">Trends</h1>
-        <p className="mt-1 text-sm text-gray-600">
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+          Trends
+        </h1>
+        <p className="text-sm text-muted-foreground mt-1">
           Visualize your symptom patterns over time
         </p>
       </div>
@@ -37,10 +39,10 @@ function TrendsPage() {
           <div className="bg-accent/25 p-4 rounded-full mb-4">
             <TrendingUpDown className="size-12 text-primary" />
           </div>
-          <h3 className="text-xl font-semibold mb-2">
+          <h3 className="text-sm text-foreground mb-2">
             Welcome to your Trends Page
           </h3>
-          <p className="text-base-content/60 text-center">
+          <p className="text-xs text-muted-foreground text-center">
             We'll visualize your symptom patterns here once you've logged some{' '}
             <Link to="/entries" className="link link-primary">
               entries
@@ -63,16 +65,16 @@ function TrendsPage() {
           </div>
 
           <div className="mb-4">
-            <h1 className="text-l font-bold text-secondary">
+            <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
               Symptom Timeline
-            </h1>
-            <p className="mt-1 text-sm text-gray-600">
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
               Each chart displays how many times you logged this symptom per day
             </p>
           </div>
           <div>
             <DailySymptomEntriesScatterPlot data={data} entries={entries} />
-            <p className="text-xs text-gray-500 text-center mt-6">
+            <p className="text-xs text-muted-foreground text-center mt-6">
               Visual representation of symptom frequency and patterns.
             </p>
           </div>

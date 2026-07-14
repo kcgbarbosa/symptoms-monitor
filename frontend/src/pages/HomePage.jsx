@@ -21,13 +21,13 @@ function HomePage() {
   return (
     <div className="flex-1 min-w-0">
       <div className="bg-base-200 rounded-3xl sm:p-8 mb-6">
-        <div className="flex justify-between items-center mb-4">
-          <div>
-            <h1 className="text-xl font-bold text-primary">Dashboard Page</h1>
-            <p className="mt-1 text-sm text-gray-600">
-              Overview of your symptom tracking
-            </p>
-          </div>
+        <div className="mb-8">
+          <h1 className="text-2xl font-semibold tracking-tight text-foreground">
+            Dashboard Page
+          </h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Overview of your symptom tracking
+          </p>
         </div>
 
         {error && <div className="alert alert-error mb-8">{error}</div>}
@@ -41,10 +41,10 @@ function HomePage() {
             <div className="bg-accent/25 p-4 rounded-full mb-4">
               <HouseHeart className="size-12 text-primary" />
             </div>
-            <h3 className="text-xl font-semibold mb-2">
+            <h3 className="text-sm text-foreground mb-2">
               Welcome to your Dashboard
             </h3>
-            <p className="text-base-content/60">
+            <p className="text-xs text-muted-foreground">
               Here you can view your recent entries. <br /> Get started by
               logging your first entry.
             </p>
@@ -69,10 +69,10 @@ function HomePage() {
             </div>
 
             <div className="bg-base-300 rounded-3xl p-4 sm:p-6">
-              <h2 className="text-xl font-semibold text-secondary">
+              <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
                 Recent Entries
               </h2>
-              <p className="mt-1 mb-4 text-sm text-gray-600">
+              <p className="mt-1 mb-4 text-sm text-foreground">
                 Showing your 6 most recent entries.{' '}
                 <Link to="/entries" className="link link-primary">
                   View all entries
