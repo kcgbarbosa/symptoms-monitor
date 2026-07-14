@@ -1,6 +1,6 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@import 'shadcn/tailwind.css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -40,7 +40,7 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
-  --font-sans: "Inter", sans-serif;
+  --font-sans: 'Inter', sans-serif;
 }
 
 :root {
@@ -124,8 +124,7 @@
   }
 }
 
-@layer components {
-  .page-container {
-    @apply flex max-w-7xl mx-auto gap-2 sm:gap-8 sm:px-2 lg:px-8;
-  }
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 150ms;
 }
