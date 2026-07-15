@@ -14,6 +14,7 @@ import {
 } from '../utils/dataProcessing';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 
 function HomePage() {
   const { entries, loading, error, fetchEntries, resetForm, openModal } =
@@ -101,7 +102,11 @@ function HomePage() {
               </Link>
             </div>
 
-            <EntryTimeline entries={recentEntries} />
+            <Card>
+              <CardContent>
+                <EntryTimeline entries={recentEntries} />
+              </CardContent>
+            </Card>
           </div>
 
           <aside className="shrink-0 space-y-4 lg:w-90">

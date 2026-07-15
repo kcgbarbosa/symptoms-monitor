@@ -28,13 +28,13 @@ import {
 export const ICON_OPTIONS = {
   DefaultIcon: {
     icon: AlertCircle,
-    tailwind: "text-red-500",
-    hex: "#ef4444",
+    tailwind: "text-rose-500",
+    hex: "#f43f5e",
   },
   Activity: {
     icon: Activity,
-    tailwind: "text-green-500",
-    hex: "#22c55e",
+    tailwind: "text-emerald-500",
+    hex: "#10b981",
   },
   Flame: {
     icon: Flame,
@@ -43,28 +43,28 @@ export const ICON_OPTIONS = {
   },
   Zap: {
     icon: Zap,
-    tailwind: "text-yellow-500",
-    hex: "#eab308",
+    tailwind: "text-amber-500",
+    hex: "#f59e0b",
   },
   Waves: {
     icon: Waves,
-    tailwind: "text-blue-500",
-    hex: "#3b82f6",
+    tailwind: "text-sky-500",
+    hex: "#0ea5e9",
   },
   Focus: {
     icon: Focus,
-    tailwind: "text-indigo-500",
-    hex: "#6366f1",
+    tailwind: "text-violet-500",
+    hex: "#8b5cf6",
   },
   Heart: {
     icon: Heart,
-    tailwind: "text-red-500",
-    hex: "#ef4444",
+    tailwind: "text-rose-500",
+    hex: "#f43f5e",
   },
   SmilePlus: {
     icon: SmilePlus,
-    tailwind: "text-yellow-400",
-    hex: "#facc15",
+    tailwind: "text-amber-400",
+    hex: "#fbbf24",
   },
   Moon: {
     icon: Moon,
@@ -83,8 +83,8 @@ export const ICON_OPTIONS = {
   },
   Droplet: {
     icon: Droplet,
-    tailwind: "text-blue-500",
-    hex: "#3b82f6",
+    tailwind: "text-sky-500",
+    hex: "#0ea5e9",
   },
   Utensils: {
     icon: Utensils,
@@ -98,33 +98,33 @@ export const ICON_OPTIONS = {
   },
   Cloud: {
     icon: Cloud,
-    tailwind: "text-gray-400",
-    hex: "#9ca3af",
+    tailwind: "text-stone-400",
+    hex: "#a8a29e",
   },
   Sparkles: {
     icon: Sparkles,
-    tailwind: "text-green-400",
-    hex: "#4ade80",
+    tailwind: "text-emerald-400",
+    hex: "#34d399",
   },
   PersonStanding: {
     icon: PersonStanding,
-    tailwind: "text-yellow-600",
-    hex: "#ca8a04",
+    tailwind: "text-teal-500",
+    hex: "#14b8a6",
   },
   Bone: {
     icon: Bone,
-    tailwind: "text-yellow-600",
-    hex: "#ca8a04",
+    tailwind: "text-stone-400",
+    hex: "#a8a29e",
   },
   Eye: {
     icon: Eye,
-    tailwind: "text-blue-400",
-    hex: "#60a5fa",
+    tailwind: "text-sky-400",
+    hex: "#38bdf8",
   },
   Frown: {
     icon: Frown,
-    tailwind: "text-gray-500",
-    hex: "#6b7280",
+    tailwind: "text-stone-500",
+    hex: "#78716c",
   },
   RotateCcw: {
     icon: RotateCcw,
@@ -138,8 +138,8 @@ export const ICON_OPTIONS = {
   },
   Ear: {
     icon: Ear,
-    tailwind: "text-amber-500",
-    hex: "#f59e0b",
+    tailwind: "text-teal-400",
+    hex: "#2dd4bf",
   },
   Brain: {
     icon: Brain,

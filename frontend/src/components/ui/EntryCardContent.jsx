@@ -1,35 +1,38 @@
 import { formatDateForDisplay } from '../../utils/dataProcessing';
-import IconComponent from './IconComponent';
-import SeverityBadge from './SeverityBadge';
+import {
+  getSeverityLevel,
+  SEVERITY_COLORS,
+} from '../../utils/severityConstants';
+import { cn } from '@/lib/utils';
 
 function EntryCardContent({ entry }) {
   const displayDate = formatDateForDisplay(entry);
+  const hasSeverity = Boolean(entry?.severity);
+  const colors = SEVERITY_COLORS[getSeverityLevel(entry?.severity)];
 
   return (
-    <div className="flex items-center gap-4">
-      <div className="flex size-11 shrink-0 items-center justify-center rounded-full bg-muted">
-        <IconComponent entry={entry} size={26} strokeWidth={2.5} />
-      </div>
-
-      <div className="min-w-0 flex-1">
-        <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5">
-          <h3 className="truncate text-sm font-medium text-foreground">
-            {entry?.symptom_name}
-          </h3>
-          {displayDate && (
-            <span className="whitespace-nowrap text-xs text-muted-foreground">
-              {displayDate}
-            </span>
+    <div>
+      <div className="flex flex-wrap items-baseline gap-x-2 gap-y-0.5">
+        <h3 className="text-sm font-medium text-foreground">
+          {entry?.symptom_name}
+        </h3>
+        <span className="text-xs text-muted-foreground">
+          {displayDate}
+          {hasSeverity && (
+            <>
+              {' · '}
+              <span className={cn('font-medium', colors.text)}>
+                Severity {entry.severity}
+              </span>
+            </>
           )}
-        </div>
-        {entry?.notes && (
-          <p className="mt-0.5 truncate text-xs text-muted-foreground">
-            {entry.notes}
-          </p>
-        )}
+        </span>
       </div>
-
-      <SeverityBadge severity={entry?.severity} />
+      {entry?.notes && (
+        <p className="mt-0.5 truncate text-xs text-muted-foreground">
+          {entry.notes}
+        </p>
+      )}
     </div>
   );
 }

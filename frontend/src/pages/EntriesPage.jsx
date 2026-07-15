@@ -5,18 +5,15 @@ import EmptyState from '../components/ui/EmptyState.jsx';
 import { useEffect, useState } from 'react';
 import { HeartOff, Pencil, Plus, Trash2 } from 'lucide-react';
 import {
-  calcEntriesPerSymptomAllTime,
-  symptomCountToArr,
   formatDateForDisplay,
   formatDateForInput,
 } from '../utils/dataProcessing.js';
-import EntriesPerSymptomAllTimeChart from '../components/charts/TotalEntriesPerSymptomBarChart.jsx';
-import IconComponent from '../components/ui/IconComponent.jsx';
+import IconBadge from '../components/ui/IconBadge.jsx';
 import SeverityBadge from '../components/ui/SeverityBadge.jsx';
 import PaginationControls from '../components/ui/PaginationControls.jsx';
 import { usePagination } from '../hooks/usePagination.js';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -77,11 +74,6 @@ function EntriesPage() {
     setPendingDeleteId(null);
   };
 
-  const entriesPerSymptomArr = symptomCountToArr(
-    calcEntriesPerSymptomAllTime(entries),
-    entries
-  );
-
   return (
     <div>
       <div className="mb-8 flex flex-wrap items-start justify-between gap-4">
@@ -130,9 +122,9 @@ function EntriesPage() {
           }
         />
       ) : (
-        <div className="flex flex-col gap-6 xl:flex-row">
-          <div className="min-w-0 flex-1">
-            <div className="overflow-x-auto rounded-xl border border-border bg-card">
+        <div>
+          <Card className="p-0 gap-0">
+            <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead className="text-xs text-muted-foreground">
                   <tr className="border-b border-border">
@@ -148,28 +140,23 @@ function EntriesPage() {
                     <th className="hidden min-w-50 max-w-xs px-4 py-3 text-left font-medium uppercase tracking-wide md:table-cell">
                       Notes
                     </th>
-                    <th className="w-16 px-4 py-3" />
+                    <th className="w-28 px-4 py-3 text-right font-medium uppercase tracking-wide">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {pageItems.map((entry) => (
                     <tr
                       key={entry.id}
-                      className="group border-b border-border transition-colors last:border-0 hover:bg-muted/40"
+                      className="border-b border-border transition-colors last:border-0 hover:bg-muted/40"
                     >
                       <td className="px-4 py-3 align-middle">
                         <div className="flex items-center gap-3">
-                          <IconComponent entry={entry} size={20} />
-                          <button
-                            type="button"
-                            onClick={() => handleEdit(entry)}
-                            className="flex items-center gap-1.5 truncate text-left font-medium text-foreground transition-colors hover:text-primary"
-                          >
-                            <span className="max-w-27.5 truncate sm:max-w-37.5">
-                              {entry.symptom_name}
-                            </span>
-                            <Pencil className="size-3 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-                          </button>
+                          <IconBadge entry={entry} />
+                          <span className="max-w-27.5 truncate font-medium text-foreground sm:max-w-37.5">
+                            {entry.symptom_name}
+                          </span>
                         </div>
                       </td>
 
@@ -185,45 +172,44 @@ function EntriesPage() {
                         {entry.notes}
                       </td>
 
-                      <td className="px-4 py-3 text-right align-middle">
-                        <Button
-                          type="button"
-                          variant="ghost"
-                          size="icon-sm"
-                          aria-label="Delete entry"
-                          onClick={() => setPendingDeleteId(entry.id)}
-                          className="cursor-pointer text-muted-foreground opacity-100 transition-all duration-150 hover:bg-destructive/10 hover:text-destructive sm:opacity-0 sm:group-hover:opacity-100"
-                        >
-                          <Trash2 />
-                        </Button>
+                      <td className="px-4 py-3 align-middle">
+                        <div className="flex items-center justify-end gap-1">
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon-sm"
+                            aria-label="Edit entry"
+                            onClick={() => handleEdit(entry)}
+                            className="cursor-pointer text-muted-foreground hover:bg-muted hover:text-foreground"
+                          >
+                            <Pencil />
+                          </Button>
+                          <Button
+                            type="button"
+                            variant="ghost"
+                            size="icon-sm"
+                            aria-label="Delete entry"
+                            onClick={() => setPendingDeleteId(entry.id)}
+                            className="cursor-pointer text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
+                          >
+                            <Trash2 />
+                          </Button>
+                        </div>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <PaginationControls
-              currentPage={currentPage}
-              totalPages={totalPages}
-              canGoPrevious={canGoPrevious}
-              canGoNext={canGoNext}
-              onPrevious={goToPrevious}
-              onNext={goToNext}
-            />
-          </div>
-
-          <div className="xl:w-1/3">
-            <Card className="gap-4">
-              <CardHeader>
-                <CardTitle className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-                  Entries Per Symptom
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <EntriesPerSymptomAllTimeChart data={entriesPerSymptomArr} />
-              </CardContent>
-            </Card>
-          </div>
+          </Card>
+          <PaginationControls
+            currentPage={currentPage}
+            totalPages={totalPages}
+            canGoPrevious={canGoPrevious}
+            canGoNext={canGoNext}
+            onPrevious={goToPrevious}
+            onNext={goToNext}
+          />
         </div>
       )}
 

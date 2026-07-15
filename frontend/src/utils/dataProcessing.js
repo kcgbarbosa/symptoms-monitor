@@ -312,14 +312,3 @@ export function getCorrelationInsight(entries) {
 }
 
 // #endregion
-
-export function symptomCountToArr(symptomCount, entries = []) {
-  return Object.entries(symptomCount).map(([symptom_name, count]) => {
-    const entry = entries.find((e) => e.symptom_name === symptom_name);
-    return {
-      symptom_name,
-      count,
-      icon_name: entry?.icon_name || "DefaultIcon",
-    };
-  });
-}

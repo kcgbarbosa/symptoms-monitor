@@ -66,7 +66,7 @@ const AppSidebar = () => {
           to="/"
           onClick={(e) => handleNavClick(e, '/')}
           viewTransition
-          className="flex items-center gap-2.5 px-1 py-2"
+          className="flex items-center gap-2.5 px-1 py-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
         >
           <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
             <Activity className="size-4" />
