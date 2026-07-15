@@ -8,7 +8,7 @@ import {
   formatDateForDisplay,
   formatDateForInput,
 } from '../utils/dataProcessing.js';
-import IconChip from '../components/ui/IconChip.jsx';
+import IconBadge from '../components/ui/IconBadge.jsx';
 import SeverityBadge from '../components/ui/SeverityBadge.jsx';
 import PaginationControls from '../components/ui/PaginationControls.jsx';
 import { usePagination } from '../hooks/usePagination.js';
@@ -153,7 +153,7 @@ function EntriesPage() {
                     >
                       <td className="px-4 py-3 align-middle">
                         <div className="flex items-center gap-3">
-                          <IconChip entry={entry} />
+                          <IconBadge entry={entry} />
                           <span className="max-w-27.5 truncate font-medium text-foreground sm:max-w-37.5">
                             {entry.symptom_name}
                           </span>
