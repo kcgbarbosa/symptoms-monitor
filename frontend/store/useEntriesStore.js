@@ -1,7 +1,10 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import { demoSeedData } from "../src/demo-seed-data/demoSeedData.js";
-import { applyRollingDates } from "../src/utils/dataProcessing.js";
+import {
+  applyRollingDates,
+  sortEntriesByDate,
+} from "../src/utils/dataProcessing.js";
 import { supabase } from "../src/config/supabase.js";
 import { useAuthStore } from "./useAuthStore.js";
 
@@ -16,7 +19,6 @@ export const useEntriesStore = create((set, get) => ({
   entries: [],
   loading: false,
   error: null,
-  currentEntry: null,
   isModalOpen: false,
 
   formData: {
@@ -50,14 +52,7 @@ export const useEntriesStore = create((set, get) => ({
       },
     }),
 
-  sortEntriesByDate: (entries) => {
-    return [...entries].sort(
-      (a, b) => new Date(b.date_of_symptom) - new Date(a.date_of_symptom),
-    );
-  },
-
-  addEntry: async (e) => {
-    e.preventDefault();
+  addEntry: async () => {
     set({ loading: true });
     const isDemoMode = useAuthStore.getState().isDemoMode;
 
@@ -71,12 +66,9 @@ export const useEntriesStore = create((set, get) => ({
         created_at: new Date().toISOString(),
       };
 
-      const currentEntries = get().entries;
-      const updatedEntries = [newEntry, ...currentEntries];
-      const sortedEntries = get().sortEntriesByDate(updatedEntries);
+      const sortedEntries = sortEntriesByDate([newEntry, ...get().entries]);
 
       set({ entries: sortedEntries, loading: false });
-      get().resetForm();
       toast.success("Entry added successfully");
 
       return;
@@ -86,12 +78,11 @@ export const useEntriesStore = create((set, get) => ({
       const { formData } = get();
       const { session } = useAuthStore.getState();
       if (!session) throw new Error("Not authenticated");
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('entries')
         .insert({ ...formData, user_id: session.user.id });
       if (error) throw error;
       await get().fetchEntries();
-      get().resetForm();
       toast.success("Entry added successfully");
     } catch (err) {
       console.log("Error in addEntry function", err);
@@ -118,7 +109,7 @@ export const useEntriesStore = create((set, get) => ({
           }),
         );
 
-        const sortedEntries = get().sortEntriesByDate(entriesWithIds);
+        const sortedEntries = sortEntriesByDate(entriesWithIds);
         set({ entries: sortedEntries, loading: false, error: null });
       } else {
         set({ loading: false, error: null });
@@ -132,8 +123,7 @@ export const useEntriesStore = create((set, get) => ({
         .from('entries')
         .select('*');
       if (error) throw error;
-      const sortedEntries = get().sortEntriesByDate(data);
-      set({ entries: sortedEntries, error: null });
+      set({ entries: sortEntriesByDate(data), error: null });
     } catch (err) {
       set({ error: "Something went wrong", entries: [] });
     } finally {
@@ -153,28 +143,19 @@ export const useEntriesStore = create((set, get) => ({
           ? { ...entry, ...formData, severity: Number(formData.severity) }
           : entry,
       );
-      const sortedEntries = get().sortEntriesByDate(updatedEntries);
-      const updatedEntry = updatedEntries.find(
-        (entry) => Number(entry.id) === targetId,
-      );
-      set({
-        entries: sortedEntries,
-        currentEntry: updatedEntry,
-        loading: false,
-      });
-      get().resetForm();
+      set({ entries: sortEntriesByDate(updatedEntries), loading: false });
       toast.success("Entry updated successfully!");
       return;
     }
 
     try {
       const { formData } = get();
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('entries')
         .update(formData)
         .eq('id', id);
       if (error) throw error;
-      set({ currentEntry: data });
+      await get().fetchEntries();
       toast.success("Entry updated successfully!");
     } catch (err) {
       toast.error("Something went wrong");
@@ -199,52 +180,16 @@ export const useEntriesStore = create((set, get) => ({
     }
 
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('entries')
         .delete()
         .eq('id', id);
       if (error) throw error;
-      set((prev) => ({
-        entries: prev.entries.filter(
-          (entry) => Number(entry.id) !== Number(id),
-        ),
-      }));
+      await get().fetchEntries();
       toast.success("Entry deleted successfully!");
     } catch (err) {
       console.log("Error in deleteEntry function", err);
       toast.error("Something went wrong");
-    } finally {
-      set({ loading: false });
-    }
-  },
-
-  fetchEntry: async (id) => {
-    set({ loading: true });
-    const isDemoMode = useAuthStore.getState().isDemoMode;
-
-    if (isDemoMode) {
-      const targetId = Number(id);
-      const entry = get().entries.find(
-        (entry) => Number(entry.id) === targetId,
-      );
-      if (entry) {
-        set({ currentEntry: entry, error: null, loading: false });
-      } else {
-        set({ error: "Entry not found", currentEntry: null, loading: false });
-      }
-      return;
-    }
-
-    try {
-      const { data, error } = await supabase.from('entries').select('*').eq('id', id);
-      if (error) throw error;
-      set({
-        currentEntry: data[0],
-        error: null,
-      });
-    } catch (err) {
-      console.log("Error in fetchEntry function", err);
-      set({ error: "Something went wrong", currentEntry: null });
     } finally {
       set({ loading: false });
     }

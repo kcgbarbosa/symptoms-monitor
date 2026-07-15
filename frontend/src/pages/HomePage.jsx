@@ -10,6 +10,7 @@ import {
   calcWeeklyEntries,
   getMostLoggedSymptomThisWeek,
   getUniqueSymptomNames,
+  sortEntriesByDate,
 } from '../utils/dataProcessing';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -22,9 +23,7 @@ function HomePage() {
     fetchEntries();
   }, []);
 
-  const recentEntries = [...entries]
-    .sort((a, b) => new Date(b.date_of_symptom) - new Date(a.date_of_symptom))
-    .slice(0, 6);
+  const recentEntries = sortEntriesByDate(entries).slice(0, 6);
 
   const weeklyEntries = calcWeeklyEntries(entries);
   const peakSymptom = getMostLoggedSymptomThisWeek(entries);

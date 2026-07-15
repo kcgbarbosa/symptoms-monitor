@@ -72,6 +72,12 @@ export function dateFromDaysAgo(daysAgo) {
   return today.toISOString().split("T")[0];
 }
 
+export function sortEntriesByDate(entries) {
+  return [...entries].sort(
+    (a, b) => new Date(b.date_of_symptom) - new Date(a.date_of_symptom),
+  );
+}
+
 export function applyRollingDates(entries) {
   return entries.map((entry) => {
     const dateOfSymptom =

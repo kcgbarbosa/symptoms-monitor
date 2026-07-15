@@ -29,7 +29,6 @@ function AddEntryModal() {
   const {
     addEntry,
     updateEntry,
-    fetchEntries,
     formData,
     setFormData,
     loading,
@@ -99,9 +98,8 @@ function AddEntryModal() {
     e.preventDefault();
     if (formData?.id) {
       await updateEntry(formData.id);
-      await fetchEntries();
     } else {
-      await addEntry(e);
+      await addEntry();
     }
     setFilteredSuggestions([]);
     closeModal();
@@ -148,7 +146,7 @@ function AddEntryModal() {
             />
 
             {filteredSuggestions.length > 0 && (
-              <ul className="absolute top-full left-0 z-[100] mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-border bg-popover p-1 shadow-md">
+              <ul className="absolute top-full left-0 z-100 mt-1 max-h-48 w-full overflow-y-auto rounded-md border border-border bg-popover p-1 shadow-md">
                 {filteredSuggestions.map((suggestion) => (
                   <li key={suggestion}>
                     <button
@@ -198,7 +196,7 @@ function AddEntryModal() {
               }
               className={cn(
                 severityColors.text,
-                '[&_[data-slot=slider-range]]:bg-current [&_[data-slot=slider-thumb]]:border-current'
+                '**:data-[slot=slider-range]:bg-current **:data-[slot=slider-thumb]:border-current'
               )}
             />
             <div className="flex justify-between text-xs font-medium text-muted-foreground">
