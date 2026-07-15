@@ -1,6 +1,8 @@
-import { Bar } from "react-chartjs-2";
-import { getIconColor } from "../IconPicker/IconOptions";
-import { getChartTheme } from "../../utils/chartTheme";
+import { useMemo } from 'react';
+import { Bar } from 'react-chartjs-2';
+import { getIconColor } from '../IconPicker/IconOptions';
+import { getChartTheme } from '../../utils/chartTheme';
+import { useThemeStore } from '../../../store/useThemeStore';
 
 import {
   Chart as ChartJS,
@@ -10,7 +12,7 @@ import {
   Title,
   Tooltip,
   Legend,
-} from "chart.js";
+} from 'chart.js';
 
 ChartJS.register(
   CategoryScale,
@@ -18,33 +20,33 @@ ChartJS.register(
   BarElement,
   Title,
   Tooltip,
-  Legend,
+  Legend
 );
 
 const TotalEntriesPerSymptomBarChart = ({ data }) => {
   const MAX_LABEL_LENGTH = 15;
 
   // Truncate symptom names to prevent labels going outside of chart boundaries
-  const fullLabels = data.map((item) => item.symptom_name || "");
+  const fullLabels = data.map((item) => item.symptom_name || '');
   const labels = fullLabels.map((name) =>
     name.length > MAX_LABEL_LENGTH
       ? `${name.slice(0, MAX_LABEL_LENGTH)}…`
-      : name,
+      : name
   );
 
   const counts = data.map((item) => item.count);
 
   // Map custom icon colors to the bars for visual consistency with the icons
   const colors = data.map((item) => {
-    const name = item.icon_name || "DefaultIcon";
-    return getIconColor(name, "hex");
+    const name = item.icon_name || 'DefaultIcon';
+    return getIconColor(name, 'hex');
   });
 
   const chartData = {
     labels,
     datasets: [
       {
-        label: "Entries",
+        label: 'Entries',
         data: counts,
         backgroundColor: colors,
         borderWidth: 0,
@@ -53,10 +55,11 @@ const TotalEntriesPerSymptomBarChart = ({ data }) => {
     ],
   };
 
-  const theme = getChartTheme();
+  const themeMode = useThemeStore((state) => state.theme);
+  const theme = useMemo(() => getChartTheme(), [themeMode]);
 
   const options = {
-    indexAxis: "y",
+    indexAxis: 'y',
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
@@ -70,7 +73,7 @@ const TotalEntriesPerSymptomBarChart = ({ data }) => {
         ...theme.tooltip,
         callbacks: {
           label: function (context) {
-            return `${context.parsed.x} ${context.parsed.x === 1 ? "entry" : "entries"}`;
+            return `${context.parsed.x} ${context.parsed.x === 1 ? 'entry' : 'entries'}`;
           },
         },
       },
@@ -94,7 +97,7 @@ const TotalEntriesPerSymptomBarChart = ({ data }) => {
         ticks: {
           font: {
             size: 13,
-            weight: "500",
+            weight: '500',
           },
           color: theme.tick,
         },
@@ -106,7 +109,7 @@ const TotalEntriesPerSymptomBarChart = ({ data }) => {
   };
 
   return (
-    <div className="h-[420px] w-full">
+    <div className="h-105 w-full">
       <Bar data={chartData} options={options} />
     </div>
   );
