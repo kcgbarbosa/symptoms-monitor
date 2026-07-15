@@ -119,13 +119,13 @@ export function calcWeeklySeverityTrend(entries) {
   const currentAvg =
     currentWeekEntries.length > 0
       ? currentWeekEntries.reduce((sum, e) => sum + e.severity, 0) /
-        currentWeekEntries.length
+      currentWeekEntries.length
       : 0;
 
   const previousAvg =
     previousWeekEntries.length > 0
       ? previousWeekEntries.reduce((sum, e) => sum + e.severity, 0) /
-        previousWeekEntries.length
+      previousWeekEntries.length
       : 0;
 
   if (currentWeekEntries.length < 3 || previousWeekEntries.length < 3)
@@ -285,6 +285,8 @@ export function getCorrelationInsight(entries) {
     return {
       tier: 2,
       message: `Your most frequent symptoms are ${symptom1} and ${symptom2}.`,
+      symptom1,
+      symptom2,
     };
   }
 
@@ -299,6 +301,7 @@ export function getCorrelationInsight(entries) {
     message: `${symptom1} and ${symptom2} occur together ${rate}% of the time when either is present.`,
     symptom1,
     symptom2,
+    rate,
   };
 }
 
