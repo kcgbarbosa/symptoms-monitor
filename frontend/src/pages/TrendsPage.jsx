@@ -2,7 +2,8 @@ import { useEntriesStore } from '../../store/useEntriesStore';
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { groupEntriesByDate } from '../utils/dataProcessing';
-import DailySymptomEntriesScatterPlot from '../components/charts/DailySymptomEntriesScatterPlot';
+import SymptomTimelineLineChart from '../components/charts/SymptomTimelineLineChart';
+import { Card, CardContent } from '@/components/ui/card';
 import StatKPICard from '../components/kpicards/StatKPICard';
 import TotalAverageSeverityKPICard from '../components/kpicards/TotalAverageSeverityKPICard';
 import CorrelationInsightKPICard from '../components/kpicards/CorrelationInsightKPICard';
@@ -59,6 +60,10 @@ function TrendsPage() {
         />
       ) : (
         <>
+          <div className="mb-6">
+            <CorrelationInsightKPICard />
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
             <div className="md:col-span-2">
               <StatKPICard
@@ -73,24 +78,20 @@ function TrendsPage() {
             </div>
           </div>
 
-          <div className="my-6">
-            <CorrelationInsightKPICard />
-          </div>
-
-          <div className="mb-4">
+          <div className="mt-6 mb-4">
             <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
               Symptom Timeline
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Each chart displays how many times you logged this symptom per day
+              Daily entry counts for your most logged symptoms. Toggle a symptom
+              to show or hide its line.
             </p>
           </div>
-          <div>
-            <DailySymptomEntriesScatterPlot data={data} entries={entries} />
-            <p className="text-xs text-muted-foreground text-center mt-6">
-              Visual representation of symptom frequency and patterns.
-            </p>
-          </div>
+          <Card>
+            <CardContent>
+              <SymptomTimelineLineChart data={data} entries={entries} />
+            </CardContent>
+          </Card>
         </>
       )}
     </div>
