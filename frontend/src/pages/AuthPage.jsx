@@ -33,7 +33,7 @@ function AuthPage() {
         <div className="space-y-5">
           <blockquote className="space-y-3">
             <p className="text-3xl font-semibold italic leading-tight">
-              “The greatest glory in living lies not in never falling, <br/> but in rising every time we fall.” 
+              “The greatest glory in living lies not in never falling, <br/> but in rising every time we fall.”
             </p>
             <cite className="block text-sm not-italic text-primary-foreground/70">
               – Nelson Mandela
@@ -49,7 +49,7 @@ function AuthPage() {
         </p>
       </div>
 
-      <div className="flex flex-col bg-background">
+      <div className="flex flex-col bg-card">
         <div className="bg-primary px-8 py-8 text-primary-foreground lg:hidden">
           <div className="mb-3 flex items-center gap-2">
             <Activity size={20} />
