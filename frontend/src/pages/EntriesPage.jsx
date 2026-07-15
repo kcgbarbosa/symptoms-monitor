@@ -13,6 +13,8 @@ import {
 import EntriesPerSymptomAllTimeChart from '../components/charts/TotalEntriesPerSymptomBarChart.jsx';
 import IconComponent from '../components/ui/IconComponent.jsx';
 import SeverityBadge from '../components/ui/SeverityBadge.jsx';
+import PaginationControls from '../components/ui/PaginationControls.jsx';
+import { usePagination } from '../hooks/usePagination.js';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -25,6 +27,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+
+const ENTRIES_PAGE_SIZE = 10;
 
 function EntriesPage() {
   const {
@@ -40,6 +44,16 @@ function EntriesPage() {
   const { isDemoMode } = useAuthStore();
 
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
+
+  const {
+    pageItems,
+    currentPage,
+    totalPages,
+    canGoPrevious,
+    canGoNext,
+    goToPrevious,
+    goToNext,
+  } = usePagination(entries, ENTRIES_PAGE_SIZE);
 
   useEffect(() => {
     fetchEntries();
@@ -122,7 +136,7 @@ function EntriesPage() {
               <table className="w-full text-sm">
                 <thead className="text-xs text-muted-foreground">
                   <tr className="border-b border-border">
-                    <th className="min-w-[140px] px-4 py-3 text-left font-medium uppercase tracking-wide">
+                    <th className="min-w-35 px-4 py-3 text-left font-medium uppercase tracking-wide">
                       Symptom
                     </th>
                     <th className="hidden w-24 px-4 py-3 text-center font-medium uppercase tracking-wide sm:table-cell">
@@ -131,14 +145,14 @@ function EntriesPage() {
                     <th className="w-28 px-4 py-3 text-left font-medium uppercase tracking-wide sm:w-32">
                       Date
                     </th>
-                    <th className="hidden min-w-[200px] max-w-xs px-4 py-3 text-left font-medium uppercase tracking-wide md:table-cell">
+                    <th className="hidden min-w-50 max-w-xs px-4 py-3 text-left font-medium uppercase tracking-wide md:table-cell">
                       Notes
                     </th>
                     <th className="w-16 px-4 py-3" />
                   </tr>
                 </thead>
                 <tbody>
-                  {entries.map((entry) => (
+                  {pageItems.map((entry) => (
                     <tr
                       key={entry.id}
                       className="group border-b border-border transition-colors last:border-0 hover:bg-muted/40"
@@ -151,7 +165,7 @@ function EntriesPage() {
                             onClick={() => handleEdit(entry)}
                             className="flex items-center gap-1.5 truncate text-left font-medium text-foreground transition-colors hover:text-primary"
                           >
-                            <span className="max-w-[110px] truncate sm:max-w-[150px]">
+                            <span className="max-w-27.5 truncate sm:max-w-37.5">
                               {entry.symptom_name}
                             </span>
                             <Pencil className="size-3 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
@@ -188,6 +202,14 @@ function EntriesPage() {
                 </tbody>
               </table>
             </div>
+            <PaginationControls
+              currentPage={currentPage}
+              totalPages={totalPages}
+              canGoPrevious={canGoPrevious}
+              canGoNext={canGoNext}
+              onPrevious={goToPrevious}
+              onNext={goToNext}
+            />
           </div>
 
           <div className="xl:w-1/3">
