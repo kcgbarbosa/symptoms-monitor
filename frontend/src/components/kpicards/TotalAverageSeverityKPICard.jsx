@@ -9,7 +9,7 @@ import {
 } from '../../utils/severityConstants';
 import RadialProgress from '../ui/RadialProgress';
 import { KPICard, KPICardHeader, KPICardMeta } from './shared';
-import { cn } from '@/lib/utils';
+import FilterPills from '../ui/FilterPills';
 import { useState } from 'react';
 
 function TotalAverageSeverityKPICard() {
@@ -24,13 +24,14 @@ function TotalAverageSeverityKPICard() {
   const level = getSeverityLevel(totalAverageSeverity);
   const colors = SEVERITY_COLORS[level];
 
-  const pillClass = (active) =>
-    cn(
-      'shrink-0 whitespace-nowrap rounded-full border px-3 py-1 text-xs font-medium transition-colors',
-      active
-        ? 'border-primary bg-primary text-primary-foreground'
-        : 'border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground'
-    );
+  const pills = [
+    { id: null, label: 'All', active: selectedSymptom === null },
+    ...symptoms.map((symptom) => ({
+      id: symptom,
+      label: symptom,
+      active: selectedSymptom === symptom,
+    })),
+  ];
 
   return (
     <KPICard className="sm:flex-row sm:items-stretch">
@@ -38,23 +39,7 @@ function TotalAverageSeverityKPICard() {
         <div className="space-y-3">
           <KPICardHeader label="Baseline Severity" />
 
-          <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            <button
-              onClick={() => setSelectedSymptom(null)}
-              className={pillClass(selectedSymptom === null)}
-            >
-              All
-            </button>
-            {symptoms.map((symptom) => (
-              <button
-                key={symptom}
-                onClick={() => setSelectedSymptom(symptom)}
-                className={pillClass(selectedSymptom === symptom)}
-              >
-                {symptom}
-              </button>
-            ))}
-          </div>
+          <FilterPills pills={pills} onSelect={setSelectedSymptom} />
         </div>
 
         <KPICardMeta>
