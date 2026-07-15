@@ -85,12 +85,11 @@ function TrendsPage() {
               Each chart displays how many times you logged this symptom per day
             </p>
           </div>
-          <div>
-            <DailySymptomEntriesScatterPlot data={data} entries={entries} />
-            <p className="text-xs text-muted-foreground text-center mt-6">
-              Visual representation of symptom frequency and patterns.
-            </p>
-          </div>
+          <Card>
+            <CardContent>
+              <SymptomTimelineLineChart data={data} entries={entries} />
+            </CardContent>
+          </Card>
         </>
       )}
     </div>
