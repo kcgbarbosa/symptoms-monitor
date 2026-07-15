@@ -3,6 +3,7 @@ import { Line } from 'react-chartjs-2';
 import { getIconColor } from '../IconPicker/IconOptions';
 import { formatDateForDisplay } from '../../utils/dataProcessing';
 import { getChartTheme } from '../../utils/chartTheme';
+import { useThemeStore } from '../../../store/useThemeStore';
 import FilterPills from '../ui/FilterPills';
 
 import 'chartjs-adapter-date-fns';
@@ -84,7 +85,8 @@ function SymptomTimelineLineChart({ data, entries }) {
     color: symptom.color,
   }));
 
-  const theme = getChartTheme();
+  const themeMode = useThemeStore((state) => state.theme);
+  const theme = useMemo(() => getChartTheme(), [themeMode]);
 
   const datasets = symptoms
     .filter((symptom) => visibleSymptoms.includes(symptom.name))
