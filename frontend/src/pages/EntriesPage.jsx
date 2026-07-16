@@ -12,7 +12,7 @@ import IconBadge from '../components/shared/IconBadge.jsx';
 import SeverityBadge from '../components/shared/SeverityBadge.jsx';
 import PaginationControls from '../components/shared/PaginationControls.jsx';
 import { usePagination } from '../hooks/usePagination.js';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import {
   AlertDialog,
@@ -226,7 +226,7 @@ function EntriesPage() {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmDelete}
-              className="bg-destructive/10 text-destructive hover:bg-destructive/20"
+              className={buttonVariants({ variant: 'destructive' })}
             >
               Delete
             </AlertDialogAction>

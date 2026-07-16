@@ -33,18 +33,19 @@ function AuthPage() {
         <div className="space-y-5">
           <blockquote className="space-y-3">
             <p className="text-3xl font-semibold italic leading-tight">
-              “The greatest glory in living lies not in never falling, <br/> but in rising every time we fall.”
+              “The greatest glory in living lies <br /> not in never falling,
+              but in rising every time we fall.”
             </p>
-            <cite className="block text-sm not-italic text-primary-foreground/70">
+            <cite className="block text-sm not-italic text-primary-foreground">
               – Nelson Mandela
             </cite>
           </blockquote>
-          <p className="text-lg leading-relaxed text-primary-foreground/80">
+          <p className="text-lg leading-relaxed text-primary-foreground">
             Your symptoms are real, and so is your capacity to heal.
           </p>
         </div>
 
-        <p className="text-sm text-primary-foreground/60">
+        <p className="text-sm text-primary-foreground">
           Creator: Kevin-Christian Giraldo-Barbosa
         </p>
       </div>
@@ -57,7 +58,7 @@ function AuthPage() {
               Symptoms Monitor
             </span>
           </div>
-          <p className="text-sm text-primary-foreground/80">
+          <p className="text-sm text-primary-foreground">
             Track, visualize, and reflect on your health trends
           </p>
         </div>
