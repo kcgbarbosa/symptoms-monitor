@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import Layout from './layouts/Layout.jsx';
 import HomePage from './pages/HomePage.jsx';
 import EntriesPage from './pages/EntriesPage.jsx';
@@ -36,6 +37,15 @@ function App() {
   }, []);
   return (
     <div className="min-h-screen bg-background">
+      <Toaster
+        toastOptions={{
+          style: {
+            background: 'var(--card)',
+            color: 'var(--card-foreground)',
+            border: '1px solid var(--border)',
+          },
+        }}
+      />
       <RouterProvider router={router} />
     </div>
   );
