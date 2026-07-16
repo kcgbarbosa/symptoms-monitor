@@ -165,7 +165,11 @@ function SymptomTimelineLineChart({ data, entries }) {
             Select a symptom above to plot its timeline
           </div>
         ) : (
-          <Line data={{ datasets }} options={options} />
+          <Line
+            data={{ datasets }}
+            options={options}
+            aria-label={`Line chart of daily entry counts over time`}
+          />
         )}
       </div>
     </div>

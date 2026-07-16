@@ -137,6 +137,8 @@ function Sidebar({
     return (
       <div
         data-slot="sidebar"
+        role="navigation"
+        aria-label="Main"
         className={cn(
           'flex h-full w-(--sidebar-width) flex-col bg-sidebar text-sidebar-foreground',
           className
@@ -156,6 +158,8 @@ function Sidebar({
           data-sidebar="sidebar"
           data-slot="sidebar"
           data-mobile="true"
+          role="navigation"
+          aria-label="Main"
           className="w-(--sidebar-width) bg-sidebar p-0 text-sidebar-foreground [&>button]:hidden"
           style={{
             '--sidebar-width': SIDEBAR_WIDTH_MOBILE,
@@ -180,6 +184,8 @@ function Sidebar({
       data-variant={variant}
       data-side={side}
       data-slot="sidebar"
+      role="navigation"
+      aria-label="Main"
     >
       {/* This is what handles the sidebar gap on desktop */}
       <div

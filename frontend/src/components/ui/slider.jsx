@@ -1,7 +1,7 @@
-import * as React from "react"
-import { Slider as SliderPrimitive } from "radix-ui"
+import * as React from 'react';
+import { Slider as SliderPrimitive } from 'radix-ui';
 
-import { cn } from "@/lib/utils"
+import { cn } from '@/lib/utils';
 
 function Slider({
   className,
@@ -9,6 +9,7 @@ function Slider({
   value,
   min = 0,
   max = 100,
+  'aria-label': ariaLabel,
   ...props
 }) {
   const _values = React.useMemo(
@@ -19,7 +20,7 @@ function Slider({
           ? defaultValue
           : [min, max],
     [value, defaultValue, min, max]
-  )
+  );
 
   return (
     <SliderPrimitive.Root
@@ -29,27 +30,32 @@ function Slider({
       min={min}
       max={max}
       className={cn(
-        "relative flex w-full touch-none items-center select-none data-[disabled]:opacity-50",
+        'relative flex w-full touch-none items-center select-none data-disabled:opacity-50',
         className
       )}
-      {...props}>
+      {...props}
+    >
       <SliderPrimitive.Track
         data-slot="slider-track"
         className={cn(
-          "relative h-1.5 w-full grow overflow-hidden rounded-full bg-muted"
-        )}>
+          'relative h-1.5 w-full grow overflow-hidden rounded-full bg-muted'
+        )}
+      >
         <SliderPrimitive.Range
           data-slot="slider-range"
-          className={cn("absolute h-full bg-primary")} />
+          className={cn('absolute h-full bg-primary')}
+        />
       </SliderPrimitive.Track>
       {Array.from({ length: _values.length }, (_, index) => (
         <SliderPrimitive.Thumb
           data-slot="slider-thumb"
           key={index}
-          className="block size-4 shrink-0 rounded-full border-2 border-primary bg-background shadow-sm ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50" />
+          aria-label={ariaLabel}
+          className="block size-4 shrink-0 rounded-full border-2 border-primary bg-background shadow-sm ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:ring-4 focus-visible:outline-hidden disabled:pointer-events-none disabled:opacity-50"
+        />
       ))}
     </SliderPrimitive.Root>
   );
 }
 
-export { Slider }
+export { Slider };
