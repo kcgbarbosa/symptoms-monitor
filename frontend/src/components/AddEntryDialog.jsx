@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { useEntriesStore } from '../../store/useEntriesStore';
-import {
-  getSeverityLevel,
-  SEVERITY_COLORS,
-} from '../utils/severityConstants';
+import { getSeverityLevel, SEVERITY_COLORS } from '../utils/severityConstants';
 import IconGrid from './IconPicker/IconGrid';
 import {
   Dialog,
@@ -191,6 +188,7 @@ function AddEntryDialog() {
               max={10}
               step={1}
               value={[severity]}
+              aria-label="Severity"
               onValueChange={([val]) =>
                 setFormData({ ...formData, severity: String(val) })
               }
@@ -248,7 +246,7 @@ function AddEntryDialog() {
             </Button>
             <Button
               type="submit"
-              className="min-w-[120px]"
+              className="min-w-30"
               disabled={
                 !formData.symptom_name ||
                 !formData.severity ||
