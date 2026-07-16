@@ -9,13 +9,14 @@ import TotalAverageSeverityKPICard from '../components/kpicards/TotalAverageSeve
 import CorrelationInsightKPICard from '../components/kpicards/CorrelationInsightKPICard';
 import EmptyState from '../components/ui/EmptyState';
 import { TrendingUpDown } from 'lucide-react';
+import LoadingState from '@/components/shared/LoadingState';
+import ErrorState from '@/components/shared/ErrorState';
+import { useFetchEntriesOnMount } from '@/hooks/useFetchEntriesOnMount';
 
 function TrendsPage() {
   const { entries, loading, error, fetchEntries } = useEntriesStore();
 
-  useEffect(() => {
-    fetchEntries();
-  }, []);
+  useFetchEntriesOnMount();
 
   const data = groupEntriesByDate(entries);
   const totalEntries = entries.length;
@@ -31,16 +32,10 @@ function TrendsPage() {
         </p>
       </div>
 
-      {error && (
-        <div className="mb-8 rounded-lg border border-destructive/25 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          {error}
-        </div>
-      )}
+      {error && <ErrorState error={error} />}
 
       {loading ? (
-        <div className="flex h-64 items-center justify-center">
-          <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
-        </div>
+        <LoadingState />
       ) : entries.length === 0 ? (
         <EmptyState
           icon={TrendingUpDown}

@@ -15,14 +15,15 @@ import {
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import ErrorState from '@/components/shared/ErrorState';
+import LoadingState from '@/components/shared/LoadingState';
+import { useFetchEntriesOnMount } from '@/hooks/useFetchEntriesOnMount';
 
 function HomePage() {
   const { entries, loading, error, fetchEntries, resetForm, openModal } =
     useEntriesStore();
 
-  useEffect(() => {
-    fetchEntries();
-  }, []);
+  useFetchEntriesOnMount();
 
   const recentEntries = sortEntriesByDate(entries).slice(0, 6);
 
@@ -65,16 +66,10 @@ function HomePage() {
         )}
       </div>
 
-      {error && (
-        <div className="mb-8 rounded-lg border border-destructive/25 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          {error}
-        </div>
-      )}
+      {error && <ErrorState error={error} />}
 
       {loading ? (
-        <div className="flex h-64 items-center justify-center">
-          <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
-        </div>
+        <LoadingState />
       ) : entries.length === 0 ? (
         <EmptyState
           icon={HouseHeart}
