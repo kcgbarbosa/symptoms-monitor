@@ -101,7 +101,7 @@ function SymptomTimelineLineChart({ data, entries }) {
       borderWidth: 2,
       pointRadius: 3,
       pointHoverRadius: 6,
-      tension: 0.3,
+      tension: 0.4,
     }));
 
   const options = {
