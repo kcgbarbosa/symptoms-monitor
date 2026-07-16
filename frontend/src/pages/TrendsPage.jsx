@@ -1,5 +1,4 @@
 import { useEntriesStore } from '../../store/useEntriesStore';
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { groupEntriesByDate } from '../utils/dataProcessing';
 import SymptomTimelineLineChart from '../components/charts/SymptomTimelineLineChart';
@@ -7,14 +6,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import StatKPICard from '../components/kpicards/StatKPICard';
 import TotalAverageSeverityKPICard from '../components/kpicards/TotalAverageSeverityKPICard';
 import CorrelationInsightKPICard from '../components/kpicards/CorrelationInsightKPICard';
-import EmptyState from '../components/ui/EmptyState';
+import EmptyState from '../components/shared/EmptyState';
 import { TrendingUpDown } from 'lucide-react';
 import LoadingState from '@/components/shared/LoadingState';
 import ErrorState from '@/components/shared/ErrorState';
 import { useFetchEntriesOnMount } from '@/hooks/useFetchEntriesOnMount';
 
 function TrendsPage() {
-  const { entries, loading, error, fetchEntries } = useEntriesStore();
+  const { entries, loading, error } = useEntriesStore();
 
   useFetchEntriesOnMount();
 

@@ -7,9 +7,9 @@ import {
   getSeverityLevel,
   SEVERITY_COLORS,
 } from '../../utils/severityConstants';
-import RadialProgress from '../ui/RadialProgress';
+import RadialProgress from '../shared/RadialProgress';
 import { KPICard, KPICardHeader, KPICardMeta } from './shared';
-import FilterPills from '../ui/FilterPills';
+import FilterPills from '../shared/FilterPills';
 import { useState } from 'react';
 
 function TotalAverageSeverityKPICard() {

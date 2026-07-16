@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Activity } from 'lucide-react';
-import AuthForm from '../components/ui/AuthForm';
+import AuthForm from '../components/auth/AuthForm';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore.js';
 import { Button } from '@/components/ui/button';

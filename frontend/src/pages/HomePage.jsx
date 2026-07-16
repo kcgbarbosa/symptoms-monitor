@@ -1,8 +1,7 @@
-import { useEffect } from 'react';
 import { useEntriesStore } from '../../store/useEntriesStore';
-import EntryTimeline from '../components/ui/EntryTimeline';
-import AddEntryModal from '../components/ui/AddEntryModal';
-import EmptyState from '../components/ui/EmptyState';
+import EntryTimeline from '../components/EntryTimeline';
+import AddEntryDialog from '../components/AddEntryDialog';
+import EmptyState from '../components/shared/EmptyState';
 import { HouseHeart, Plus } from 'lucide-react';
 import StatKPICard from '../components/kpicards/StatKPICard';
 import AverageSeverityKPICard from '../components/kpicards/WeeklyAverageSeverityKPICard';
@@ -20,8 +19,7 @@ import LoadingState from '@/components/shared/LoadingState';
 import { useFetchEntriesOnMount } from '@/hooks/useFetchEntriesOnMount';
 
 function HomePage() {
-  const { entries, loading, error, fetchEntries, resetForm, openModal } =
-    useEntriesStore();
+  const { entries, loading, error, resetForm, openDialog } = useEntriesStore();
 
   useFetchEntriesOnMount();
 
@@ -43,7 +41,7 @@ function HomePage() {
 
   const handleAddNew = () => {
     resetForm();
-    openModal();
+    openDialog();
   };
 
   return (
@@ -122,7 +120,7 @@ function HomePage() {
         </div>
       )}
 
-      <AddEntryModal />
+      <AddEntryDialog />
     </div>
   );
 }

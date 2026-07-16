@@ -3,7 +3,7 @@ import {
   calcWeeklySeverityTrend,
 } from '../../utils/dataProcessing';
 import { useEntriesStore } from '../../../store/useEntriesStore';
-import RadialProgress from '../ui/RadialProgress';
+import RadialProgress from '../shared/RadialProgress';
 import {
   getSeverityLevel,
   SEVERITY_COLORS,

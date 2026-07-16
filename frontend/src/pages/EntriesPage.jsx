@@ -1,16 +1,16 @@
 import { useEntriesStore } from '../../store/useEntriesStore.js';
 import { useAuthStore } from '../../store/useAuthStore.js';
-import AddEntryModal from '../components/ui/AddEntryModal.jsx';
-import EmptyState from '../components/ui/EmptyState.jsx';
-import { useEffect, useState } from 'react';
+import AddEntryDialog from '../components/AddEntryDialog.jsx';
+import EmptyState from '../components/shared/EmptyState.jsx';
+import { useState } from 'react';
 import { HeartOff, Pencil, Plus, Trash2 } from 'lucide-react';
 import {
   formatDateForDisplay,
   formatDateForInput,
 } from '../utils/dataProcessing.js';
-import IconBadge from '../components/ui/IconBadge.jsx';
-import SeverityBadge from '../components/ui/SeverityBadge.jsx';
-import PaginationControls from '../components/ui/PaginationControls.jsx';
+import IconBadge from '../components/shared/IconBadge.jsx';
+import SeverityBadge from '../components/shared/SeverityBadge.jsx';
+import PaginationControls from '../components/shared/PaginationControls.jsx';
 import { usePagination } from '../hooks/usePagination.js';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -31,13 +31,14 @@ import { useFetchEntriesOnMount } from '@/hooks/useFetchEntriesOnMount.js';
 const ENTRIES_PAGE_SIZE = 10;
 
 function EntriesPage() {
+  const { isDemoMode } = useAuthStore();
+
   const {
     entries,
-    fetchEntries,
     deleteEntry,
     setFormData,
     resetForm,
-    openModal,
+    openDialog,
     error,
     loading,
   } = useEntriesStore();
@@ -61,12 +62,12 @@ function EntriesPage() {
       ...entry,
       date_of_symptom: formatDateForInput(entry),
     });
-    openModal();
+    openDialog();
   };
 
   const handleAddNew = () => {
     resetForm();
-    openModal();
+    openDialog();
   };
 
   const confirmDelete = async () => {
@@ -207,7 +208,7 @@ function EntriesPage() {
         </div>
       )}
 
-      <AddEntryModal />
+      <AddEntryDialog />
 
       <AlertDialog
         open={pendingDeleteId !== null}
