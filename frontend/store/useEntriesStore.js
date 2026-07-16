@@ -19,7 +19,7 @@ export const useEntriesStore = create((set, get) => ({
   entries: [],
   loading: false,
   error: null,
-  isModalOpen: false,
+  isDialogOpen: false,
 
   formData: {
     // TODO: Add time 
@@ -32,11 +32,11 @@ export const useEntriesStore = create((set, get) => ({
 
   clearEntries: () => set({ entries: [] }),
 
-  openModal: () => set({ isModalOpen: true }),
+  openDialog: () => set({ isDialogOpen: true }),
 
-  closeModal: () => {
+  closeDialog: () => {
     get().resetForm();
-    set({ isModalOpen: false });
+    set({ isDialogOpen: false });
   },
 
   setFormData: (formData) => set({ formData }),
