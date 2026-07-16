@@ -1,5 +1,4 @@
 import { useEntriesStore } from '../../store/useEntriesStore';
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { groupEntriesByDate } from '../utils/dataProcessing';
 import SymptomTimelineLineChart from '../components/charts/SymptomTimelineLineChart';
@@ -7,15 +6,16 @@ import { Card, CardContent } from '@/components/ui/card';
 import StatKPICard from '../components/kpicards/StatKPICard';
 import TotalAverageSeverityKPICard from '../components/kpicards/TotalAverageSeverityKPICard';
 import CorrelationInsightKPICard from '../components/kpicards/CorrelationInsightKPICard';
-import EmptyState from '../components/ui/EmptyState';
+import EmptyState from '../components/shared/EmptyState';
 import { TrendingUpDown } from 'lucide-react';
+import LoadingState from '@/components/shared/LoadingState';
+import ErrorState from '@/components/shared/ErrorState';
+import { useFetchEntriesOnMount } from '@/hooks/useFetchEntriesOnMount';
 
 function TrendsPage() {
-  const { entries, loading, error, fetchEntries } = useEntriesStore();
+  const { entries, loading, error } = useEntriesStore();
 
-  useEffect(() => {
-    fetchEntries();
-  }, []);
+  useFetchEntriesOnMount();
 
   const data = groupEntriesByDate(entries);
   const totalEntries = entries.length;
@@ -31,16 +31,10 @@ function TrendsPage() {
         </p>
       </div>
 
-      {error && (
-        <div className="mb-8 rounded-lg border border-destructive/25 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          {error}
-        </div>
-      )}
+      {error && <ErrorState error={error} />}
 
       {loading ? (
-        <div className="flex h-64 items-center justify-center">
-          <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
-        </div>
+        <LoadingState />
       ) : entries.length === 0 ? (
         <EmptyState
           icon={TrendingUpDown}

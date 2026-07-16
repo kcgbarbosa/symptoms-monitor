@@ -4,7 +4,7 @@ import { getIconColor } from '../IconPicker/IconOptions';
 import { formatDateForDisplay } from '../../utils/dataProcessing';
 import { getChartTheme } from '../../utils/chartTheme';
 import { useThemeStore } from '../../../store/useThemeStore';
-import FilterPills from '../ui/FilterPills';
+import FilterPills from '../shared/FilterPills';
 
 import 'chartjs-adapter-date-fns';
 

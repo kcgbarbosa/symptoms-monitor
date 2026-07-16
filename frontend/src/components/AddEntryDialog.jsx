@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { useEntriesStore } from '../../../store/useEntriesStore';
+import { useEntriesStore } from '../../store/useEntriesStore';
 import {
   getSeverityLevel,
   SEVERITY_COLORS,
-} from '../../utils/severityConstants';
-import IconGrid from '../IconPicker/IconGrid';
+} from '../utils/severityConstants';
+import IconGrid from './IconPicker/IconGrid';
 import {
   Dialog,
   DialogContent,
@@ -25,7 +25,7 @@ const MAX_NAME_LENGTH = 40;
 
 const fieldLabel = 'text-sm font-medium text-foreground';
 
-function AddEntryModal() {
+function AddEntryDialog() {
   const {
     addEntry,
     updateEntry,
@@ -33,8 +33,8 @@ function AddEntryModal() {
     setFormData,
     loading,
     entries,
-    isModalOpen,
-    closeModal,
+    isDialogOpen,
+    closeDialog,
   } = useEntriesStore();
 
   const [filteredSuggestions, setFilteredSuggestions] = useState([]);
@@ -46,7 +46,7 @@ function AddEntryModal() {
   const handleOpenChange = (open) => {
     if (!open) {
       setFilteredSuggestions([]);
-      closeModal();
+      closeDialog();
     }
   };
 
@@ -102,11 +102,11 @@ function AddEntryModal() {
       await addEntry();
     }
     setFilteredSuggestions([]);
-    closeModal();
+    closeDialog();
   };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={handleOpenChange}>
+    <Dialog open={isDialogOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="max-h-[90vh] gap-0 overflow-y-auto sm:max-w-lg">
         <DialogHeader>
           <DialogTitle className="text-lg">
@@ -243,7 +243,7 @@ function AddEntryModal() {
           </div>
 
           <DialogFooter>
-            <Button type="button" variant="ghost" onClick={closeModal}>
+            <Button type="button" variant="ghost" onClick={closeDialog}>
               Cancel
             </Button>
             <Button
@@ -271,4 +271,4 @@ function AddEntryModal() {
   );
 }
 
-export default AddEntryModal;
+export default AddEntryDialog;

@@ -1,16 +1,16 @@
 import { useEntriesStore } from '../../store/useEntriesStore.js';
 import { useAuthStore } from '../../store/useAuthStore.js';
-import AddEntryModal from '../components/ui/AddEntryModal.jsx';
-import EmptyState from '../components/ui/EmptyState.jsx';
-import { useEffect, useState } from 'react';
+import AddEntryDialog from '../components/AddEntryDialog.jsx';
+import EmptyState from '../components/shared/EmptyState.jsx';
+import { useState } from 'react';
 import { HeartOff, Pencil, Plus, Trash2 } from 'lucide-react';
 import {
   formatDateForDisplay,
   formatDateForInput,
 } from '../utils/dataProcessing.js';
-import IconBadge from '../components/ui/IconBadge.jsx';
-import SeverityBadge from '../components/ui/SeverityBadge.jsx';
-import PaginationControls from '../components/ui/PaginationControls.jsx';
+import IconBadge from '../components/shared/IconBadge.jsx';
+import SeverityBadge from '../components/shared/SeverityBadge.jsx';
+import PaginationControls from '../components/shared/PaginationControls.jsx';
 import { usePagination } from '../hooks/usePagination.js';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -24,21 +24,26 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import LoadingState from '@/components/shared/LoadingState.jsx';
+import ErrorState from '@/components/shared/ErrorState.jsx';
+import { useFetchEntriesOnMount } from '@/hooks/useFetchEntriesOnMount.js';
 
 const ENTRIES_PAGE_SIZE = 10;
 
 function EntriesPage() {
+  const { isDemoMode } = useAuthStore();
+
   const {
     entries,
-    fetchEntries,
     deleteEntry,
     setFormData,
     resetForm,
-    openModal,
+    openDialog,
     error,
     loading,
   } = useEntriesStore();
-  const { isDemoMode } = useAuthStore();
+
+  useFetchEntriesOnMount();
 
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
@@ -52,21 +57,17 @@ function EntriesPage() {
     goToNext,
   } = usePagination(entries, ENTRIES_PAGE_SIZE);
 
-  useEffect(() => {
-    fetchEntries();
-  }, []);
-
   const handleEdit = (entry) => {
     setFormData({
       ...entry,
       date_of_symptom: formatDateForInput(entry),
     });
-    openModal();
+    openDialog();
   };
 
   const handleAddNew = () => {
     resetForm();
-    openModal();
+    openDialog();
   };
 
   const confirmDelete = async () => {
@@ -99,16 +100,10 @@ function EntriesPage() {
         )}
       </div>
 
-      {error && (
-        <div className="mb-8 rounded-lg border border-destructive/25 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-          {error}
-        </div>
-      )}
+      {error && <ErrorState error={error} />}
 
       {loading ? (
-        <div className="flex h-64 items-center justify-center">
-          <div className="size-8 animate-spin rounded-full border-2 border-muted border-t-primary" />
-        </div>
+        <LoadingState />
       ) : entries.length === 0 ? (
         <EmptyState
           icon={HeartOff}
@@ -213,7 +208,7 @@ function EntriesPage() {
         </div>
       )}
 
-      <AddEntryModal />
+      <AddEntryDialog />
 
       <AlertDialog
         open={pendingDeleteId !== null}

@@ -1,4 +1,4 @@
-import ThemeToggle from '../components/ui/ThemeToggle';
+import ThemeToggle from '../components/shared/ThemeToggle';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 
 const AppHeader = () => {
