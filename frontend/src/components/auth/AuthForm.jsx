@@ -65,14 +65,14 @@ function AuthForm({ isLogin, onToggle }) {
 
     setLoading(true);
     setFormError('');
-    let data, error;
+    let error;
     if (isLogin) {
-      ({ data, error } = await supabase.auth.signInWithPassword({
+      ({ error } = await supabase.auth.signInWithPassword({
         email,
         password,
       }));
     } else {
-      ({ data, error } = await supabase.auth.signUp({ email, password }));
+      ({ error } = await supabase.auth.signUp({ email, password }));
     }
     setLoading(false);
 

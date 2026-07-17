@@ -85,8 +85,8 @@ function SymptomTimelineLineChart({ data, entries }) {
     color: symptom.color,
   }));
 
-  const themeMode = useThemeStore((state) => state.theme);
-  const theme = useMemo(() => getChartTheme(), [themeMode]);
+  useThemeStore((state) => state.theme);
+  const theme = getChartTheme();
 
   const datasets = symptoms
     .filter((symptom) => visibleSymptoms.includes(symptom.name))

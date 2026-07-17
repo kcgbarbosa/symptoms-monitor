@@ -34,7 +34,7 @@ function App() {
     return () => {
       subscription.unsubscribe();
     };
-  }, []);
+  }, [initAuth]);
   return (
     <div className="min-h-screen bg-background">
       <Toaster
