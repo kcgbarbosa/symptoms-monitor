@@ -243,6 +243,22 @@ export function calcEntriesPerSymptomAllTime(entries) {
   return symptomCount;
 }
 
+export function getTopSymptoms(entries, limit = 3) {
+  const counts = calcEntriesPerSymptomAllTime(entries);
+
+  const iconNames = {};
+  entries.forEach((entry) => {
+    if (!iconNames[entry.symptom_name]) {
+      iconNames[entry.symptom_name] = entry.icon_name;
+    }
+  });
+
+  return Object.keys(counts)
+    .map((name) => ({ name, count: counts[name], icon_name: iconNames[name] }))
+    .sort((a, b) => b.count - a.count)
+    .slice(0, limit);
+}
+
 export function getCorrelationInsight(entries) {
   const totalEntries = entries.length;
 

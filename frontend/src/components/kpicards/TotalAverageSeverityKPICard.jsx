@@ -8,7 +8,7 @@ import {
   SEVERITY_COLORS,
 } from '../../utils/severityConstants';
 import RadialProgress from '../shared/RadialProgress';
-import { KPICard, KPICardHeader, KPICardMeta } from './shared';
+import { KPICard, KPICardHeader } from './KPICard';
 import FilterPills from '../shared/FilterPills';
 import { useState } from 'react';
 
@@ -42,12 +42,12 @@ function TotalAverageSeverityKPICard() {
           <FilterPills pills={pills} onSelect={setSelectedSymptom} />
         </div>
 
-        <KPICardMeta>
+        <p className="text-xs text-muted-foreground">
           {selectedSymptom
             ? `Showing ${selectedSymptom}`
             : 'Across all symptoms'}{' '}
           · all-time average
-        </KPICardMeta>
+        </p>
       </div>
 
       <div className="flex shrink-0 items-center justify-center">
