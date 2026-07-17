@@ -8,9 +8,12 @@ import TotalAverageSeverityKPICard from '../components/kpicards/TotalAverageSeve
 import CorrelationInsight from '../components/CorrelationInsight';
 import EmptyState from '../components/shared/EmptyState';
 import { TrendingUpDown } from 'lucide-react';
-import LoadingState from '@/components/shared/LoadingState';
 import ErrorState from '@/components/shared/ErrorState';
 import { useFetchEntriesOnMount } from '@/hooks/useFetchEntriesOnMount';
+import StatKPICardSkeleton from '../components/kpicards/StatKPICardSkeleton';
+import TotalAverageSeverityKPICardSkeleton from '../components/kpicards/TotalAverageSeverityKPICardSkeleton';
+import CorrelationInsightSkeleton from '../components/shared/CorrelationInsightSkeleton';
+import SymptomTimelineLineChartSkeleton from '../components/charts/SymptomTimelineLineChartSkeleton';
 
 function TrendsPage() {
   const { entries, loading, error } = useEntriesStore();
@@ -34,7 +37,35 @@ function TrendsPage() {
       {error && <ErrorState error={error} />}
 
       {loading ? (
-        <LoadingState />
+        <>
+          <div className="mb-6">
+            <CorrelationInsightSkeleton />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+            <div className="md:col-span-2">
+              <StatKPICardSkeleton />
+            </div>
+            <div className="md:col-span-3">
+              <TotalAverageSeverityKPICardSkeleton />
+            </div>
+          </div>
+
+          <div className="mt-6 mb-4">
+            <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+              Symptom Timeline
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              Daily entry counts for your most logged symptoms. Toggle a symptom
+              to show or hide its line.
+            </p>
+          </div>
+          <Card>
+            <CardContent>
+              <SymptomTimelineLineChartSkeleton />
+            </CardContent>
+          </Card>
+        </>
       ) : entries.length === 0 ? (
         <EmptyState
           icon={TrendingUpDown}
