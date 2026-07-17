@@ -74,7 +74,57 @@ function HomePage() {
 
       {error && <ErrorState error={error} />}
 
-      {!loading && entries.length === 0 ? (
+      {loading ? (
+        <>
+          <div className="mb-4 flex flex-col gap-6 lg:flex-row lg:items-end">
+            <div className="flex flex-1 items-end justify-between gap-4">
+              <div>
+                <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                  Recent Entries
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Your 6 most recent entries.
+                </p>
+              </div>
+              <Link
+                to="/entries"
+                className="shrink-0 text-sm font-medium text-primary hover:underline"
+              >
+                View all
+              </Link>
+            </div>
+
+            <div className="hidden shrink-0 lg:block lg:w-90">
+              <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                Recent Severity
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Your weekly average and most tracked.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-6 lg:flex-row">
+            <div className="min-w-0 flex-1 space-y-6">
+              <Card>
+                <CardContent>
+                  <EntryTimelineSkeleton />
+                </CardContent>
+              </Card>
+
+              <div className="grid grid-cols-2 gap-4">
+                <StatKPICardSkeleton />
+                <StatKPICardSkeleton />
+              </div>
+            </div>
+
+            <aside className="shrink-0 space-y-4 lg:w-90">
+              <WeeklyAverageSeverityKPICardSkeleton />
+              <TopSymptomsKPICardSkeleton />
+            </aside>
+          </div>
+        </>
+      ) : entries.length === 0 ? (
         <EmptyState
           icon={HouseHeart}
           title="Welcome to your dashboard"
@@ -115,51 +165,29 @@ function HomePage() {
             <div className="min-w-0 flex-1 space-y-6">
               <Card>
                 <CardContent>
-                  {loading ? (
-                    <EntryTimelineSkeleton />
-                  ) : (
-                    <EntryTimeline entries={recentEntries} />
-                  )}
+                  <EntryTimeline entries={recentEntries} />
                 </CardContent>
               </Card>
 
               <div className="grid grid-cols-2 gap-4">
-                {loading ? (
-                  <>
-                    <StatKPICardSkeleton />
-                    <StatKPICardSkeleton />
-                  </>
-                ) : (
-                  <>
-                    <StatKPICard
-                      label="This Week"
-                      value={weeklyEntries}
-                      valueLabel="Symptoms logged"
-                      caption={weeklyCaption}
-                    />
-                    <StatKPICard
-                      label="All Time"
-                      value={uniqueSymptoms}
-                      valueLabel="Distinct symptom types"
-                      caption="Across all of your entries"
-                    />
-                  </>
-                )}
+                <StatKPICard
+                  label="This Week"
+                  value={weeklyEntries}
+                  valueLabel="Symptoms logged"
+                  caption={weeklyCaption}
+                />
+                <StatKPICard
+                  label="All Time"
+                  value={uniqueSymptoms}
+                  valueLabel="Distinct symptom types"
+                  caption="Across all of your entries"
+                />
               </div>
             </div>
 
             <aside className="shrink-0 space-y-4 lg:w-90">
-              {loading ? (
-                <>
-                  <WeeklyAverageSeverityKPICardSkeleton />
-                  <TopSymptomsKPICardSkeleton />
-                </>
-              ) : (
-                <>
-                  <WeeklyAverageSeverityKPICard />
-                  <TopSymptomsKPICard />
-                </>
-              )}
+              <WeeklyAverageSeverityKPICard />
+              <TopSymptomsKPICard />
             </aside>
           </div>
         </>
