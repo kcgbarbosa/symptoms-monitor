@@ -5,7 +5,7 @@ import SymptomTimelineLineChart from '../components/charts/SymptomTimelineLineCh
 import { Card, CardContent } from '@/components/ui/card';
 import StatKPICard from '../components/kpicards/StatKPICard';
 import TotalAverageSeverityKPICard from '../components/kpicards/TotalAverageSeverityKPICard';
-import CorrelationInsightKPICard from '../components/kpicards/CorrelationInsightKPICard';
+import CorrelationInsight from '../components/CorrelationInsight';
 import EmptyState from '../components/shared/EmptyState';
 import { TrendingUpDown } from 'lucide-react';
 import LoadingState from '@/components/shared/LoadingState';
@@ -55,7 +55,7 @@ function TrendsPage() {
       ) : (
         <>
           <div className="mb-6">
-            <CorrelationInsightKPICard />
+            <CorrelationInsight />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-5 gap-6">

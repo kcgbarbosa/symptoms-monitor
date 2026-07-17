@@ -5,7 +5,7 @@ import {
 } from '../../utils/severityConstants';
 import { cn } from '@/lib/utils';
 
-function EntryCardContent({ entry }) {
+function EntryTimelineRow({ entry }) {
   const displayDate = formatDateForDisplay(entry);
   const hasSeverity = Boolean(entry?.severity);
   const colors = SEVERITY_COLORS[getSeverityLevel(entry?.severity)];
@@ -37,4 +37,4 @@ function EntryCardContent({ entry }) {
   );
 }
 
-export default EntryCardContent;
+export default EntryTimelineRow;

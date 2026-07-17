@@ -1,4 +1,4 @@
-import { ICON_OPTIONS, getIconColor } from '../IconPicker/IconOptions';
+import { ICON_OPTIONS, getIconColor } from '../IconGrid/IconOptions';
 import { cn } from '@/lib/utils';
 
 function IconBadge({ entry, size = 18, className }) {

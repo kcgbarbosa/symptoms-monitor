@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useEntriesStore } from '../../store/useEntriesStore';
 import { getSeverityLevel, SEVERITY_COLORS } from '../utils/severityConstants';
-import IconGrid from './IconPicker/IconGrid';
+import IconGrid from './IconGrid/IconGrid';
 import {
   Dialog,
   DialogContent,

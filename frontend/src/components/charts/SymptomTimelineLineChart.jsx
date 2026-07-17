@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { Line } from 'react-chartjs-2';
-import { getIconColor } from '../IconPicker/IconOptions';
+import { getIconColor } from '../IconGrid/IconOptions';
 import { formatDateForDisplay } from '../../utils/dataProcessing';
 import { getChartTheme } from '../../utils/chartTheme';
 import { useThemeStore } from '../../../store/useThemeStore';
