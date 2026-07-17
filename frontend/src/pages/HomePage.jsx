@@ -1,10 +1,10 @@
 import { useEntriesStore } from '../../store/useEntriesStore';
-import EntryTimeline from '../components/EntryTimeline';
+import EntryTimeline from '../components/EntryTimeline/EntryTimeline';
 import AddEntryDialog from '../components/AddEntryDialog';
 import EmptyState from '../components/shared/EmptyState';
 import { HouseHeart, Plus } from 'lucide-react';
 import StatKPICard from '../components/kpicards/StatKPICard';
-import AverageSeverityKPICard from '../components/kpicards/WeeklyAverageSeverityKPICard';
+import WeeklyAverageSeverityKPICard from '../components/kpicards/WeeklyAverageSeverityKPICard';
 import TopSymptomsKPICard from '../components/kpicards/TopSymptomsKPICard';
 import {
   calcWeeklyEntries,
@@ -17,8 +17,11 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import ErrorState from '@/components/shared/ErrorState';
-import LoadingState from '@/components/shared/LoadingState';
 import { useFetchEntriesOnMount } from '@/hooks/useFetchEntriesOnMount';
+import EntryTimelineSkeleton from '../components/EntryTimeline/EntryTimelineSkeleton';
+import StatKPICardSkeleton from '../components/kpicards/StatKPICardSkeleton';
+import WeeklyAverageSeverityKPICardSkeleton from '../components/kpicards/WeeklyAverageSeverityKPICardSkeleton';
+import TopSymptomsKPICardSkeleton from '../components/kpicards/TopSymptomsKPICardSkeleton';
 
 function HomePage() {
   const { entries, loading, error, resetForm, openDialog } = useEntriesStore();
@@ -71,9 +74,7 @@ function HomePage() {
 
       {error && <ErrorState error={error} />}
 
-      {loading ? (
-        <LoadingState />
-      ) : entries.length === 0 ? (
+      {!loading && entries.length === 0 ? (
         <EmptyState
           icon={HouseHeart}
           title="Welcome to your dashboard"
@@ -114,29 +115,51 @@ function HomePage() {
             <div className="min-w-0 flex-1 space-y-6">
               <Card>
                 <CardContent>
-                  <EntryTimeline entries={recentEntries} />
+                  {loading ? (
+                    <EntryTimelineSkeleton />
+                  ) : (
+                    <EntryTimeline entries={recentEntries} />
+                  )}
                 </CardContent>
               </Card>
 
               <div className="grid grid-cols-2 gap-4">
-                <StatKPICard
-                  label="This Week"
-                  value={weeklyEntries}
-                  valueLabel="Symptoms logged"
-                  caption={weeklyCaption}
-                />
-                <StatKPICard
-                  label="All Time"
-                  value={uniqueSymptoms}
-                  valueLabel="Distinct symptom types"
-                  caption="Across all of your entries"
-                />
+                {loading ? (
+                  <>
+                    <StatKPICardSkeleton />
+                    <StatKPICardSkeleton />
+                  </>
+                ) : (
+                  <>
+                    <StatKPICard
+                      label="This Week"
+                      value={weeklyEntries}
+                      valueLabel="Symptoms logged"
+                      caption={weeklyCaption}
+                    />
+                    <StatKPICard
+                      label="All Time"
+                      value={uniqueSymptoms}
+                      valueLabel="Distinct symptom types"
+                      caption="Across all of your entries"
+                    />
+                  </>
+                )}
               </div>
             </div>
 
             <aside className="shrink-0 space-y-4 lg:w-90">
-              <AverageSeverityKPICard />
-              <TopSymptomsKPICard />
+              {loading ? (
+                <>
+                  <WeeklyAverageSeverityKPICardSkeleton />
+                  <TopSymptomsKPICardSkeleton />
+                </>
+              ) : (
+                <>
+                  <WeeklyAverageSeverityKPICard />
+                  <TopSymptomsKPICard />
+                </>
+              )}
             </aside>
           </div>
         </>
