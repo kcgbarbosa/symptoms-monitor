@@ -8,7 +8,7 @@ import {
   getSeverityLevel,
   SEVERITY_COLORS,
 } from '../../utils/severityConstants';
-import { KPICard, KPICardHeader } from './shared';
+import { KPICard, KPICardHeader } from './KPICard';
 import { cn } from '@/lib/utils';
 
 function WeeklyAverageSeverityKPICard() {
@@ -48,7 +48,7 @@ function WeeklyAverageSeverityKPICard() {
 
   return (
     <KPICard>
-      <KPICardHeader label="Recent Severity" />
+      <KPICardHeader label="Recent Severity" className="lg:hidden" />
 
       <div className="flex flex-1 items-center justify-center py-2">
         <RadialProgress

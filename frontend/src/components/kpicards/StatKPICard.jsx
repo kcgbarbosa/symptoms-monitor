@@ -1,13 +1,18 @@
-import { KPICard, KPICardHeader, KPICardStat, KPICardMeta } from './shared';
+import { KPICard, KPICardHeader } from './KPICard';
 
-// Presentational card for the label + metric + caption pattern shared by the
-// dashboard and trends stat cards. Data is derived by the page and passed in.
 function StatKPICard({ label, value, valueLabel, caption }) {
   return (
     <KPICard>
       <KPICardHeader label={label} />
-      <KPICardStat value={value} label={valueLabel} />
-      {caption != null && <KPICardMeta>{caption}</KPICardMeta>}
+      <div className="space-y-1">
+        {valueLabel && <p className="text-sm text-muted-foreground">{valueLabel}</p>}
+        <p className="text-5xl font-bold tracking-tighter tabular-nums text-foreground">
+          {value}
+        </p>
+      </div>
+      {caption != null && (
+        <p className="text-xs text-muted-foreground">{caption}</p>
+      )}
     </KPICard>
   );
 }
