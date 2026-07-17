@@ -24,8 +24,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import LoadingState from '@/components/shared/LoadingState.jsx';
 import ErrorState from '@/components/shared/ErrorState.jsx';
+import EntriesTableSkeleton from '@/components/shared/EntriesTableSkeleton.jsx';
 import { useFetchEntriesOnMount } from '@/hooks/useFetchEntriesOnMount.js';
 
 const ENTRIES_PAGE_SIZE = 10;
@@ -103,7 +103,7 @@ function EntriesPage() {
       {error && <ErrorState error={error} />}
 
       {loading ? (
-        <LoadingState />
+        <EntriesTableSkeleton />
       ) : entries.length === 0 ? (
         <EmptyState
           icon={HeartOff}
