@@ -50,11 +50,11 @@ The live demo runs with pre-seeded data so you can explore the full UI without h
 
 ```bash
 git clone https://github.com/kcgbarbosa/symptoms-monitor.git
-cd symptoms-monitor/frontend
+cd symptoms-monitor
 npm install && npm run dev
 ```
 
-Create a free [Supabase](https://supabase.com) project and update `frontend/.env`:
+Create a free [Supabase](https://supabase.com) project and update `.env`:
 
 ```bash
 VITE_SUPABASE_URL=your-project-url

@@ -1,12 +1,9 @@
 .env
-/frontend/dist
-/frontend/dist-ssr
+/dist
+/dist-ssr
 /node_modules
-/frontend/node_modules
 .DS_Store
 .vscode/
 .idea/
-/sm-github-media
+/sylvius-media-assets
 /docs
-CLAUDE.md
-prac.jsx
