@@ -3,7 +3,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 function CorrelationInsightSkeleton() {
   return (
     <section
-      className="flex flex-col gap-4 rounded-2xl border border-border bg-muted/30 p-6 sm:flex-row sm:items-center sm:gap-6 sm:p-8"
+      className="flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 sm:flex-row sm:items-center sm:gap-6 sm:p-8"
       role="status"
       aria-label="Loading insight"
     >
