@@ -85,7 +85,7 @@ function AuthPage() {
             <Button
               variant="outline"
               onClick={() => setDemoMode(true)}
-              className="w-full max-w-sm"
+              className="w-full max-w-sm transition-all duration-200 ease-out hover:scale-[1.06] hover:border-highlight hover:text-highlight hover:shadow-[0_6px_20px_-10px_var(--highlight)] dark:hover:border-highlight"
             >
               Try Demo
             </Button>
