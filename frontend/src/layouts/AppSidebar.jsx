@@ -1,6 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
-  Activity,
   ClipboardList,
   LayoutDashboard,
   LogIn,
@@ -66,14 +65,14 @@ const AppSidebar = () => {
           to="/"
           onClick={(e) => handleNavClick(e, '/')}
           viewTransition
-          aria-label="Symptoms Monitor"
+          aria-label="Sylvius"
           className="flex items-center gap-2.5 px-1 py-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
         >
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-            <Activity className="size-4" />
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary font-serif text-lg font-bold text-primary-foreground">
+            S
           </div>
-          <span className="truncate text-lg font-bold tracking-tight text-primary group-data-[collapsible=icon]:hidden">
-            Symptoms Monitor
+          <span className="truncate font-serif text-3xl font-semibold italic tracking-tight text-primary group-data-[collapsible=icon]:hidden">
+            Sylvius
           </span>
         </NavLink>
       </SidebarHeader>
