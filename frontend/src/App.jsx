@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import Layout from './layouts/Layout.jsx';
-import HomePage from './pages/HomePage.jsx';
+import OverviewPage from './pages/OverviewPage.jsx';
 import EntriesPage from './pages/EntriesPage.jsx';
 import TrendsPage from './pages/TrendsPage.jsx';
 import AuthPage from './pages/AuthPage.jsx';
@@ -18,7 +18,7 @@ const router = createBrowserRouter([
       {
         element: <ProtectedRoute />,
         children: [
-          { index: true, element: <HomePage /> },
+          { index: true, element: <OverviewPage /> },
           { path: 'entries', element: <EntriesPage /> },
           { path: 'trends', element: <TrendsPage /> },
         ],

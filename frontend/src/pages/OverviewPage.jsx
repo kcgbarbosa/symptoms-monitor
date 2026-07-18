@@ -23,7 +23,7 @@ import StatKPICardSkeleton from '../components/kpicards/StatKPICardSkeleton';
 import WeeklyAverageSeverityKPICardSkeleton from '../components/kpicards/WeeklyAverageSeverityKPICardSkeleton';
 import TopSymptomsKPICardSkeleton from '../components/kpicards/TopSymptomsKPICardSkeleton';
 
-function HomePage() {
+function OverviewPage() {
   const { entries, loading, error, resetForm, openDialog } = useEntriesStore();
 
   useFetchEntriesOnMount();
@@ -127,7 +127,7 @@ function HomePage() {
       ) : entries.length === 0 ? (
         <EmptyState
           icon={HouseHeart}
-          title="Welcome to your dashboard"
+          title="Welcome to your overview"
           description="Your recent entries will show here. Get started by logging your first one."
           action={<Button onClick={handleAddNew}>Add first entry</Button>}
         />
@@ -198,4 +198,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default OverviewPage;

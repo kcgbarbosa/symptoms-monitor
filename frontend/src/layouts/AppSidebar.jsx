@@ -24,7 +24,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 const NAV_ITEMS = [
-  { to: '/', label: 'Dashboard', icon: LayoutDashboard, end: true },
+  { to: '/', label: 'Overview', icon: LayoutDashboard, end: true },
   { to: '/entries', label: 'Entries', icon: ClipboardList },
   { to: '/trends', label: 'Trends', icon: TrendingUp },
 ];
