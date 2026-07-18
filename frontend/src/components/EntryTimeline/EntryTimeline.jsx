@@ -1,4 +1,4 @@
-import EntryCardContent from './EntryCardContent';
+import EntryTimelineRow from './EntryTimelineRow';
 import { cn } from '@/lib/utils';
 import {
   getSeverityLevel,
@@ -27,7 +27,7 @@ function EntryTimeline({ entries }) {
               )}
             />
             <div className="min-w-0 flex-1">
-              <EntryCardContent entry={entry} />
+              <EntryTimelineRow entry={entry} />
             </div>
           </div>
         );

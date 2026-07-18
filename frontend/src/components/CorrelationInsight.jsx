@@ -1,5 +1,5 @@
-import { useEntriesStore } from '../../../store/useEntriesStore';
-import { getCorrelationInsight } from '../../utils/dataProcessing';
+import { useEntriesStore } from '../../store/useEntriesStore';
+import { getCorrelationInsight } from '../utils/dataProcessing';
 import { cn } from '@/lib/utils';
 import { Activity, Lightbulb, Sparkles } from 'lucide-react';
 
@@ -53,7 +53,7 @@ function InsightMessage({ insight }) {
   return insight.message;
 }
 
-function CorrelationInsightKPICard() {
+function CorrelationInsight() {
   const { entries } = useEntriesStore();
   const insight = getCorrelationInsight(entries);
   const config = TIER_CONFIG[insight.tier];
@@ -87,4 +87,4 @@ function CorrelationInsightKPICard() {
   );
 }
 
-export default CorrelationInsightKPICard;
+export default CorrelationInsight;

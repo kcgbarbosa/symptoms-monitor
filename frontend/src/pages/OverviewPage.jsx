@@ -1,10 +1,10 @@
 import { useEntriesStore } from '../../store/useEntriesStore';
-import EntryTimeline from '../components/EntryTimeline';
+import EntryTimeline from '../components/EntryTimeline/EntryTimeline';
 import AddEntryDialog from '../components/AddEntryDialog';
 import EmptyState from '../components/shared/EmptyState';
 import { HouseHeart, Plus } from 'lucide-react';
 import StatKPICard from '../components/kpicards/StatKPICard';
-import AverageSeverityKPICard from '../components/kpicards/WeeklyAverageSeverityKPICard';
+import WeeklyAverageSeverityKPICard from '../components/kpicards/WeeklyAverageSeverityKPICard';
 import TopSymptomsKPICard from '../components/kpicards/TopSymptomsKPICard';
 import {
   calcWeeklyEntries,
@@ -17,10 +17,13 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import ErrorState from '@/components/shared/ErrorState';
-import LoadingState from '@/components/shared/LoadingState';
 import { useFetchEntriesOnMount } from '@/hooks/useFetchEntriesOnMount';
+import EntryTimelineSkeleton from '../components/EntryTimeline/EntryTimelineSkeleton';
+import StatKPICardSkeleton from '../components/kpicards/StatKPICardSkeleton';
+import WeeklyAverageSeverityKPICardSkeleton from '../components/kpicards/WeeklyAverageSeverityKPICardSkeleton';
+import TopSymptomsKPICardSkeleton from '../components/kpicards/TopSymptomsKPICardSkeleton';
 
-function HomePage() {
+function OverviewPage() {
   const { entries, loading, error, resetForm, openDialog } = useEntriesStore();
 
   useFetchEntriesOnMount();
@@ -72,11 +75,59 @@ function HomePage() {
       {error && <ErrorState error={error} />}
 
       {loading ? (
-        <LoadingState />
+        <>
+          <div className="mb-4 flex flex-col gap-6 lg:flex-row lg:items-end">
+            <div className="flex flex-1 items-end justify-between gap-4">
+              <div>
+                <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                  Recent Entries
+                </h2>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Your 6 most recent entries.
+                </p>
+              </div>
+              <Link
+                to="/entries"
+                className="shrink-0 text-sm font-medium text-primary hover:underline"
+              >
+                View all
+              </Link>
+            </div>
+
+            <div className="hidden shrink-0 lg:block lg:w-90">
+              <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
+                Recent Severity
+              </h2>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Your weekly average and most tracked.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-6 lg:flex-row">
+            <div className="min-w-0 flex-1 space-y-6">
+              <Card>
+                <CardContent>
+                  <EntryTimelineSkeleton />
+                </CardContent>
+              </Card>
+
+              <div className="grid grid-cols-2 gap-4">
+                <StatKPICardSkeleton />
+                <StatKPICardSkeleton />
+              </div>
+            </div>
+
+            <aside className="shrink-0 space-y-4 lg:w-90">
+              <WeeklyAverageSeverityKPICardSkeleton />
+              <TopSymptomsKPICardSkeleton />
+            </aside>
+          </div>
+        </>
       ) : entries.length === 0 ? (
         <EmptyState
           icon={HouseHeart}
-          title="Welcome to your dashboard"
+          title="Welcome to your overview"
           description="Your recent entries will show here. Get started by logging your first one."
           action={<Button onClick={handleAddNew}>Add first entry</Button>}
         />
@@ -135,7 +186,7 @@ function HomePage() {
             </div>
 
             <aside className="shrink-0 space-y-4 lg:w-90">
-              <AverageSeverityKPICard />
+              <WeeklyAverageSeverityKPICard />
               <TopSymptomsKPICard />
             </aside>
           </div>
@@ -147,4 +198,4 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default OverviewPage;
