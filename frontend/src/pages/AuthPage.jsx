@@ -35,19 +35,24 @@ function AuthPage() {
               Symptoms Monitor
             </Link>
           </div>
-          <div className="space-y-5">
-            <blockquote className="space-y-3">
-              <p className="text-3xl font-semibold italic leading-tight">
-                “The greatest glory in living lies <br /> not in never falling,
-                but in rising every time we fall.”
+          <div
+            key={isLogin ? 'login' : 'signup'}
+            className="animate-in fade-in-0 slide-in-from-bottom-4 duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]"
+          >
+            <div className="space-y-5">
+              <blockquote className="space-y-3">
+                <p className="text-3xl font-semibold italic leading-tight">
+                  “The greatest glory in living lies <br /> not in never
+                  falling, but in rising every time we fall.”
+                </p>
+                <cite className="block text-sm not-italic text-primary-foreground">
+                  – Nelson Mandela
+                </cite>
+              </blockquote>
+              <p className="text-lg leading-relaxed text-primary-foreground">
+                Your symptoms are real, and so is your capacity to heal.
               </p>
-              <cite className="block text-sm not-italic text-primary-foreground">
-                – Nelson Mandela
-              </cite>
-            </blockquote>
-            <p className="text-lg leading-relaxed text-primary-foreground">
-              Your symptoms are real, and so is your capacity to heal.
-            </p>
+            </div>
           </div>
 
           <p className="text-sm text-primary-foreground">
