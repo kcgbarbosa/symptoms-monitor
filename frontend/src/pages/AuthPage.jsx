@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore.js';
 import { Button } from '@/components/ui/button';
 import ThemeToggle from '@/components/shared/ThemeToggle';
+import { Check } from 'lucide-react';
 
 function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -39,20 +40,37 @@ function AuthPage() {
             key={isLogin ? 'login' : 'signup'}
             className="animate-in fade-in-0 slide-in-from-bottom-4 duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]"
           >
-            <div className="space-y-5">
-              <blockquote className="space-y-3">
-                <p className="text-3xl font-semibold italic leading-tight">
-                  “The greatest glory in living lies <br /> not in never
-                  falling, but in rising every time we fall.”
-                </p>
-                <cite className="block text-sm not-italic text-primary-foreground">
-                  – Nelson Mandela
-                </cite>
-              </blockquote>
-              <p className="text-lg leading-relaxed text-primary-foreground">
-                Your symptoms are real, and so is your capacity to heal.
-              </p>
-            </div>
+            {isLogin ? (
+              <div className="space-y-5">
+                <blockquote className="space-y-3">
+                  <p className="text-3xl font-semibold italic leading-tight">
+                    “The greatest glory in living lies <br /> not in never
+                    falling, but in rising every time we fall.”
+                  </p>
+                  <cite className="block text-sm not-italic text-primary-foreground">
+                    – Nelson Mandela
+                  </cite>
+                </blockquote>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                <h2 className="text-3xl font-semibold italic leading-tight">
+                  Start monitoring your symptoms today
+                </h2>
+                <ul className="space-y-3 text-lg">
+                  <li className="flex items-center gap-3">
+                    <Check className="size-5 shrink-0" /> Track symptoms
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="size-5 shrink-0" /> Visualize patterns
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <Check className="size-5 shrink-0" /> Reflect on your
+                    trends
+                  </li>
+                </ul>
+              </div>
+            )}
           </div>
 
           <p className="text-sm text-primary-foreground">
