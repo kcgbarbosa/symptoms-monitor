@@ -95,7 +95,7 @@ function AuthForm({ isLogin, onToggle }) {
 
   if (signUpSuccess) {
     return (
-      <div className="space-y-6">
+      <div className="animate-in fade-in-0 slide-in-from-bottom-4 space-y-6 duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-foreground lg:text-3xl">
             {heading}
@@ -120,12 +120,12 @@ function AuthForm({ isLogin, onToggle }) {
   }
 
   return (
-    <div>
+    <div className="animate-in fade-in-0 slide-in-from-bottom-4 duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]">
       <div className="mb-8">
         {!isLogin && (
-          <p className="mb-2 text-xs font-semibold uppercase tracking-widest text-primary">
+          <span className="mb-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-primary lg:hidden">
             New Account
-          </p>
+          </span>
         )}
         <h1 className="text-2xl font-semibold tracking-tight text-foreground lg:text-3xl">
           {heading}
