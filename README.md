@@ -1,75 +1,60 @@
-<div align="center">
+# Sylvius
 
-# Symptoms Monitor
+A symptom journal for logging how you feel and understanding your patterns over time.
 
-## Track, visualize, and reflect on your health trends
+**[sylvius.kcgbarbosa.dev](https://sylvius.kcgbarbosa.dev)**
 
-_Built during my brain surgery recovery_
+<!-- this is where ill put the walkthrough gif -->
 
-[![Live](https://img.shields.io/badge/%20Live-limegreen?style=for-the-badge)](https://health.kcgbarbosa.dev)
+## Why I built this
 
-![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
-![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Zustand](https://img.shields.io/badge/Zustand-433E38?style=for-the-badge)
-![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)
+In 2024 I was diagnosed with a brain tumour and went under two brain surgeries. In times of hardship, it's common for patients to try and regain a sense of control in their lives. The way this came up for me was educating myself and keeping a log of my ongoing condition.
 
-</div>
+Doing so was easier said than done. Neurological symptoms can be nuanced, which made the responsibility of logging them became a stressor more than anything I would have considered empowering.
 
-## Why I Built This
-
-In 2024 I was diagnosed with a brain tumour. Over the next 12 months I underwent two neurosurgical procedures. Throughout the process, my doctors emphasized the importance of closely tracking my symptoms. I found monitoring my symptoms to be quite overwhelming.
-
-After six months of recovery, I decided to start building the tool I wish I had. A symptom monitoring application that made tracking simple, while also providing helpful insights and empowering my progression.
-
----
+Three months after my final operation, I began building the tool I wish I'd had. A service that made tracking symptoms a frictionless experience, and turned my logs into something real.
 
 ## Features
 
-- Personal profiles: Create an account to track and manage your own symptom history
+- Symptom logging with severity, date, icon, and optional notes. The form suggests names you've used before and remembers each symptom's icon.
+- A weekly overview with entry counts, average severity, most-tracked symptoms, and a week-over-week severity trend.
+- A symptom timeline chart and a co-occurrence insight that surfaces symptoms that tend to appear together.
+- Statistics render only when there is enough data to support them. Below that threshold the app says so instead of showing a misleading number.
+- Demo mode runs the full app on seeded in-memory data, with dates generated relative to today.
+- Light and Dark mode. Responsive across mobile, tablet, and desktop.
 
-<img alt="Login page on desktop" src="https://github.com/user-attachments/assets/9c156ccd-4b06-41cb-991c-a85e938c1549" />
-- Responsive: looks great on mobile, tablet, and desktop
+## Architecture
 
-<img width="500" height="900" alt="Mobile navigation menu" src="https://github.com/user-attachments/assets/d70c2980-4dac-4ec9-ae1c-35c3426dbd94" />
+**Stack:** React 19, Vite, React Router 7, Zustand, Tailwind CSS v4 + shadcn/ui (Radix), Chart.js, Supabase.
 
-- Symptom Logging: track symptoms from past, present or future with optional context notes
-  <img src='https://github.com/user-attachments/assets/cc3332b3-85a6-4d7b-bcb0-0460953542bf' alt='Dashboard showing recent symptom entries'/>
-- Statistics & Insights: Weekly/all-time severity, total count, and correlation (based on co-occurrence)
-- Visuals: various charts and radials throughout
+- React frontend with Supabase handling the backend (Postgres, auth, and row-level security)
 
-<img src='https://github.com/user-attachments/assets/0fd4f8de-26b8-4c5d-a729-9726e47d385f' alt='Trends page showing symptom charts and statistics'/>
+- State handled with three Zustand stores (auth, entries, theme).
 
----
+- All statistic aggregation is derived with utiltiies in `src/utils/dataProcessing.js`
 
-## Demo Mode
+- Project styling principles kept consistent with a semantic token system.
 
-The live demo runs with pre-seeded data so you can explore the full UI without having to create an account. </br> Entries, trends, and insights are all populated. Sign up when you're ready to start tracking your own data.
+- Loading skeletons share their layout shells with the components they stand in for.
 
-## Setup
+## Local Setup
 
 ```bash
 git clone https://github.com/kcgbarbosa/symptoms-monitor.git
 cd symptoms-monitor
-npm install && npm run dev
+npm install
+npm run dev
 ```
 
-Create a free [Supabase](https://supabase.com) project and update `.env`:
+Create a [Supabase](https://supabase.com) project and add an `.env`:
 
 ```bash
 VITE_SUPABASE_URL=your-project-url
-VITE_SUPABASE_PUBLISHABLE_KEY=your-anon-key
+VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 ```
 
-**Contributing:**
+## About
 
-1. Fork the repo and create a branch from `main`
-2. Make your changes and test locally
-3. Open a pull request with a clear description of changes and why
+Built by **Kevin-Christian Giraldo-Barbosa**.
 
-## Connect
-
-**Kevin-Christian Giraldo-Barbosa**
-
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/kcgbarbosa/)
-[![Email](https://img.shields.io/badge/Email-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:kcgbarbosa@gmail.com)
+[LinkedIn](https://www.linkedin.com/in/kcgbarbosa/) · [Email](mailto:kcgbarbosa@gmail.com)
