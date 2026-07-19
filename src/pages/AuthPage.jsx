@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Activity } from 'lucide-react';
 import AuthForm from '../components/auth/AuthForm';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/useAuthStore.js';
@@ -27,13 +26,15 @@ function AuthPage() {
       </div>
       <div className="grid min-h-screen grid-cols-1 lg:grid-cols-2">
         <div className="hidden flex-col justify-between bg-primary p-12 text-primary-foreground lg:flex">
-          <div className="flex items-center gap-2">
-            <Activity size={22} />
+          <div className="flex items-center gap-2.5">
+            <div className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-primary-foreground font-serif text-xl font-bold text-primary">
+              S
+            </div>
             <Link
               to="/auth"
-              className="text-xl font-bold uppercase tracking-tight"
+              className="font-serif text-3xl font-semibold italic tracking-tight"
             >
-              Symptoms Monitor
+              Sylvius
             </Link>
           </div>
           <div
@@ -80,10 +81,12 @@ function AuthPage() {
 
         <div className="flex flex-col bg-card">
           <div className="bg-primary px-8 py-8 text-primary-foreground lg:hidden">
-            <div className="mb-3 flex items-center gap-2">
-              <Activity size={20} />
-              <span className="font-bold uppercase tracking-tight">
-                Symptoms Monitor
+            <div className="mb-3 flex items-center gap-2.5">
+              <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary-foreground font-serif text-lg font-bold text-primary">
+                S
+              </div>
+              <span className="font-serif text-2xl font-semibold italic tracking-tight">
+                Sylvius
               </span>
             </div>
             <p className="text-sm text-primary-foreground">

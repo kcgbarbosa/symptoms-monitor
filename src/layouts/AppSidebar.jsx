@@ -1,6 +1,5 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import {
-  Activity,
   ClipboardList,
   LayoutDashboard,
   LogIn,
@@ -12,7 +11,6 @@ import { useEntriesStore } from '../../store/useEntriesStore.js';
 import {
   Sidebar,
   SidebarContent,
-  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
@@ -22,6 +20,11 @@ import {
 } from '@/components/ui/sidebar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 const NAV_ITEMS = [
   { to: '/', label: 'Overview', icon: LayoutDashboard, end: true },
@@ -66,14 +69,14 @@ const AppSidebar = () => {
           to="/"
           onClick={(e) => handleNavClick(e, '/')}
           viewTransition
-          aria-label="Symptoms Monitor"
+          aria-label="Sylvius"
           className="flex items-center gap-2.5 px-1 py-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
         >
-          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
-            <Activity className="size-4" />
+          <div className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-primary font-serif text-lg font-bold text-primary-foreground">
+            S
           </div>
-          <span className="truncate text-lg font-bold tracking-tight text-primary group-data-[collapsible=icon]:hidden">
-            Symptoms Monitor
+          <span className="truncate font-serif text-3xl font-semibold italic tracking-tight text-primary group-data-[collapsible=icon]:hidden">
+            Sylvius
           </span>
         </NavLink>
       </SidebarHeader>
@@ -109,59 +112,80 @@ const AppSidebar = () => {
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
-      </SidebarContent>
 
-      <SidebarFooter className="gap-2 p-2 group-data-[collapsible=icon]:items-center">
-        {session ? (
-          <div className="flex items-center justify-between gap-2 rounded-lg border border-sidebar-border bg-sidebar-accent/40 px-2 py-2 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:border-none group-data-[collapsible=icon]:bg-transparent group-data-[collapsible=icon]:p-0">
-            <span className="truncate text-sm text-muted-foreground group-data-[collapsible=icon]:hidden">
-              {session.user.email}
-            </span>
+        <SidebarMenu className="mt-1.5">
+          <SidebarMenuItem>
+            {session ? (
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <SidebarMenuButton
+                    onClick={handleSignOut}
+                    aria-label="Sign out"
+                    size="lg"
+                    className="text-base [&_svg]:size-5 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center"
+                  >
+                    <LogOut />
+                    <span className="truncate group-data-[collapsible=icon]:hidden">
+                      Sign out
+                    </span>
+                  </SidebarMenuButton>
+                </TooltipTrigger>
+                <TooltipContent side="right" align="center">
+                  Signed in as {session.user.email}
+                </TooltipContent>
+              </Tooltip>
+            ) : isDemoMode ? (
+              <SidebarMenuButton
+                onClick={handleExitDemo}
+                tooltip="Exit Demo"
+                aria-label="Exit Demo"
+                size="lg"
+                className="hidden text-base [&_svg]:size-5 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:flex group-data-[collapsible=icon]:justify-center"
+              >
+                <LogOut />
+                <span className="truncate group-data-[collapsible=icon]:hidden">
+                  Exit Demo
+                </span>
+              </SidebarMenuButton>
+            ) : (
+              <NavLink
+                to="/auth"
+                onClick={(e) => handleNavClick(e, '/auth')}
+                viewTransition
+                aria-label="Log in"
+              >
+                {({ isActive }) => (
+                  <SidebarMenuButton
+                    isActive={isActive}
+                    tooltip="Log in"
+                    aria-label="Log in"
+                    size="lg"
+                    className="text-base [&_svg]:size-5 group-data-[collapsible=icon]:mx-auto group-data-[collapsible=icon]:justify-center"
+                  >
+                    <LogIn />
+                    <span className="truncate group-data-[collapsible=icon]:hidden">
+                      Log in
+                    </span>
+                  </SidebarMenuButton>
+                )}
+              </NavLink>
+            )}
+          </SidebarMenuItem>
+        </SidebarMenu>
+
+        {isDemoMode && (
+          <div className="mt-1.5 flex flex-col items-center gap-2 rounded-lg border border-sidebar-border bg-sidebar-accent/40 p-2 group-data-[collapsible=icon]:hidden">
             <Button
-              variant="ghost"
-              size="icon-sm"
-              onClick={handleSignOut}
-              aria-label="Sign out"
+              variant="outline"
+              size="sm"
+              onClick={handleExitDemo}
+              className="w-full bg-primary/10 hover:bg-primary/15"
             >
-              <LogOut />
-            </Button>
-          </div>
-        ) : isDemoMode ? (
-          <div className="flex flex-col gap-2 rounded-lg border border-sidebar-border bg-sidebar-accent/40 p-2 group-data-[collapsible=icon]:hidden">
-            <Badge
-              variant="secondary"
-              className="w-fit uppercase tracking-widest"
-            >
-              Demo
-            </Badge>
-            <Button variant="outline" size="sm" onClick={handleExitDemo}>
               Exit Demo
             </Button>
           </div>
-        ) : (
-          <NavLink
-            to="/auth"
-            onClick={(e) => handleNavClick(e, '/auth')}
-            viewTransition
-            aria-label="Log in"
-          >
-            {({ isActive }) => (
-              <SidebarMenuButton
-                isActive={isActive}
-                tooltip="Log in"
-                aria-label="Log in"
-                size="lg"
-                className="text-base [&_svg]:size-5 group-data-[collapsible=icon]:justify-center"
-              >
-                <LogIn />
-                <span className="truncate group-data-[collapsible=icon]:hidden">
-                  Log in
-                </span>
-              </SidebarMenuButton>
-            )}
-          </NavLink>
         )}
-      </SidebarFooter>
+      </SidebarContent>
     </Sidebar>
   );
 };
