@@ -41,8 +41,8 @@ Three months after my final operation, I began building the tool I wish I'd had.
 Requires Node 18+.
 
 ```bash
-git clone https://github.com/kcgbarbosa/symptoms-monitor.git
-cd symptoms-monitor
+git clone https://github.com/kcgbarbosa/sylvius.git
+cd sylvius
 npm install
 npm run dev
 ```
