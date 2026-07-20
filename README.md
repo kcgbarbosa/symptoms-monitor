@@ -2,9 +2,9 @@
 
 A symptom journal for logging how you feel and understanding your patterns over time.
 
-**[sylvius.kcgbarbosa.dev](https://sylvius.kcgbarbosa.dev)**
+**[sylvius.kcgbarbosa.dev](https://sylvius.kcgbarbosa.dev)** — Register for a new account or click the **Try Demo** button for a quick walkthrough.
 
-<!-- this is where ill put the walkthrough gif -->
+
 
 ## Why I built this
 
@@ -17,10 +17,10 @@ Three months after my final operation, I began building the tool I wish I'd had.
 ## Features
 
 - Symptom logging with severity, date, icon, and optional notes. The form suggests names you've used before and remembers each symptom's icon.
-- A weekly overview with entry counts, average severity, most-tracked symptoms, and a week-over-week severity trend.
+- A weekly overview with entry counts, average severity and a most-tracked symptoms.
 - A symptom timeline chart and a co-occurrence insight that surfaces symptoms that tend to appear together.
-- Statistics render only when there is enough data to support them. Below that threshold the app says so instead of showing a misleading number.
-- Demo mode runs the full app on seeded in-memory data, with dates generated relative to today.
+- Correlation insights render only when there is enough data to support them. Below that threshold the app says so instead of showing a misleading number.
+- Demo mode runs the full app with dates generated relative to today.
 - Light and Dark mode. Responsive across mobile, tablet, and desktop.
 
 ## Architecture
@@ -28,16 +28,15 @@ Three months after my final operation, I began building the tool I wish I'd had.
 **Stack:** React 19, Vite, React Router 7, Zustand, Tailwind CSS v4 + shadcn/ui (Radix), Chart.js, Supabase.
 
 - React frontend with Supabase handling the backend (Postgres, auth, and row-level security)
-
+- Row-level security policies scope every query to the authenticated user, so user entries are secured.
 - State handled with three Zustand stores (auth, entries, theme).
-
 - All statistic aggregation is derived with utiltiies in `src/utils/dataProcessing.js`
-
 - Project styling principles kept consistent with a semantic token system.
-
-- Loading skeletons share their layout shells with the components they stand in for.
+- Loading skeletons occupy their corresponding components shell when appropiate.
 
 ## Local Setup
+
+Requires Node 18+.
 
 ```bash
 git clone https://github.com/kcgbarbosa/symptoms-monitor.git
